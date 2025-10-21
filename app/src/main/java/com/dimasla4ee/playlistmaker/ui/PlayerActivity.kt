@@ -1,10 +1,8 @@
 package com.dimasla4ee.playlistmaker.ui
 
-import android.media.MediaPlayer
-import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import com.bumptech.glide.Glide
@@ -15,85 +13,74 @@ import com.dimasla4ee.playlistmaker.domain.model.Track
 import com.dimasla4ee.playlistmaker.presentation.mapper.TrackDetailedInfoMapper
 import com.dimasla4ee.playlistmaker.presentation.model.TrackDetailedInfo
 import com.dimasla4ee.playlistmaker.presentation.util.dpToPx
+import com.dimasla4ee.playlistmaker.presentation.util.getParcelableExtraCompat
 import com.dimasla4ee.playlistmaker.presentation.util.setupWindowInsets
 import com.dimasla4ee.playlistmaker.presentation.util.show
-import com.dimasla4ee.playlistmaker.presentation.util.toMmSs
+import com.dimasla4ee.playlistmaker.presentation.viewmodel.MediaPlayerViewModel
+import com.dimasla4ee.playlistmaker.presentation.viewmodel.MediaPlayerViewModel.Companion.State
 import com.dimasla4ee.playlistmaker.util.Keys
 
 class PlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var trackDetailedInfo: TrackDetailedInfo
-    private var mediaPlayer = MediaPlayer()
-    private var playerState = PlayerState.DEFAULT
-
-    private val isPlaying: Boolean
-        get() = playerState == PlayerState.PLAYING
-
-    private val currentPosition: Int
-        get() = mediaPlayer.currentPosition
-
-    private lateinit var handler: Handler
+    private val mediaPlayerViewModel: MediaPlayerViewModel by viewModels {
+        MediaPlayerViewModel.getFactory(trackDetailedInfo.audioUrl)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityPlayerBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        enableEdgeToEdge()
-        binding.root.setupWindowInsets()
+        binding = ActivityPlayerBinding.inflate(layoutInflater).apply {
+            setContentView(root)
+            root.setupWindowInsets()
+            enableEdgeToEdge()
+        }
 
-        handler = Handler(mainLooper)
-
-        val track = (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(Keys.TRACK_INFO, Track::class.java)
-        } else {
-            @Suppress("deprecation")
-            intent.getParcelableExtra(Keys.TRACK_INFO)
-        })!!
+        val track = intent.getParcelableExtraCompat<Track>(Keys.TRACK_INFO)
+            ?: throw IllegalStateException("Track data is missing in the intent")
 
         trackDetailedInfo = TrackDetailedInfoMapper.map(track)
-
         fillTrackInfo(trackDetailedInfo)
 
         binding.panelHeader.setOnIconClickListener { finish() }
 
-        preparePlayer(trackDetailedInfo.audioUrl)
+        with(mediaPlayerViewModel) {
+            state.observe(this@PlayerActivity) { mediaPlayerState ->
+                binding.playButton.isEnabled = mediaPlayerState != State.DEFAULT
 
-        binding.playButton.setOnClickListener {
-            playbackControl()
+                binding.playButton.setImageResource(
+                    if (mediaPlayerState == State.PLAYING) {
+                        R.drawable.ic_pause_24
+                    } else {
+                        R.drawable.ic_play_24
+                    }
+                )
+            }
+
+            timer.observe(this@PlayerActivity) { timerValue ->
+                binding.songCurrentDuration.text = timerValue
+            }
+
+            binding.playButton.setOnClickListener {
+                onPlayButtonClicked()
+            }
         }
-
-        binding.songCurrentDuration.text = currentPosition.toMmSs()
-        updateTrackTimer()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        releasePlayer()
     }
 
     private fun fillTrackInfo(track: TrackDetailedInfo) {
-        binding.apply {
+        with(binding) {
+            val yearIsAvailable = track.year != null
+            val albumIsAvailable = track.album != null
+
             songDurationFetched.text = track.duration
+            songYearFetched.show(yearIsAvailable)
+            songYearLabel.show(yearIsAvailable)
+            songYearFetched.text = track.year?.toString()
 
-            track.year.let { year ->
-                if (year == null) {
-                    songYearFetched.show(false)
-                    songYearLabel.show(false)
-                } else {
-                    songYearFetched.text = year.toString()
-                }
-            }
-
-            track.album.let { album ->
-                if (album == null) {
-                    songAlbumFetched.show(false)
-                    songAlbumLabel.show(false)
-                } else {
-                    songAlbumFetched.text = album
-                }
-            }
+            songAlbumFetched.show(albumIsAvailable)
+            songAlbumLabel.show(albumIsAvailable)
+            songAlbumFetched.text = track.album
 
             songGenreFetched.text = track.genre
             songCountryFetched.text = track.country
@@ -105,9 +92,9 @@ class PlayerActivity : AppCompatActivity() {
             val pxRadius = dpRadius.dpToPx(this@PlayerActivity).toInt()
             val placeholder = AppCompatResources.getDrawable(
                 this@PlayerActivity, R.drawable.ic_placeholder_45
-            )
-
-            placeholder?.setTint(getColor(R.color.light_gray))
+            )?.apply {
+                setTint(getColor(R.color.light_gray))
+            }
 
             Glide.with(root)
                 .load(track.coverUrl)
@@ -117,81 +104,4 @@ class PlayerActivity : AppCompatActivity() {
                 .into(songCover)
         }
     }
-
-    private fun preparePlayer(source: String?) {
-        mediaPlayer.apply {
-            setDataSource(source)
-            prepareAsync()
-            setOnPreparedListener { playerState = PlayerState.PREPARED }
-            setOnCompletionListener { stopPlayer() }
-        }
-    }
-
-    private fun playPlayer() {
-        mediaPlayer.start()
-        playerState = PlayerState.PLAYING
-        handler.post(updateTrackTimerRunnable)
-        binding.playButton.setImageResource(R.drawable.ic_pause_24)
-    }
-
-    private fun pausePlayer() {
-        mediaPlayer.pause()
-        playerState = PlayerState.PAUSED
-        handler.removeCallbacks(updateTrackTimerRunnable)
-        binding.playButton.setImageResource(R.drawable.ic_play_24)
-    }
-
-    private fun stopPlayer() {
-        mediaPlayer.stop()
-        mediaPlayer.prepareAsync()
-        playerState = PlayerState.PREPARED
-        handler.removeCallbacks(updateTrackTimerRunnable)
-        binding.songCurrentDuration.text = 0.toMmSs()
-        binding.playButton.setImageResource(R.drawable.ic_play_24)
-    }
-
-    private fun releasePlayer() {
-        mediaPlayer.release()
-        playerState = PlayerState.DEFAULT
-        handler.removeCallbacks(updateTrackTimerRunnable)
-    }
-
-    private fun playbackControl() {
-        when (playerState) {
-            PlayerState.PLAYING -> {
-                pausePlayer()
-            }
-
-            PlayerState.PREPARED, PlayerState.PAUSED -> {
-                playPlayer()
-            }
-
-            else -> Unit
-        }
-    }
-
-    private val updateTrackTimerRunnable = object : Runnable {
-        override fun run() {
-            if (isPlaying) {
-                binding.songCurrentDuration.text = currentPosition.toMmSs()
-                handler.postDelayed(this, DELAY)
-            }
-        }
-    }
-
-    private fun updateTrackTimer() {
-        handler.post(updateTrackTimerRunnable)
-    }
-
-    enum class PlayerState {
-        DEFAULT,
-        PREPARED,
-        PLAYING,
-        PAUSED
-    }
-
-    private companion object {
-        const val DELAY = 300L
-    }
 }
-

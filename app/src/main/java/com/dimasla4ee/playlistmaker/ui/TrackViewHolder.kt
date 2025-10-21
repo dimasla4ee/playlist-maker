@@ -23,19 +23,20 @@ class TrackViewHolder(
         track: Track,
         onItemClick: (Track) -> Unit
     ) {
+        val trackDetailedInfo = TrackDetailedInfoMapper.map(track)
         val dpRadius = itemView.resources.getDimension(R.dimen.small_25)
         val pxRadius = dpRadius.dpToPx(context).toInt()
-        val placeholder = AppCompatResources.getDrawable(context, R.drawable.ic_placeholder_45)
-        val trackUi = TrackDetailedInfoMapper.map(track)
+        val placeholder = AppCompatResources.getDrawable(
+            context, R.drawable.ic_placeholder_45
+        )?.apply {
+            setTint(context.getColor(R.color.light_gray))
+        }
 
-        placeholder?.setTint(context.getColor(R.color.light_gray))
-
-        binding.apply {
+        with(binding) {
             titleTextView.text = track.title
-
             artistAndTimeTextView.text = context.getString(
                 R.string.artist_and_time,
-                track.artist, trackUi.duration
+                track.artist, trackDetailedInfo.duration
             )
 
             trackContainer.setOnClickListener {
