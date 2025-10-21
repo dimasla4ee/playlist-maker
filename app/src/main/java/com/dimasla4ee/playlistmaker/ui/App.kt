@@ -14,7 +14,6 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        Creator.setSearchHistoryPrefs(getSharedPreferences(Keys.SEARCH_PREFERENCES, MODE_PRIVATE))
         Creator.setSettingsPrefs(getSharedPreferences(Keys.APP_PREFERENCES, MODE_PRIVATE))
         settingsInteractor = Creator.provideSettingsInteractor()
         setAppTheme(isDarkThemeEnabled)

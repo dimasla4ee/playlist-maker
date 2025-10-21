@@ -19,6 +19,8 @@ object Debouncer {
         handler.postDelayed(action, delayMillis)
     }
 
+    fun cancel(action: Runnable) = handler.removeCallbacks(action)
+
     fun isClickAllowed(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
