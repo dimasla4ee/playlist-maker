@@ -27,8 +27,8 @@ class SearchActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchBinding
     private lateinit var searchInputEditText: EditText
-    private lateinit var searchHistoryAdapter: TracksAdapter
-    private lateinit var searchResultsAdapter: TracksAdapter
+    private lateinit var searchHistoryAdapter: TrackAdapter
+    private lateinit var searchResultsAdapter: TrackAdapter
     private lateinit var searchHistory: SearchHistoryInteractor
 
     private lateinit var handler: Handler
@@ -58,8 +58,8 @@ class SearchActivity : AppCompatActivity() {
 
         searchInputEditText = binding.searchInputEditText
 
-        searchHistoryAdapter = TracksAdapter { onItemClick(it) }
-        searchResultsAdapter = TracksAdapter { onItemClick(it) }
+        searchHistoryAdapter = TrackAdapter { onItemClick(it) }
+        searchResultsAdapter = TrackAdapter { onItemClick(it) }
 
         setContent(ContentType.NONE)
         searchInputEditText.setText(query)
