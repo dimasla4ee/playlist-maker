@@ -15,7 +15,7 @@
         app:layout_constraintGuide_end="@dimen/normal_100" />
 
     <!-- Header -->
-    <com.dimasla4ee.playlistmaker.ui.PanelHeader
+    <com.dimasla4ee.playlistmaker.core.presentation.widget.PanelHeader
         android:id="@+id/panelHeader"
         style="@style/LinearLayout.PanelHeader"
         android:text="@string/search"

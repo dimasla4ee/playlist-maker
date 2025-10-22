@@ -4,7 +4,7 @@
     style="@style/LinearLayout"
     android:paddingBottom="@dimen/normal_150">
 
-    <com.dimasla4ee.playlistmaker.ui.PanelHeader
+    <com.dimasla4ee.playlistmaker.core.presentation.widget.PanelHeader
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/app_name"
