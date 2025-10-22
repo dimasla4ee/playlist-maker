@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import com.dimasla4ee.playlistmaker.app.di.dataModule
 import com.dimasla4ee.playlistmaker.app.di.domainModule
+import com.dimasla4ee.playlistmaker.app.di.presentationModule
 import com.dimasla4ee.playlistmaker.app.di.repositoryModule
 import com.dimasla4ee.playlistmaker.app.di.viewModelModule
 import com.dimasla4ee.playlistmaker.feature.settings.domain.SettingsInteractor
@@ -20,7 +21,7 @@ class App : Application() {
 
         startKoin {
             androidContext(this@App)
-            modules(viewModelModule, repositoryModule, domainModule, dataModule)
+            modules(viewModelModule, repositoryModule, domainModule, dataModule, presentationModule)
         }
 
         val isDarkThemeEnabled = settingsInteractor.isDarkThemeEnabled()

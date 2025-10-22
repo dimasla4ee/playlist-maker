@@ -16,6 +16,6 @@ val viewModelModule = module {
     }
 
     viewModel { (sourceUrl: String) ->
-        MediaPlayerViewModel(sourceUrl)
+        MediaPlayerViewModel(sourceUrl, get())
     }
 }

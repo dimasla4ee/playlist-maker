@@ -9,10 +9,10 @@ import androidx.lifecycle.ViewModel
 import com.dimasla4ee.playlistmaker.core.presentation.util.toMmSs
 
 class MediaPlayerViewModel(
-    private val sourceUrl: String
+    private val sourceUrl: String,
+    private val mediaPlayer: MediaPlayer
 ) : ViewModel() {
 
-    private var mediaPlayer = MediaPlayer()
     private var handler = Handler(Looper.getMainLooper())
 
     private val _state = MutableLiveData(State.DEFAULT)
