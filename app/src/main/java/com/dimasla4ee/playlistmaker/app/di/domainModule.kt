@@ -8,15 +8,15 @@ import com.dimasla4ee.playlistmaker.feature.settings.domain.SettingsInteractorIm
 import org.koin.dsl.module
 
 val domainModule = module {
-    single<SettingsInteractor> {
+    factory<SettingsInteractor> {
         SettingsInteractorImpl(get())
     }
 
-    single<SearchHistoryInteractor> {
+    factory<SearchHistoryInteractor> {
         SearchHistoryInteractorImpl(get())
     }
 
-    single {
+    factory {
         SearchTracksUseCase(get())
     }
 }

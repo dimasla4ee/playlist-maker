@@ -33,15 +33,15 @@ val repositoryModule = module {
         )
     }
 
-    single<SettingsRepository> {
+    factory<SettingsRepository> {
         SettingsRepositoryImpl(get<StorageClient<Boolean>>(named("theme_storage")))
     }
 
-    single<SearchHistoryRepository> {
+    factory<SearchHistoryRepository> {
         SearchHistoryRepositoryImpl(get(named("search_history_storage")))
     }
 
-    single<TrackSearchRepository> {
+    factory<TrackSearchRepository> {
         TrackSearchRepositoryImpl(get())
     }
 }
