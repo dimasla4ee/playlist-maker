@@ -1,11 +1,12 @@
 package com.dimasla4ee.playlistmaker.domain.use_case
 
-import com.dimasla4ee.playlistmaker.domain.repository.SettingsRepository
+interface SettingsInteractor {
 
-class SettingsInteractor(
-    private val settingsRepository: SettingsRepository
-) {
+    fun isDarkThemeEnabled(consumer: SettingsConsumer)
+    fun setAppTheme(useDarkTheme: Boolean)
 
-    fun isDarkThemeEnabled() = settingsRepository.isDarkThemeEnabled()
-    fun setAppTheme(useDarkTheme: Boolean) = settingsRepository.setAppTheme(useDarkTheme)
+    interface SettingsConsumer {
+
+        fun consume(isDarkThemeEnabled: Boolean)
+    }
 }
