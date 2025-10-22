@@ -1,11 +1,12 @@
 package com.dimasla4ee.playlistmaker.core.presentation.adapter
 
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
 import com.dimasla4ee.playlistmaker.core.domain.model.Track
 
 class TrackAdapter(
     private val onItemClick: (Track) -> Unit
-) : androidx.recyclerview.widget.ListAdapter<Track, TrackViewHolder>(TrackDiffCallback()) {
+) : ListAdapter<Track, TrackViewHolder>(TrackDiffCallback()) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

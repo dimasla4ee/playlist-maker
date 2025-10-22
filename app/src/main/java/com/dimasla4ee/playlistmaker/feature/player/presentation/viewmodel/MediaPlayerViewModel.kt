@@ -96,14 +96,14 @@ class MediaPlayerViewModel(
         mediaPlayer.release()
     }
 
-    companion object {
+    enum class State {
+        DEFAULT,
+        PREPARED,
+        PLAYING,
+        PAUSED
+    }
 
-        enum class State {
-            DEFAULT,
-            PREPARED,
-            PLAYING,
-            PAUSED
-        }
+    companion object {
 
         fun getFactory(url: String): ViewModelProvider.Factory = viewModelFactory {
             initializer {

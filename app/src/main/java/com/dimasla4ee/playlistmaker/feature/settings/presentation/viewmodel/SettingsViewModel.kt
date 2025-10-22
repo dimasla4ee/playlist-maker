@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.dimasla4ee.playlistmaker.app.creator.Creator
-import com.dimasla4ee.playlistmaker.feature.settings.domain.usecase.SettingsInteractor
+import com.dimasla4ee.playlistmaker.feature.settings.domain.SettingsInteractor
 
 class SettingsViewModel(
     private val settingsInteractor: SettingsInteractor
@@ -19,13 +19,8 @@ class SettingsViewModel(
         get() = _isDarkThemeEnabled
 
     init {
-        settingsInteractor.isDarkThemeEnabled(
-            object : SettingsInteractor.SettingsConsumer {
-                override fun consume(isDarkThemeEnabled: Boolean) {
-                    _isDarkThemeEnabled.postValue(isDarkThemeEnabled)
-                }
-            }
-        )
+        val isDarkThemeEnabled = settingsInteractor.isDarkThemeEnabled()
+        _isDarkThemeEnabled.postValue(isDarkThemeEnabled)
     }
 
     fun onThemeToggle(useDarkTheme: Boolean) {

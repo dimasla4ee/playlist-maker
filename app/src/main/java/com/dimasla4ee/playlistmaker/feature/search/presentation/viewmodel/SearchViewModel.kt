@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.dimasla4ee.playlistmaker.app.creator.Creator
@@ -13,14 +14,14 @@ import com.dimasla4ee.playlistmaker.core.domain.consumer.ConsumerData
 import com.dimasla4ee.playlistmaker.core.domain.model.Track
 import com.dimasla4ee.playlistmaker.core.presentation.util.Debouncer
 import com.dimasla4ee.playlistmaker.core.util.LogUtil
-import com.dimasla4ee.playlistmaker.feature.search.domain.usecase.SearchHistoryInteractor
+import com.dimasla4ee.playlistmaker.feature.search.domain.SearchHistoryInteractor
 import com.dimasla4ee.playlistmaker.feature.search.presentation.model.SearchActivityState
 
 class SearchViewModel(
     private val searchHistoryInteractor: SearchHistoryInteractor
 ) : ViewModel() {
 
-    private val _uiState = MutableLiveData<SearchActivityState>(SearchActivityState.Content)
+    private val _uiState = MutableLiveData<SearchActivityState>(SearchActivityState.Content())
     val uiState: LiveData<SearchActivityState>
         get() = _uiState
 
@@ -31,26 +32,17 @@ class SearchViewModel(
         get() = _searchQuery.value.isNullOrBlank()
 
     private val _searchHistory = MutableLiveData<ArrayDeque<Track>>(ArrayDeque())
-    val searchHistory: LiveData<ArrayDeque<Track>>
-        get() = _searchHistory
     private val isSearchHistoryEmpty: Boolean
         get() = _searchHistory.value.isNullOrEmpty()
 
     private val _results = MutableLiveData<List<Track>>()
-    val results: LiveData<List<Track>>
-        get() = _results
 
     private val searchRunnable = Runnable { performSearch() }
     private val searchTracksUseCase = Creator.provideSearchTracksUseCase()
 
     init {
-        searchHistoryInteractor.getSearchHistory(
-            object : SearchHistoryInteractor.HistoryConsumer {
-                override fun consume(searchHistory: List<Track>) {
-                    _searchHistory.postValue(ArrayDeque(searchHistory))
-                }
-            }
-        )
+        val searchHistory = searchHistoryInteractor.getSearchHistory()
+        _searchHistory.postValue(ArrayDeque(searchHistory))
     }
 
     fun onQueryChanged(newQuery: String) {
@@ -59,9 +51,13 @@ class SearchViewModel(
         if (newQuery.isBlank()) {
             Debouncer.cancel(searchRunnable)
             if (isSearchHistoryEmpty) {
-                _uiState.postValue(SearchActivityState.Content)
+                _uiState.postValue(SearchActivityState.Content())
             } else {
-                _uiState.postValue(SearchActivityState.SearchHistory)
+                _uiState.postValue(
+                    SearchActivityState.SearchHistory(
+                        _searchHistory.value?.toList() ?: listOf()
+                    )
+                )
             }
             return
         }
@@ -82,12 +78,11 @@ class SearchViewModel(
                     val newState = when (data) {
                         is ConsumerData.Data -> {
                             val tracks = data.value
-                            _results.postValue(tracks)
-
+                            LogUtil.d("SearchViewModel", data.value.joinToString())
                             if (tracks.isEmpty()) {
                                 SearchActivityState.NoResults
                             } else {
-                                SearchActivityState.Content
+                                SearchActivityState.Content(tracks)
                             }
                         }
 
@@ -115,11 +110,13 @@ class SearchViewModel(
 
     fun onClearSearchHistoryClicked() {
         _searchHistory.postValue(ArrayDeque())
+        _uiState.postValue(SearchActivityState.Content())
     }
 
     fun onClearQueueClicked() {
         _results.postValue(listOf())
         _searchQuery.postValue("")
+        _uiState.postValue(SearchActivityState.Content())
     }
 
     fun onSearchClicked() {
@@ -133,11 +130,9 @@ class SearchViewModel(
 
     fun onFocusChanged(hasFocus: Boolean) {
         val newState = if (hasFocus && isSearchQueryBlank && !isSearchHistoryEmpty) {
-            LogUtil.d("onFocusChanged", "SearchHistory")
-            SearchActivityState.SearchHistory
+            SearchActivityState.SearchHistory(_searchHistory.value?.toList() ?: listOf())
         } else {
-            LogUtil.d("onFocusChanged", "Content")
-            SearchActivityState.Content
+            SearchActivityState.Content(_results.value ?: listOf())
         }
         _uiState.postValue(newState)
     }
@@ -151,8 +146,7 @@ class SearchViewModel(
 
         fun getFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val app =
-                    this[ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY] as Application
+                val app = this[APPLICATION_KEY] as Application
                 SearchViewModel(
                     Creator.provideSearchHistoryInteractor(app)
                 )

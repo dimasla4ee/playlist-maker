@@ -1,4 +1,4 @@
-package com.dimasla4ee.playlistmaker.feature.search.domain.usecase
+package com.dimasla4ee.playlistmaker.feature.search.domain
 
 import com.dimasla4ee.playlistmaker.core.domain.model.Resource
 import com.dimasla4ee.playlistmaker.core.domain.model.Track
@@ -8,10 +8,8 @@ class SearchHistoryInteractorImpl(
     private val repository: SearchHistoryRepository
 ) : SearchHistoryInteractor {
 
-    override fun getSearchHistory(consumer: SearchHistoryInteractor.HistoryConsumer) {
-        val searchHistory = (repository.getHistory() as Resource.Success<List<Track>>).data
-        consumer.consume(searchHistory)
-    }
+    override fun getSearchHistory(): List<Track> =
+        (repository.getHistory() as Resource.Success<List<Track>>).data
 
     override fun saveHistory(tracks: List<Track>) {
         repository.saveHistory(tracks)

@@ -1,4 +1,4 @@
-package com.dimasla4ee.playlistmaker.feature.search.domain.usecase
+package com.dimasla4ee.playlistmaker.feature.search.domain
 
 import com.dimasla4ee.playlistmaker.core.domain.consumer.Consumer
 import com.dimasla4ee.playlistmaker.core.domain.consumer.ConsumerData

@@ -15,16 +15,16 @@ import com.dimasla4ee.playlistmaker.core.presentation.util.setupWindowInsets
 import com.dimasla4ee.playlistmaker.core.presentation.util.show
 import com.dimasla4ee.playlistmaker.core.util.Keys
 import com.dimasla4ee.playlistmaker.databinding.ActivityPlayerBinding
+import com.dimasla4ee.playlistmaker.feature.player.presentation.viewmodel.MediaPlayerViewModel
 import com.dimasla4ee.playlistmaker.feature.search.presentation.mapper.TrackDetailedInfoMapper
 import com.dimasla4ee.playlistmaker.feature.search.presentation.model.TrackDetailedInfo
-import com.dimasla4ee.playlistmaker.feature.player.presentation.viewmodel.MediaPlayerViewModel
 
 class PlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var trackDetailedInfo: TrackDetailedInfo
     private val mediaPlayerViewModel: MediaPlayerViewModel by viewModels {
-        MediaPlayerViewModel.Companion.getFactory(trackDetailedInfo.audioUrl)
+        MediaPlayerViewModel.getFactory(trackDetailedInfo.audioUrl)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,10 +47,10 @@ class PlayerActivity : AppCompatActivity() {
         with(mediaPlayerViewModel) {
             state.observe(this@PlayerActivity) { mediaPlayerState ->
                 binding.playButton.isEnabled =
-                    mediaPlayerState != MediaPlayerViewModel.Companion.State.DEFAULT
+                    mediaPlayerState != MediaPlayerViewModel.State.DEFAULT
 
                 binding.playButton.setImageResource(
-                    if (mediaPlayerState == MediaPlayerViewModel.Companion.State.PLAYING) {
+                    if (mediaPlayerState == MediaPlayerViewModel.State.PLAYING) {
                         R.drawable.ic_pause_24
                     } else {
                         R.drawable.ic_play_24

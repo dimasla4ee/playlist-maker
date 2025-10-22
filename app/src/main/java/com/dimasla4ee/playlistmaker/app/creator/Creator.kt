@@ -8,12 +8,12 @@ import com.dimasla4ee.playlistmaker.feature.search.data.repository.SearchHistory
 import com.dimasla4ee.playlistmaker.feature.search.data.repository.TrackSearchRepositoryImpl
 import com.dimasla4ee.playlistmaker.feature.search.domain.repository.SearchHistoryRepository
 import com.dimasla4ee.playlistmaker.feature.search.domain.repository.TrackSearchRepository
-import com.dimasla4ee.playlistmaker.feature.search.domain.usecase.SearchHistoryInteractor
-import com.dimasla4ee.playlistmaker.feature.search.domain.usecase.SearchHistoryInteractorImpl
-import com.dimasla4ee.playlistmaker.feature.search.domain.usecase.SearchTracksUseCase
+import com.dimasla4ee.playlistmaker.feature.search.domain.SearchHistoryInteractor
+import com.dimasla4ee.playlistmaker.feature.search.domain.SearchHistoryInteractorImpl
+import com.dimasla4ee.playlistmaker.feature.search.domain.SearchTracksUseCase
 import com.dimasla4ee.playlistmaker.feature.settings.data.repository.SettingsRepositoryImpl
+import com.dimasla4ee.playlistmaker.feature.settings.domain.SettingsInteractorImpl
 import com.dimasla4ee.playlistmaker.feature.settings.domain.repository.SettingsRepository
-import com.dimasla4ee.playlistmaker.feature.settings.domain.usecase.SettingsInteractorImpl
 import kotlinx.serialization.builtins.ListSerializer
 
 object Creator {

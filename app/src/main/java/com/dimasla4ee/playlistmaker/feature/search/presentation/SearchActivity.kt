@@ -27,7 +27,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var searchResultsAdapter: TrackAdapter
 
     private val searchHistoryViewModel: SearchViewModel by viewModels {
-        SearchViewModel.Companion.getFactory()
+        SearchViewModel.getFactory()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,14 +47,6 @@ class SearchActivity : AppCompatActivity() {
         }
 
         with(searchHistoryViewModel) {
-            searchHistory.observe(this@SearchActivity) { tracks ->
-                searchHistoryAdapter.submitList(tracks)
-            }
-
-            results.observe(this@SearchActivity) { tracks ->
-                searchResultsAdapter.submitList(tracks)
-            }
-
             uiState.observe(this@SearchActivity) { state ->
                 render(state)
             }
@@ -93,7 +85,6 @@ class SearchActivity : AppCompatActivity() {
         with(binding) {
             clearHistoryButton.setOnClickListener {
                 searchHistoryViewModel.onClearSearchHistoryClicked()
-                render(SearchActivityState.Content)
             }
 
             panelHeader.setOnIconClickListener {
@@ -123,7 +114,6 @@ class SearchActivity : AppCompatActivity() {
                 queryInput.apply {
                     searchHistoryViewModel.onClearQueueClicked()
                     clearFocus()
-                    render(SearchActivityState.Content)
                 }
             }
 
@@ -149,6 +139,7 @@ class SearchActivity : AppCompatActivity() {
                     clearHistoryButton.show(false)
                     historyRecycler.show(false)
                     resultsRecycler.show(true)
+                    searchResultsAdapter.submitList(state.results)
                 }
 
                 is SearchActivityState.Error -> {
@@ -188,6 +179,7 @@ class SearchActivity : AppCompatActivity() {
                     clearHistoryButton.show(true)
                     historyRecycler.show(true)
                     resultsRecycler.show(false)
+                    searchHistoryAdapter.submitList(state.searchHistory)
                 }
 
                 is SearchActivityState.NoResults -> {
