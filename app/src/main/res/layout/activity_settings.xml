@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/LinearLayout">
 
-    <com.dimasla4ee.playlistmaker.ui.PanelHeader
+    <com.dimasla4ee.playlistmaker.core.presentation.widget.PanelHeader
         android:id="@+id/panelHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     style="@style/ConstraintLayout"
-    tools:context=".ui.PlayerActivity">
+    tools:context=".feature.player.presentation.PlayerActivity">
 
     <!-- Guidelines -->
     <androidx.constraintlayout.widget.Guideline
@@ -23,7 +23,7 @@
         app:layout_constraintGuide_end="24dp" />
 
     <!-- Header -->
-    <com.dimasla4ee.playlistmaker.ui.PanelHeader
+    <com.dimasla4ee.playlistmaker.core.presentation.widget.PanelHeader
         android:id="@+id/panelHeader"
         style="@style/LinearLayout.PanelHeader"
         android:background="@color/transparent"
