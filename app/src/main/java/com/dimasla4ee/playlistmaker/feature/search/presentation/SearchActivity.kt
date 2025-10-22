@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import com.dimasla4ee.playlistmaker.R
@@ -19,16 +18,14 @@ import com.dimasla4ee.playlistmaker.databinding.ActivitySearchBinding
 import com.dimasla4ee.playlistmaker.feature.player.presentation.PlayerActivity
 import com.dimasla4ee.playlistmaker.feature.search.presentation.model.SearchActivityState
 import com.dimasla4ee.playlistmaker.feature.search.presentation.viewmodel.SearchViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchBinding
     private lateinit var searchHistoryAdapter: TrackAdapter
     private lateinit var searchResultsAdapter: TrackAdapter
-
-    private val searchHistoryViewModel: SearchViewModel by viewModels {
-        SearchViewModel.getFactory()
-    }
+    private val searchHistoryViewModel: SearchViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -13,9 +13,10 @@ glide = "5.0.5"
 retrofit = "3.0.0"
 serialization = "2.2.20"
 serializationJson = "1.9.0"
-lifecycleViewmodelKtx = "2.10.0-alpha05"
-lifecycleLivedataKtx = "2.10.0-alpha05"
-activityKtx = "1.12.0-alpha09"
+lifecycleViewmodelKtx = "2.10.0-beta01"
+lifecycleLivedataKtx = "2.10.0-beta01"
+activityKtx = "1.12.0-beta01"
+koinAndroid = "4.1.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -33,6 +34,7 @@ serialization-converter = { group = "com.squareup.retrofit2", name = "converter-
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
 androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx" }
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koinAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

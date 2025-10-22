@@ -1,24 +1,20 @@
 package com.dimasla4ee.playlistmaker.feature.search.presentation.viewmodel
 
-import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.dimasla4ee.playlistmaker.app.creator.Creator
 import com.dimasla4ee.playlistmaker.core.domain.consumer.Consumer
 import com.dimasla4ee.playlistmaker.core.domain.consumer.ConsumerData
 import com.dimasla4ee.playlistmaker.core.domain.model.Track
 import com.dimasla4ee.playlistmaker.core.presentation.util.Debouncer
 import com.dimasla4ee.playlistmaker.core.util.LogUtil
 import com.dimasla4ee.playlistmaker.feature.search.domain.SearchHistoryInteractor
+import com.dimasla4ee.playlistmaker.feature.search.domain.SearchTracksUseCase
 import com.dimasla4ee.playlistmaker.feature.search.presentation.model.SearchActivityState
 
 class SearchViewModel(
-    private val searchHistoryInteractor: SearchHistoryInteractor
+    private val searchHistoryInteractor: SearchHistoryInteractor,
+    private val searchTracksUseCase: SearchTracksUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableLiveData<SearchActivityState>(SearchActivityState.Content())
@@ -38,7 +34,6 @@ class SearchViewModel(
     private val _results = MutableLiveData<List<Track>>()
 
     private val searchRunnable = Runnable { performSearch() }
-    private val searchTracksUseCase = Creator.provideSearchTracksUseCase()
 
     init {
         val searchHistory = searchHistoryInteractor.getSearchHistory()
@@ -106,6 +101,10 @@ class SearchViewModel(
         }
 
         _searchHistory.postValue(newTracks)
+
+        if (_uiState.value is SearchActivityState.SearchHistory) {
+            _uiState.postValue(SearchActivityState.SearchHistory(newTracks))
+        }
     }
 
     fun onClearSearchHistoryClicked() {
@@ -143,15 +142,6 @@ class SearchViewModel(
     }
 
     companion object {
-
-        fun getFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val app = this[APPLICATION_KEY] as Application
-                SearchViewModel(
-                    Creator.provideSearchHistoryInteractor(app)
-                )
-            }
-        }
 
         private const val MAX_HISTORY_SIZE = 10
     }
