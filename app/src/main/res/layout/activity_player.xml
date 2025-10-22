@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     style="@style/ConstraintLayout"
-    tools:context=".ui.PlayerActivity">
+    tools:context=".feature.player.presentation.PlayerActivity">
 
     <!-- Guidelines -->
     <androidx.constraintlayout.widget.Guideline
@@ -13,17 +13,17 @@
         app:layout_constraintGuide_begin="@dimen/panel_header_height" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineStart"
+        android:id="@+id/guideStart"
         style="@style/Guideline.Vertical"
         app:layout_constraintGuide_begin="24dp" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineEnd"
+        android:id="@+id/guideEnd"
         style="@style/Guideline.Vertical"
         app:layout_constraintGuide_end="24dp" />
 
     <!-- Header -->
-    <com.dimasla4ee.playlistmaker.ui.PanelHeader
+    <com.dimasla4ee.playlistmaker.core.presentation.widget.PanelHeader
         android:id="@+id/panelHeader"
         style="@style/LinearLayout.PanelHeader"
         android:background="@color/transparent"
@@ -40,8 +40,8 @@
         android:layout_height="0dp"
         android:importantForAccessibility="no"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toStartOf="@id/guidelineEnd"
-        app:layout_constraintStart_toStartOf="@id/guidelineStart"
+        app:layout_constraintEnd_toStartOf="@id/guideEnd"
+        app:layout_constraintStart_toStartOf="@id/guideStart"
         app:layout_constraintTop_toBottomOf="@id/guidelineTop"
         app:layout_constraintWidth_max="500dp" />
 
