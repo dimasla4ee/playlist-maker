@@ -43,14 +43,16 @@ class PlayerActivity : AppCompatActivity() {
         trackDetailedInfo = TrackDetailedInfoMapper.map(track)
         fillTrackInfo(trackDetailedInfo)
 
-        binding.panelHeader.setOnIconClickListener { finish() }
+        binding.appBar.setNavigationOnClickListener {
+            finish()
+        }
 
         with(mediaPlayerViewModel) {
             state.observe(this@PlayerActivity) { mediaPlayerState ->
                 binding.playButton.isEnabled =
                     mediaPlayerState != MediaPlayerViewModel.State.DEFAULT
 
-                binding.playButton.setImageResource(
+                binding.playButton.setIconResource(
                     if (mediaPlayerState == MediaPlayerViewModel.State.PLAYING) {
                         R.drawable.ic_pause_24
                     } else {

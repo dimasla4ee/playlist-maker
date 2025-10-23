@@ -8,9 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.dimasla4ee.playlistmaker.core.presentation.util.InsetsTypes
 import com.dimasla4ee.playlistmaker.core.presentation.util.setupWindowInsets
 import com.dimasla4ee.playlistmaker.databinding.ActivityMainBinding
+import com.dimasla4ee.playlistmaker.feature.media_library.presentation.MediaLibraryActivity
 import com.dimasla4ee.playlistmaker.feature.search.presentation.SearchActivity
 import com.dimasla4ee.playlistmaker.feature.settings.presentation.SettingsActivity
-import com.dimasla4ee.playlistmaker.feature.media_library.presentation.MediaLibraryActivity
 
 class MainActivity : AppCompatActivity() {
 

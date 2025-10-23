@@ -27,7 +27,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         viewModel.isDarkThemeEnabled.observe(this) { isDarkTheme ->
-            binding.darkThemeSwitch.isChecked = isDarkTheme
+            binding.themeSwitch.isChecked = isDarkTheme
             setAppTheme(isDarkTheme)
         }
 
@@ -42,19 +42,19 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun setupListeners() {
         with(binding) {
-            panelHeader.setOnIconClickListener {
+            appBar.setNavigationOnClickListener {
                 finish()
             }
 
-            darkThemeLayout.setOnClickListener {
-                darkThemeSwitch.isChecked = !darkThemeSwitch.isChecked
+            themeContainer.setOnClickListener {
+                themeSwitch.isChecked = !themeSwitch.isChecked
             }
 
-            darkThemeSwitch.setOnCheckedChangeListener { _, checked ->
+            themeSwitch.setOnCheckedChangeListener { _, checked ->
                 viewModel.onThemeToggle(checked)
             }
 
-            shareAppContainer.setOnClickListener {
+            shareContainer.setOnClickListener {
                 val shareIntent = Intent().apply {
                     action = Intent.ACTION_SEND
                     putExtra(
@@ -67,7 +67,7 @@ class SettingsActivity : AppCompatActivity() {
                 startActivity(shareIntent)
             }
 
-            textSupportContainer.setOnClickListener {
+            supportContainer.setOnClickListener {
                 val emailIntent = Intent().apply {
                     action = Intent.ACTION_SENDTO
                     data = getString(R.string.mailto_uri_data).toUri()
@@ -82,7 +82,7 @@ class SettingsActivity : AppCompatActivity() {
                 startActivity(emailIntent)
             }
 
-            userAgreementContainer.setOnClickListener {
+            agreementContainer.setOnClickListener {
                 val agreementIntent = Intent().apply {
                     action = Intent.ACTION_VIEW
                     data = getString(R.string.user_agreement_link).toUri()

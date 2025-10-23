@@ -4,42 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/LinearLayout">
 
-    <com.dimasla4ee.playlistmaker.core.presentation.widget.PanelHeader
-        android:id="@+id/panelHeader"
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/settings"
-        app:iconSrc="@drawable/ic_arrow_back_24"
-        app:showIcon="true" />
+        app:navigationIcon="@drawable/ic_arrow_back_24"
+        app:title="@string/settings"
+        app:titleTextAppearance="@style/Text.PanelHeader" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/darkThemeLayout"
+        android:id="@+id/themeContainer"
         style="@style/ConstraintLayout.Setting">
 
         <TextView
-            android:id="@+id/darkThemeTextView"
+            android:id="@+id/themeLabel"
             style="@style/Text.Setting"
             android:text="@string/dark_theme"
             tools:ignore="MissingConstraints" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/darkThemeSwitch"
+            android:id="@+id/themeSwitch"
             style="@style/Switch.Setting"
             tools:ignore="MissingConstraints" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/shareAppContainer"
+        android:id="@+id/shareContainer"
         style="@style/ConstraintLayout.Setting">
 
         <TextView
-            android:id="@+id/shareAppTextView"
+            android:id="@+id/shareLabel"
             style="@style/Text.Setting"
             android:text="@string/share_app"
             tools:ignore="MissingConstraints" />
 
         <ImageView
-            android:id="@+id/shareImageView"
+            android:id="@+id/shareIcon"
             style="@style/Icon.Setting"
             android:contentDescription="@null"
             android:src="@drawable/ic_share_24"
@@ -47,17 +47,17 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/textSupportContainer"
+        android:id="@+id/supportContainer"
         style="@style/ConstraintLayout.Setting">
 
         <TextView
-            android:id="@+id/textSupportTextView"
+            android:id="@+id/supportLabel"
             style="@style/Text.Setting"
             android:text="@string/text_support"
             tools:ignore="MissingConstraints" />
 
         <ImageView
-            android:id="@+id/textSupportImageView"
+            android:id="@+id/supportIcon"
             style="@style/Icon.Setting"
             android:contentDescription="@null"
             android:src="@drawable/ic_support_24"
@@ -65,17 +65,17 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/userAgreementContainer"
+        android:id="@+id/agreementContainer"
         style="@style/ConstraintLayout.Setting">
 
         <TextView
-            android:id="@+id/userAgreementTextView"
+            android:id="@+id/agreementLabel"
             style="@style/Text.Setting"
             android:text="@string/user_agreement"
             tools:ignore="MissingConstraints" />
 
         <ImageView
-            android:id="@+id/userAgreementImageView"
+            android:id="@+id/agreementIcon"
             style="@style/Icon.Setting"
             android:contentDescription="@null"
             android:src="@drawable/ic_arrow_forward_24"
