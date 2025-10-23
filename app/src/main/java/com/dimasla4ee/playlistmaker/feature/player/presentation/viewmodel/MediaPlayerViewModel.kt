@@ -6,16 +6,13 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.dimasla4ee.playlistmaker.core.presentation.util.toMmSs
 
 class MediaPlayerViewModel(
-    private val sourceUrl: String
+    private val sourceUrl: String,
+    private val mediaPlayer: MediaPlayer
 ) : ViewModel() {
 
-    private var mediaPlayer = MediaPlayer()
     private var handler = Handler(Looper.getMainLooper())
 
     private val _state = MutableLiveData(State.DEFAULT)
@@ -104,12 +101,6 @@ class MediaPlayerViewModel(
     }
 
     companion object {
-
-        fun getFactory(url: String): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                MediaPlayerViewModel(url)
-            }
-        }
 
         private const val DELAY = 300L
     }

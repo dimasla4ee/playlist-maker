@@ -2,7 +2,6 @@ package com.dimasla4ee.playlistmaker.feature.player.presentation
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import com.bumptech.glide.Glide
@@ -18,13 +17,15 @@ import com.dimasla4ee.playlistmaker.databinding.ActivityPlayerBinding
 import com.dimasla4ee.playlistmaker.feature.player.presentation.viewmodel.MediaPlayerViewModel
 import com.dimasla4ee.playlistmaker.feature.search.presentation.mapper.TrackDetailedInfoMapper
 import com.dimasla4ee.playlistmaker.feature.search.presentation.model.TrackDetailedInfo
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class PlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var trackDetailedInfo: TrackDetailedInfo
-    private val mediaPlayerViewModel: MediaPlayerViewModel by viewModels {
-        MediaPlayerViewModel.getFactory(trackDetailedInfo.audioUrl)
+    private val mediaPlayerViewModel: MediaPlayerViewModel by viewModel {
+        parametersOf(trackDetailedInfo.audioUrl)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

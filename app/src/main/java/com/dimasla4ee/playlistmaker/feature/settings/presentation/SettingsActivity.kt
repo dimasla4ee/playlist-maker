@@ -3,7 +3,6 @@ package com.dimasla4ee.playlistmaker.feature.settings.presentation
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.net.toUri
@@ -11,13 +10,12 @@ import com.dimasla4ee.playlistmaker.R
 import com.dimasla4ee.playlistmaker.core.presentation.util.setupWindowInsets
 import com.dimasla4ee.playlistmaker.databinding.ActivitySettingsBinding
 import com.dimasla4ee.playlistmaker.feature.settings.presentation.viewmodel.SettingsViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySettingsBinding
-    private val viewModel: SettingsViewModel by viewModels {
-        SettingsViewModel.Companion.getFactory()
-    }
+    private val viewModel: SettingsViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

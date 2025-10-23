@@ -6,8 +6,7 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.modules.SerializersModule
-import java.time.LocalDate
+import org.koin.java.KoinJavaComponent.inject
 
 class PrefsStorageClient<T>(
     context: Context,
@@ -20,14 +19,7 @@ class PrefsStorageClient<T>(
         prefsName, MODE_PRIVATE
     )
 
-    val json = Json {
-        ignoreUnknownKeys = true
-        isLenient = true
-        encodeDefaults = true
-        serializersModule = SerializersModule {
-            contextual(LocalDate::class, LocalDateSerializer)
-        }
-    }
+    val json: Json by inject(Json::class.java)
 
     override fun getData(): T? = when (serializer) {
         null -> {
