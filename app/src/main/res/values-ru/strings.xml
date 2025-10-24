@@ -26,4 +26,6 @@
     <string name="year_label">Год</string>
     <string name="genre_label">Жанр</string>
     <string name="country_label">Страна</string>
+    <string name="new_playlist">Новый плейлист</string>
+    <string name="no_playlists_yet">Вы не создали\nни одного плейлиста</string>
 </resources>

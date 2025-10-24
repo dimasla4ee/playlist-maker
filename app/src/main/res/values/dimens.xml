@@ -39,4 +39,8 @@
 
     <dimen name="App.Padding.Horizontal">16dp</dimen>
 
+    <dimen name="StateTextImage.Height">182dp</dimen>
+
+    <dimen name="StateTextImage.Margin.Top">46dp</dimen>
+
 </resources>
