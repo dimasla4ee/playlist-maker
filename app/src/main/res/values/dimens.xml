@@ -25,7 +25,7 @@
     <dimen name="text_19">19sp</dimen>
     <dimen name="text_22">22sp</dimen>
 
-
+    <!---->
     <dimen name="PlayerButtons.Spread">50dp</dimen>
 
     <dimen name="AppBar.Height">56dp</dimen>
@@ -36,11 +36,15 @@
     <dimen name="Setting.Height">61dp</dimen>
 
     <dimen name="Track.Height">61dp</dimen>
+    <dimen name="Track.Typography.Primary">16sp</dimen>
+    <dimen name="Track.Typography.Secondary">11sp</dimen>
 
     <dimen name="App.Padding.Horizontal">16dp</dimen>
 
     <dimen name="StateTextImage.Height">182dp</dimen>
 
     <dimen name="StateTextImage.Margin.Top">46dp</dimen>
+
+    <dimen name="AlbumCover.Size">48dp</dimen>
 
 </resources>

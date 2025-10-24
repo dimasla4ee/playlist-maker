@@ -19,6 +19,7 @@
         <item name="android:textColor">?attr/colorOnPrimaryFixed</item>
     </style>
 
+    <!--Widgets-->
     <style name="Widget" />
 
     <style name="Widget.PlaylistMaker" />
@@ -44,6 +45,27 @@
     <style name="Widget.PlaylistMaker.Setting.Switch" parent="Widget.PlaylistMaker.Setting.Base">
         <item name="thumbTint">@color/switch_thumb_state</item>
         <item name="trackTint">@color/switch_track_state</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.Image" />
+
+    <style name="Widget.PlaylistMaker.Image.FixedSquare">
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.Image.FixedSquare.Small">
+        <item name="android:layout_width">@dimen/AlbumCover.Size</item>
+        <item name="android:layout_height">@dimen/AlbumCover.Size</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.Icon">
+        <item name="android:backgroundTint">@color/transparent</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.Icon.Small">
+        <item name="android:layout_width">@dimen/normal_150</item>
+        <item name="android:layout_height">@dimen/normal_150</item>
+        <item name="tint">?attr/colorOnSurfaceVariant</item>
     </style>
 
     <!-- LinearLayout styles -->

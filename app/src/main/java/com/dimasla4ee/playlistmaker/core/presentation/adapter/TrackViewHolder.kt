@@ -33,8 +33,8 @@ class TrackViewHolder(
         }
 
         with(binding) {
-            titleTextView.text = track.title
-            artistAndTimeTextView.text = context.getString(
+            titleLabel.text = track.title
+            artistDurationLabel.text = context.getString(
                 R.string.artist_and_time,
                 track.artist, trackDetailedInfo.duration
             )
