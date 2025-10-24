@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/ConstraintLayout">
 
-    <!-- Guidelines -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideStart"
         style="@style/Guideline.Vertical"
@@ -14,18 +13,15 @@
         style="@style/Guideline.Vertical"
         app:layout_constraintGuide_end="@dimen/normal_100" />
 
-    <!-- Header -->
-    <com.dimasla4ee.playlistmaker.core.presentation.widget.PanelHeader
-        android:id="@+id/panelHeader"
-        style="@style/LinearLayout.PanelHeader"
-        android:text="@string/search"
-        app:iconSrc="@drawable/ic_arrow_back_24"
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/appBar"
+        style="@style/Widget.PlaylistMaker.AppBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:showIcon="true" />
+        app:navigationIcon="@drawable/ic_arrow_back_24"
+        app:title="@string/search" />
 
-    <!-- SearchBar -->
     <LinearLayout
         android:id="@+id/searchBarLayout"
         style="@style/LinearLayout.Searchbar"
@@ -33,7 +29,7 @@
         android:layout_marginTop="@dimen/small_100"
         app:layout_constraintEnd_toEndOf="@id/guideEnd"
         app:layout_constraintStart_toStartOf="@id/guideStart"
-        app:layout_constraintTop_toBottomOf="@id/panelHeader">
+        app:layout_constraintTop_toBottomOf="@id/appBar">
 
         <ImageView
             style="@style/Icon.SearchBar"
@@ -59,7 +55,6 @@
             android:visibility="gone" />
     </LinearLayout>
 
-    <!-- Search Results RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/resultsRecycler"
         android:layout_width="0dp"
@@ -72,7 +67,6 @@
         app:layout_constraintStart_toStartOf="@id/guideStart"
         app:layout_constraintTop_toBottomOf="@id/searchBarLayout" />
 
-    <!-- Search History -->
     <TextView
         android:id="@+id/historyLabel"
         style="@style/Text.Medium.19"
@@ -105,7 +99,6 @@
         app:layout_constraintEnd_toEndOf="@id/guideEnd"
         app:layout_constraintStart_toStartOf="@id/guideStart" />
 
-    <!-- Search Status Layout -->
     <ProgressBar
         android:id="@+id/loadingIndicator"
         android:layout_width="48dp"

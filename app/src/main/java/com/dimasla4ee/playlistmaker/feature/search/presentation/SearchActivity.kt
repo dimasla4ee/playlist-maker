@@ -84,7 +84,7 @@ class SearchActivity : AppCompatActivity() {
                 searchHistoryViewModel.onClearSearchHistoryClicked()
             }
 
-            panelHeader.setOnIconClickListener {
+            appBar.setNavigationOnClickListener {
                 finish()
             }
 

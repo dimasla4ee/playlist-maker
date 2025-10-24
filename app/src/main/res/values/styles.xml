@@ -19,18 +19,53 @@
         <item name="android:textColor">?attr/colorOnPrimaryFixed</item>
     </style>
 
-    <!-- Switch styles -->
-    <style name="Switch" />
+    <!--Widgets-->
+    <style name="Widget" />
 
-    <style name="Switch.Setting" parent="TextAppearance.AppCompat.Widget.Switch">
-        <item name="android:layout_width">wrap_content</item>
+    <style name="Widget.PlaylistMaker" />
+
+    <style name="Widget.PlaylistMaker.AppBar" parent="Widget.Material3.Toolbar">
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="titleTextAppearance">@style/TextAppearance.PlaylistMaker.AppBar.Title</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.Setting.Base" parent="Text.Regular.16">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">@dimen/Setting.Height</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingHorizontal">@dimen/App.Padding.Horizontal</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.Setting.Button" parent="Widget.PlaylistMaker.Setting.Base">
+        <item name="drawableTint">?colorOnSurfaceVariant</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.Setting.Switch" parent="Widget.PlaylistMaker.Setting.Base">
         <item name="thumbTint">@color/switch_thumb_state</item>
         <item name="trackTint">@color/switch_track_state</item>
-        <item name="android:layout_marginHorizontal">@dimen/small_150</item>
-        <item name="layout_constraintRight_toRightOf">parent</item>
-        <item name="layout_constraintTop_toTopOf">parent</item>
-        <item name="layout_constraintBottom_toBottomOf">parent</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.Image" />
+
+    <style name="Widget.PlaylistMaker.Image.FixedSquare">
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.Image.FixedSquare.Small">
+        <item name="android:layout_width">@dimen/AlbumCover.Size</item>
+        <item name="android:layout_height">@dimen/AlbumCover.Size</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.Icon">
+        <item name="android:backgroundTint">@color/transparent</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.Icon.Small">
+        <item name="android:layout_width">@dimen/normal_150</item>
+        <item name="android:layout_height">@dimen/normal_150</item>
+        <item name="tint">?attr/colorOnSurfaceVariant</item>
     </style>
 
     <!-- LinearLayout styles -->
@@ -39,13 +74,6 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:background">?attr/colorSurface</item>
         <item name="android:orientation">vertical</item>
-    </style>
-
-    <style name="LinearLayout.PanelHeader" parent="LinearLayout">
-        <item name="android:layout_height">@dimen/panel_header_height</item>
-        <item name="android:padding">@dimen/small_50</item>
-        <item name="android:orientation">horizontal</item>
-        <item name="android:gravity">center_vertical</item>
     </style>
 
     <style name="LinearLayout.Searchbar" parent="LinearLayout">
@@ -57,7 +85,6 @@
         <item name="android:background">@drawable/rounded_corners</item>
         <item name="android:backgroundTint">?attr/colorSurfaceContainerHighest</item>
     </style>
-
 
     <!-- Weight styles -->
     <style name="Weight" />
@@ -71,17 +98,11 @@
         <item name="android:layout_weight">1</item>
     </style>
 
+
     <!-- Constraint Layout styles -->
     <style name="ConstraintLayout">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-    </style>
-
-    <style name="ConstraintLayout.Setting">
-        <item name="android:layout_height">@dimen/setting_height</item>
-        <item name="android:orientation">horizontal</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:foreground">?attr/selectableItemBackground</item>
     </style>
 
     <!-- Guidelines -->

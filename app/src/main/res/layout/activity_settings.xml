@@ -1,84 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     style="@style/LinearLayout">
 
-    <com.dimasla4ee.playlistmaker.core.presentation.widget.PanelHeader
-        android:id="@+id/panelHeader"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/settings"
-        app:iconSrc="@drawable/ic_arrow_back_24"
-        app:showIcon="true" />
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/appBar"
+        style="@style/Widget.PlaylistMaker.AppBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_arrow_back_24"
+        app:title="@string/settings" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/darkThemeLayout"
-        style="@style/ConstraintLayout.Setting">
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/themeSwitch"
+        style="@style/Widget.PlaylistMaker.Setting.Switch"
+        android:text="@string/dark_theme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appBar" />
 
-        <TextView
-            android:id="@+id/darkThemeTextView"
-            style="@style/Text.Setting"
-            android:text="@string/dark_theme"
-            tools:ignore="MissingConstraints" />
+    <!-- Share -->
+    <TextView
+        android:id="@+id/shareButton"
+        style="@style/Widget.PlaylistMaker.Setting.Button"
+        android:text="@string/share_app"
+        app:drawableEndCompat="@drawable/ic_share_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/themeSwitch" />
 
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/darkThemeSwitch"
-            style="@style/Switch.Setting"
-            tools:ignore="MissingConstraints" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Support -->
+    <TextView
+        android:id="@+id/supportButton"
+        style="@style/Widget.PlaylistMaker.Setting.Button"
+        android:text="@string/text_support"
+        app:drawableEndCompat="@drawable/ic_support_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/shareButton" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/shareAppContainer"
-        style="@style/ConstraintLayout.Setting">
+    <!-- User Agreement -->
+    <TextView
+        android:id="@+id/agreementButton"
+        style="@style/Widget.PlaylistMaker.Setting.Button"
+        android:text="@string/user_agreement"
+        app:drawableEndCompat="@drawable/ic_arrow_forward_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/supportButton" />
 
-        <TextView
-            android:id="@+id/shareAppTextView"
-            style="@style/Text.Setting"
-            android:text="@string/share_app"
-            tools:ignore="MissingConstraints" />
-
-        <ImageView
-            android:id="@+id/shareImageView"
-            style="@style/Icon.Setting"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_share_24"
-            tools:ignore="MissingConstraints" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/textSupportContainer"
-        style="@style/ConstraintLayout.Setting">
-
-        <TextView
-            android:id="@+id/textSupportTextView"
-            style="@style/Text.Setting"
-            android:text="@string/text_support"
-            tools:ignore="MissingConstraints" />
-
-        <ImageView
-            android:id="@+id/textSupportImageView"
-            style="@style/Icon.Setting"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_support_24"
-            tools:ignore="MissingConstraints" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/userAgreementContainer"
-        style="@style/ConstraintLayout.Setting">
-
-        <TextView
-            android:id="@+id/userAgreementTextView"
-            style="@style/Text.Setting"
-            android:text="@string/user_agreement"
-            tools:ignore="MissingConstraints" />
-
-        <ImageView
-            android:id="@+id/userAgreementImageView"
-            style="@style/Icon.Setting"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_arrow_forward_24"
-            tools:ignore="MissingConstraints" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
