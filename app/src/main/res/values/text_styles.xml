@@ -63,8 +63,7 @@
     <style name="TextAppearance.PlaylistMaker.AppBar.Title" parent="TextAppearance.Material3.ActionBar.Title">
         <item name="android:textSize">@dimen/AppBar.Title.TextSize</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:fontWeight">500</item>
+        <item name="android:textFontWeight">500</item>
     </style>
 
     <style name="TextAppearance.PlaylistMaker.Track.Base" parent="Text.Regular">
