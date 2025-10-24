@@ -3,6 +3,7 @@ package com.dimasla4ee.playlistmaker.feature.media_library.presentation
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.dimasla4ee.playlistmaker.R
 import com.dimasla4ee.playlistmaker.core.presentation.util.setupWindowInsets
 import com.dimasla4ee.playlistmaker.databinding.ActivityMediaLibraryBinding
 import com.google.android.material.tabs.TabLayoutMediator
@@ -30,8 +31,8 @@ class MediaLibraryActivity : AppCompatActivity() {
 
             tabMediator = TabLayoutMediator(tabLayout, viewPager) { tab, position ->
                 when (position) {
-                    0 -> tab.text = "Избранные треки"
-                    1 -> tab.text = "Плейлисты"
+                    0 -> tab.text = getString(R.string.favorite_tracks)
+                    1 -> tab.text = getString(R.string.playlists)
                 }
             }
             tabMediator.attach()

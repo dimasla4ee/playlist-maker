@@ -11,9 +11,8 @@ class MediaLibraryPagerAdapter(
 ) : FragmentStateAdapter(fragmentManager, lifecycle) {
 
     override fun createFragment(position: Int): Fragment = when (position) {
-        0 -> FavoriteFragment()
-        1 -> PlaylistFragment()
-        else -> throw IllegalArgumentException("Invalid position: $position")
+        0 -> FavoriteFragment.newInstance()
+        else -> PlaylistFragment.newInstance()
     }
 
     override fun getItemCount(): Int = 2

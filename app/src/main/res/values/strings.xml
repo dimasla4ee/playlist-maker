@@ -35,4 +35,6 @@
     <string name="new_playlist">New Playlist</string>
     <string name="no_playlists_yet">You have no playlists so far</string>
     <string name="empty_media_library">Your media library is empty</string>
+    <string name="playlists">Playlists</string>
+    <string name="favorite_tracks">Favorite tracks</string>
 </resources>
