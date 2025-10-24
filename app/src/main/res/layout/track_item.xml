@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/trackContainer"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/setting_height"
+    android:layout_height="@dimen/Track.Height"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 

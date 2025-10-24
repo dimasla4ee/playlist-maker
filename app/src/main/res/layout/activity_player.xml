@@ -7,11 +7,6 @@
     tools:context=".feature.player.presentation.PlayerActivity">
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineTop"
-        style="@style/Guideline.Horizontal"
-        app:layout_constraintGuide_begin="@dimen/panel_header_height" />
-
-    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideStart"
         style="@style/Guideline.Vertical"
         app:layout_constraintGuide_begin="24dp" />
@@ -23,23 +18,22 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/appBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        style="@style/Widget.PlaylistMaker.AppBar"
+        app:layout_constraintEnd_toEndOf="@id/guideEnd"
+        app:layout_constraintStart_toStartOf="@id/guideStart"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/ic_arrow_back_24"
-        app:titleTextAppearance="@style/Text.PanelHeader" />
+        app:navigationIcon="@drawable/ic_arrow_back_24" />
 
     <ImageView
         android:id="@+id/songCover"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:importantForAccessibility="no"
+        android:src="@drawable/ic_placeholder_45"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toStartOf="@id/guideEnd"
         app:layout_constraintStart_toStartOf="@id/guideStart"
-        app:layout_constraintTop_toBottomOf="@id/guidelineTop"
+        app:layout_constraintTop_toBottomOf="@id/appBar"
         app:layout_constraintWidth_max="500dp" />
 
     <TextView
@@ -52,7 +46,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/songCover"
         app:layout_constraintTop_toBottomOf="@id/songCover"
-        app:layout_constraintWidth="wrap_content_constrained" />
+        app:layout_constraintWidth="wrap_content_constrained"
+        tools:text="Name" />
 
     <TextView
         android:id="@+id/songAuthor"
@@ -64,14 +59,15 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/songTitle"
         app:layout_constraintTop_toBottomOf="@id/songTitle"
-        app:layout_constraintVertical_chainStyle="spread" />
+        app:layout_constraintVertical_chainStyle="spread"
+        tools:text="Author" />
 
     <com.google.android.material.button.MaterialButtonGroup
         android:id="@+id/buttonGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:spacing="50dp"
+        android:spacing="@dimen/PlayerButtons.Spread"
         app:layout_constraintBottom_toTopOf="@id/songInfoFlow"
         app:layout_constraintEnd_toEndOf="@id/guideEnd"
         app:layout_constraintStart_toStartOf="@id/guideStart"
@@ -79,31 +75,22 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/addToPlaylistButton"
-            style="?attr/materialIconButtonFilledStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/Widget.PlaylistMaker.IconButton.Medium"
             android:contentDescription="@string/add_to_playlist"
-            android:gravity="center"
             app:icon="@drawable/ic_add_to_playlist_24"
             app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.IconButton.Medium" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/playButton"
-            style="?attr/materialIconButtonFilledStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/Widget.PlaylistMaker.IconButton.Large"
             android:contentDescription="@string/play"
-            android:gravity="center"
             app:icon="@drawable/ic_play_24"
             app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.IconButton.Large" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/addToFavoriteButton"
-            style="?attr/materialIconButtonFilledStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/Widget.PlaylistMaker.IconButton.Medium"
             android:contentDescription="@string/add_to_favorite"
-            android:gravity="center"
             app:icon="@drawable/ic_favorite_24"
             app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.IconButton.Medium" />
     </com.google.android.material.button.MaterialButtonGroup>
@@ -119,7 +106,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/buttonGroup"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        tools:text="00:00" />
 
     <androidx.constraintlayout.helper.widget.Flow
         android:id="@+id/songInfoFlow"
@@ -141,7 +129,8 @@
 
     <TextView
         android:id="@+id/songDurationFetched"
-        style="@style/Text.SongInfo.Fetched" />
+        style="@style/Text.SongInfo.Fetched"
+        tools:text="00:00" />
 
     <TextView
         android:id="@+id/songAlbumLabel"
@@ -150,7 +139,8 @@
 
     <TextView
         android:id="@+id/songAlbumFetched"
-        style="@style/Text.SongInfo.Fetched" />
+        style="@style/Text.SongInfo.Fetched"
+        tools:text="Album name" />
 
     <TextView
         android:id="@+id/songYearLabel"
@@ -159,7 +149,8 @@
 
     <TextView
         android:id="@+id/songYearFetched"
-        style="@style/Text.SongInfo.Fetched" />
+        style="@style/Text.SongInfo.Fetched"
+        tools:text="2025" />
 
     <TextView
         android:id="@+id/songGenreLabel"
@@ -168,7 +159,8 @@
 
     <TextView
         android:id="@+id/songGenreFetched"
-        style="@style/Text.SongInfo.Fetched" />
+        style="@style/Text.SongInfo.Fetched"
+        tools:text="Hip-Hop/Rap" />
 
     <TextView
         android:id="@+id/songCountryLabel"
@@ -177,6 +169,7 @@
 
     <TextView
         android:id="@+id/songCountryFetched"
-        style="@style/Text.SongInfo.Fetched" />
+        style="@style/Text.SongInfo.Fetched"
+        tools:text="USA" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="Widget.PlaylistMaker.IconButton.Base" parent="Widget.Material3Expressive.Button.IconButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.IconButton.Medium" parent="Widget.PlaylistMaker.IconButton.Base">
+        <item name="iconTint">?attr/colorOnSecondaryContainer</item>
+        <item name="backgroundTint">?attr/colorSecondaryContainer</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.IconButton.Large" parent="Widget.PlaylistMaker.IconButton.Base">
+        <item name="iconTint">?attr/colorSurface</item>
+        <item name="backgroundTint">?attr/colorOnSurface</item>
+    </style>
+
     <!-- Button styles -->
     <style name="Button" parent="Widget.Material3.Button.UnelevatedButton" />
 
@@ -28,30 +43,5 @@
         <item name="android:textAllCaps">false</item>
         <item name="android:textAppearance">@style/Text.Medium.14</item>
         <item name="cornerRadius">@dimen/big_150</item>
-    </style>
-
-    <!-- FloatingActionButton styles -->
-    <style name="FloatingActionButton">
-        <item name="elevation">0dp</item>
-        <item name="android:layout_width">0dp</item>
-        <item name="layout_constraintDimensionRatio">1:1</item>
-        <item name="layout_constraintHorizontal_chainStyle">spread_inside</item>
-        <item name="strokeWidth">0dp</item>
-    </style>
-
-    <style name="FloatingActionButton.Big" parent="FloatingActionButton">
-        <item name="layout_constraintWidth_percent">0.2</item>
-        <item name="tint">?attr/colorSurface</item>
-        <item name="backgroundTint">?attr/colorOnSurface</item>
-        <item name="android:layout_height">84dp</item>
-        <item name="fabCustomSize">84dp</item>
-    </style>
-
-    <style name="FloatingActionButton.Small" parent="FloatingActionButton">
-        <item name="layout_constraintWidth_percent">0.1</item>
-        <item name="android:layout_height">50dp</item>
-        <item name="tint">?attr/colorOnSecondaryContainer</item>
-        <item name="fabCustomSize">50dp</item>
-        <item name="backgroundTint">?attr/colorSecondaryContainer</item>
     </style>
 </resources>

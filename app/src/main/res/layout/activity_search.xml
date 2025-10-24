@@ -15,14 +15,12 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/appBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/Widget.PlaylistMaker.AppBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_arrow_back_24"
-        app:title="@string/search"
-        app:titleTextAppearance="@style/Text.PanelHeader" />
+        app:title="@string/search" />
 
     <LinearLayout
         android:id="@+id/searchBarLayout"

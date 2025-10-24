@@ -46,15 +46,11 @@ class SettingsActivity : AppCompatActivity() {
                 finish()
             }
 
-            themeContainer.setOnClickListener {
-                themeSwitch.isChecked = !themeSwitch.isChecked
-            }
-
             themeSwitch.setOnCheckedChangeListener { _, checked ->
                 viewModel.onThemeToggle(checked)
             }
 
-            shareContainer.setOnClickListener {
+            shareButton.setOnClickListener {
                 val shareIntent = Intent().apply {
                     action = Intent.ACTION_SEND
                     putExtra(
@@ -67,7 +63,7 @@ class SettingsActivity : AppCompatActivity() {
                 startActivity(shareIntent)
             }
 
-            supportContainer.setOnClickListener {
+            supportButton.setOnClickListener {
                 val emailIntent = Intent().apply {
                     action = Intent.ACTION_SENDTO
                     data = getString(R.string.mailto_uri_data).toUri()
@@ -82,7 +78,7 @@ class SettingsActivity : AppCompatActivity() {
                 startActivity(emailIntent)
             }
 
-            agreementContainer.setOnClickListener {
+            agreementButton.setOnClickListener {
                 val agreementIntent = Intent().apply {
                     action = Intent.ACTION_VIEW
                     data = getString(R.string.user_agreement_link).toUri()

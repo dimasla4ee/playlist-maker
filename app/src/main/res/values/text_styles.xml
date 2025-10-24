@@ -60,17 +60,9 @@
         <item name="layout_constraintHorizontal_weight">7</item>
     </style>
 
-    <style name="Text.PanelHeader" parent="Text.Medium.22">
-        <item name="android:layout_marginTop">@dimen/small_125</item>
-        <item name="android:layout_marginBottom">@dimen/small_150</item>
-        <item name="android:layout_marginStart">@dimen/small_150</item>
-        <item name="android:layout_marginEnd">@dimen/small_150</item>
-    </style>
-
-    <style name="Text.Setting" parent="Text.Regular.16">
-        <item name="android:layout_marginHorizontal">@dimen/normal_100</item>
-        <item name="layout_constraintLeft_toLeftOf">parent</item>
-        <item name="layout_constraintTop_toTopOf">parent</item>
-        <item name="layout_constraintBottom_toBottomOf">parent</item>
+    <style name="TextAppearance.PlaylistMaker.AppBar.Title" parent="TextAppearance.Material3.ActionBar.Title">
+        <item name="android:textSize">@dimen/AppBar.Title.TextSize</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:fontWeight">1000</item>
     </style>
 </resources>
