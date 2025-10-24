@@ -34,4 +34,5 @@
     <string name="country_label">Country</string>
     <string name="new_playlist">New Playlist</string>
     <string name="no_playlists_yet">You have no playlists so far</string>
+    <string name="empty_media_library">Your media library is empty</string>
 </resources>
