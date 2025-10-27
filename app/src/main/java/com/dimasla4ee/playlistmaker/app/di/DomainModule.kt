@@ -7,7 +7,7 @@ import com.dimasla4ee.playlistmaker.feature.settings.domain.SettingsInteractor
 import com.dimasla4ee.playlistmaker.feature.settings.domain.SettingsInteractorImpl
 import org.koin.dsl.module
 
-val domainModule = module {
+val DomainModule = module {
     factory<SettingsInteractor> {
         SettingsInteractorImpl(get())
     }
