@@ -40,6 +40,10 @@ class SearchViewModel(
         _searchHistory.postValue(ArrayDeque(searchHistory))
     }
 
+    fun onResume() {
+        if (_uiState.value is SearchActivityState.Content && !isSearchQueryBlank) return
+    }
+
     fun onQueryChanged(newQuery: String) {
         _searchQuery.value = newQuery
 

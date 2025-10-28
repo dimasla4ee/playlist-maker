@@ -1,53 +1,37 @@
 package com.dimasla4ee.playlistmaker.app.main
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.WindowManager
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import com.dimasla4ee.playlistmaker.core.presentation.util.InsetsTypes
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import com.dimasla4ee.playlistmaker.R
 import com.dimasla4ee.playlistmaker.core.presentation.util.setupWindowInsets
+import com.dimasla4ee.playlistmaker.core.presentation.util.show
 import com.dimasla4ee.playlistmaker.databinding.ActivityMainBinding
-import com.dimasla4ee.playlistmaker.feature.media_library.presentation.MediaLibraryActivity
-import com.dimasla4ee.playlistmaker.feature.search.presentation.SearchActivity
-import com.dimasla4ee.playlistmaker.feature.settings.presentation.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater).apply {
             setContentView(root)
-            enableEdgeToEdge()
-            root.setupWindowInsets(InsetsTypes.StatusBars)
+            root.setupWindowInsets()
         }
 
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-        )
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.fragmentContainer) as NavHostFragment
+        val navController = navHostFragment.navController
 
-        setupListeners()
-    }
-
-    private fun setupListeners() {
         with(binding) {
-            searchButton.setOnClickListener {
-                val intent = Intent(this@MainActivity, SearchActivity::class.java)
-                startActivity(intent)
-            }
+            bottomNavigation.setupWithNavController(navController)
 
-            mediaLibraryButton.setOnClickListener {
-                val intent = Intent(this@MainActivity, MediaLibraryActivity::class.java)
-                startActivity(intent)
-            }
-
-            settingsButton.setOnClickListener {
-                val intent = Intent(this@MainActivity, SettingsActivity::class.java)
-                startActivity(intent)
+            navController.addOnDestinationChangedListener { _, destination, _ ->
+                bottomNavigation.show(destination.id != R.id.playerFragment)
             }
         }
     }

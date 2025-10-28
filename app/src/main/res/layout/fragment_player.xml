@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     style="@style/ConstraintLayout"
-    tools:context=".feature.player.presentation.PlayerActivity">
+    tools:context=".feature.player.presentation.PlayerFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideStart"

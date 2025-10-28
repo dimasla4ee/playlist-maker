@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/LinearLayout">
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/LinearLayout"
+    tools:context=".feature.settings.presentation.SettingsFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/appBar"
@@ -9,7 +11,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/ic_arrow_back_24"
         app:title="@string/settings" />
 
     <com.google.android.material.materialswitch.MaterialSwitch
@@ -20,7 +21,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appBar" />
 
-    <!-- Share -->
     <TextView
         android:id="@+id/shareButton"
         style="@style/Widget.PlaylistMaker.Setting.Button"
@@ -30,7 +30,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/themeSwitch" />
 
-    <!-- Support -->
     <TextView
         android:id="@+id/supportButton"
         style="@style/Widget.PlaylistMaker.Setting.Button"
@@ -40,7 +39,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/shareButton" />
 
-    <!-- User Agreement -->
     <TextView
         android:id="@+id/agreementButton"
         style="@style/Widget.PlaylistMaker.Setting.Button"
