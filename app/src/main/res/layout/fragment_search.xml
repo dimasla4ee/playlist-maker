@@ -5,7 +5,6 @@
     style="@style/ConstraintLayout"
     android:clipToPadding="false"
     android:fitsSystemWindows="false"
-    android:paddingBottom="?attr/actionBarSize"
     tools:context=".feature.search.presentation.SearchFragment">
 
     <androidx.constraintlayout.widget.Guideline
@@ -86,19 +85,20 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/normal_150"
-        android:paddingBottom="@dimen/normal_150"
+        android:layout_marginBottom="@dimen/big_150"
         android:requiresFadingEdge="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@+id/clearHistoryButton"
+        app:layout_constraintBottom_toBottomOf="@+id/clearHistoryButton"
         app:layout_constraintEnd_toEndOf="@id/guideEnd"
         app:layout_constraintStart_toStartOf="@id/guideStart"
-        app:layout_constraintTop_toBottomOf="@id/historyLabel" />
+        app:layout_constraintTop_toBottomOf="@id/historyLabel"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/clearHistoryButton"
         style="@style/Button.Common"
-        android:layout_marginTop="@dimen/normal_150"
         android:text="@string/clear_history"
+        android:layout_marginBottom="@dimen/small_100"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/guideEnd"
         app:layout_constraintStart_toStartOf="@id/guideStart" />
