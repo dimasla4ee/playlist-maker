@@ -68,15 +68,8 @@
         <item name="tint">?attr/colorOnSurfaceVariant</item>
     </style>
 
-    <!-- LinearLayout styles -->
-    <style name="LinearLayout">
+    <style name="Widget.PlaylistMaker.Searchbar">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:background">?attr/colorSurface</item>
-        <item name="android:orientation">vertical</item>
-    </style>
-
-    <style name="LinearLayout.Searchbar" parent="LinearLayout">
         <item name="android:layout_height">@dimen/searchbar_height</item>
         <item name="android:orientation">horizontal</item>
         <item name="android:gravity">center_vertical</item>
@@ -101,6 +94,7 @@
 
     <!-- Constraint Layout styles -->
     <style name="ConstraintLayout">
+        <item name="android:background">?attr/colorSurface</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
     </style>

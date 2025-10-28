@@ -27,7 +27,7 @@
 
     <LinearLayout
         android:id="@+id/searchBarLayout"
-        style="@style/LinearLayout.Searchbar"
+        style="@style/Widget.PlaylistMaker.Searchbar"
         android:layout_width="0dp"
         android:layout_marginTop="@dimen/small_100"
         app:layout_constraintEnd_toEndOf="@id/guideEnd"
@@ -36,6 +36,7 @@
 
         <ImageView
             style="@style/Icon.SearchBar"
+            app:tint="?attr/colorOnPrimaryFixed"
             android:importantForAccessibility="no"
             android:src="@drawable/ic_search_24" />
 
@@ -97,8 +98,8 @@
     <Button
         android:id="@+id/clearHistoryButton"
         style="@style/Button.Common"
-        android:text="@string/clear_history"
         android:layout_marginBottom="@dimen/small_100"
+        android:text="@string/clear_history"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/guideEnd"
         app:layout_constraintStart_toStartOf="@id/guideStart" />
