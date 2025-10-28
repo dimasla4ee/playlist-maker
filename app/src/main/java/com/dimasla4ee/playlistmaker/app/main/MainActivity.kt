@@ -13,7 +13,7 @@ import com.dimasla4ee.playlistmaker.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -21,10 +21,6 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater).apply {
             setContentView(root)
-            root.setupWindowInsets { windowInsets ->
-                val isKeyboardOpened = windowInsets.isVisible(WindowInsetsCompat.Type.ime())
-                bottomNavigation.show(!isKeyboardOpened)
-            }
         }
 
         val navHostFragment = supportFragmentManager.findFragmentById(
@@ -34,6 +30,14 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         with(binding) {
+            root.setupWindowInsets { windowInsets ->
+                val isKeyboardOpened = windowInsets.isVisible(WindowInsetsCompat.Type.ime())
+
+                if (navController.currentDestination?.id == R.id.searchFragment) {
+                    bottomNavigation.show(!isKeyboardOpened)
+                }
+            }
+
             bottomNavigation.setupWithNavController(navController)
 
             navController.addOnDestinationChangedListener { _, destination, _ ->
