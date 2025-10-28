@@ -14,7 +14,7 @@ import com.dimasla4ee.playlistmaker.core.presentation.adapter.TrackAdapter
 import com.dimasla4ee.playlistmaker.core.presentation.util.show
 import com.dimasla4ee.playlistmaker.core.presentation.util.viewBinding
 import com.dimasla4ee.playlistmaker.databinding.FragmentSearchBinding
-import com.dimasla4ee.playlistmaker.feature.search.presentation.model.SearchActivityState
+import com.dimasla4ee.playlistmaker.feature.search.presentation.model.SearchScreenState
 import com.dimasla4ee.playlistmaker.feature.search.presentation.viewmodel.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -60,15 +60,10 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         )
     }
 
-    override fun onResume() {
-        super.onResume()
-        binding.queryInput.clearFocus()
-        searchViewModel.onResume()
-    }
-
     private fun setupListeners() {
-        val inputMethodManager =
-            requireContext().getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
+        val inputMethodManager = requireContext().getSystemService(
+            INPUT_METHOD_SERVICE
+        ) as? InputMethodManager
 
         with(binding) {
             clearHistoryButton.setOnClickListener {
@@ -110,33 +105,33 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         }
     }
 
-    private fun render(state: SearchActivityState) {
+    private fun render(state: SearchScreenState) {
         with(binding) {
             when (state) {
-                is SearchActivityState.Content -> {
+                is SearchScreenState.Content -> {
                     showContent(state)
                 }
 
-                is SearchActivityState.Error -> {
+                is SearchScreenState.Error -> {
                     showError()
                 }
 
-                is SearchActivityState.Loading -> {
+                is SearchScreenState.Loading -> {
                     showLoading()
                 }
 
-                is SearchActivityState.SearchHistory -> {
+                is SearchScreenState.SearchHistory -> {
                     showHistory(state)
                 }
 
-                is SearchActivityState.NoResults -> {
+                is SearchScreenState.NoResults -> {
                     showNoResults()
                 }
             }
         }
     }
 
-    private fun showContent(state: SearchActivityState.Content) {
+    private fun showContent(state: SearchScreenState.Content) {
         with(binding) {
             loadingIndicator.show(false)
             stateText.show(false)
@@ -169,7 +164,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         }
     }
 
-    private fun showHistory(state: SearchActivityState.SearchHistory) {
+    private fun showHistory(state: SearchScreenState.SearchHistory) {
         with(binding) {
             historyRecycler.show(true)
             historyLabel.show(true)
