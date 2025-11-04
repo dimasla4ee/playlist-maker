@@ -11,18 +11,20 @@ import androidx.navigation.fragment.findNavController
 import com.dimasla4ee.playlistmaker.R
 import com.dimasla4ee.playlistmaker.core.domain.model.Track
 import com.dimasla4ee.playlistmaker.core.presentation.adapter.TrackAdapter
+import com.dimasla4ee.playlistmaker.core.presentation.util.setTopDrawable
 import com.dimasla4ee.playlistmaker.core.presentation.util.show
 import com.dimasla4ee.playlistmaker.core.presentation.util.viewBinding
+import com.dimasla4ee.playlistmaker.core.util.LogUtil
 import com.dimasla4ee.playlistmaker.databinding.FragmentSearchBinding
-import com.dimasla4ee.playlistmaker.feature.search.presentation.model.SearchScreenState
+import com.dimasla4ee.playlistmaker.feature.search.presentation.model.SearchUiState
 import com.dimasla4ee.playlistmaker.feature.search.presentation.viewmodel.SearchViewModel
+import com.google.android.material.search.SearchView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment(R.layout.fragment_search) {
 
     private val binding by viewBinding(FragmentSearchBinding::bind)
-    private lateinit var searchHistoryAdapter: TrackAdapter
-    private lateinit var searchResultsAdapter: TrackAdapter
+    private lateinit var recyclerAdapter: TrackAdapter
     private val searchViewModel: SearchViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -32,22 +34,10 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             uiState.observe(viewLifecycleOwner) { state ->
                 render(state)
             }
-
-            searchQuery.observe(viewLifecycleOwner) { query ->
-                with(binding) {
-                    if (queryInput.text.toString() != query) {
-                        queryInput.setText(query)
-                    }
-                    clearQueryButton.show(query.isNotBlank())
-                }
-            }
         }
 
-        searchHistoryAdapter = TrackAdapter { onItemClick(it) }
-        searchResultsAdapter = TrackAdapter { onItemClick(it) }
-
-        binding.historyRecycler.adapter = searchHistoryAdapter
-        binding.resultsRecycler.adapter = searchResultsAdapter
+        recyclerAdapter = TrackAdapter { onItemClick(it) }
+        binding.recycler.adapter = recyclerAdapter
 
         setupListeners()
     }
@@ -63,40 +53,45 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     private fun setupListeners() {
         val inputMethodManager = requireContext().getSystemService(
             INPUT_METHOD_SERVICE
-        ) as? InputMethodManager
+        ) as InputMethodManager
+
+        val clearButtonSearchBar = binding.searchBar.menu.findItem(
+            R.id.actionClear
+        ).apply { isVisible = false }
 
         with(binding) {
             clearHistoryButton.setOnClickListener {
                 searchViewModel.onClearSearchHistoryClicked()
             }
 
-            queryInput.apply {
-                doOnTextChanged { text, _, _, _ ->
-                    searchViewModel.onQueryChanged(text.toString())
-                }
+            searchView.editText.doOnTextChanged { charSequence, _, _, _ ->
+                val text = charSequence.toString()
+                searchViewModel.onQueryChanged(text)
+                clearButtonSearchBar?.isVisible = text.isNotEmpty()
+            }
 
-                setOnFocusChangeListener { _, hasFocus ->
-                    searchViewModel.onFocusChanged(hasFocus)
-                }
+            searchView.editText.setOnEditorActionListener { _, actionId, _ ->
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    searchViewModel.onSearchClicked()
+                    inputMethodManager.hideSoftInputFromWindow(searchView.windowToken, 0)
+                    true
+                } else false
+            }
 
-                setOnEditorActionListener { _, actionId, _ ->
-                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                        inputMethodManager?.hideSoftInputFromWindow(windowToken, 0)
-                        searchViewModel.onSearchClicked()
-                        true
-                    } else false
+            searchView.addTransitionListener { _, _, newState ->
+                if (newState == SearchView.TransitionState.HIDING) {
+                    searchBar.setText(searchView.editText.text)
                 }
             }
 
-            clearQueryButton.setOnClickListener {
-                queryInput.apply {
+            searchBar.setOnMenuItemClickListener { item ->
+                if (item.itemId == R.id.actionClear) {
                     searchViewModel.onClearQueueClicked()
-                    clearFocus()
+                    searchBar.clearText()
+                    true
+                } else {
+                    false
                 }
-            }
-
-            searchBarLayout.setOnClickListener {
-                queryInput.requestFocus()
             }
 
             retryButton.setOnClickListener {
@@ -105,109 +100,108 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         }
     }
 
-    private fun render(state: SearchScreenState) {
+    private fun render(state: SearchUiState) {
+        LogUtil.d("SearchFragment", "render() called with: state = $state")
+        when (state) {
+            is SearchUiState.Content -> showContent(state)
+            is SearchUiState.Error -> showError()
+            is SearchUiState.Loading -> showLoading()
+            is SearchUiState.NoResults -> showNoResults()
+            is SearchUiState.History -> showHistory(state)
+            is SearchUiState.Idle -> showIdle()
+        }
+    }
+
+    private fun updateUiVisibility(
+        recyclerAdapterList: List<Track>,
+        loadingIndicatorVisible: Boolean,
+        retryButtonVisible: Boolean,
+        historyLabelVisible: Boolean,
+        clearHistoryButtonVisible: Boolean,
+        stateContainerVisible: Boolean,
+        stateInfoText: String?,
+        stateInfoDrawable: Int?
+    ) {
+        recyclerAdapter.submitList(recyclerAdapterList)
         with(binding) {
-            when (state) {
-                is SearchScreenState.Content -> {
-                    showContent(state)
-                }
+            loadingIndicator.show(loadingIndicatorVisible)
+            retryButton.show(retryButtonVisible)
+            historyLabel.show(historyLabelVisible)
+            clearHistoryButton.show(clearHistoryButtonVisible)
+            stateContainer.show(stateContainerVisible)
 
-                is SearchScreenState.Error -> {
-                    showError()
-                }
-
-                is SearchScreenState.Loading -> {
-                    showLoading()
-                }
-
-                is SearchScreenState.SearchHistory -> {
-                    showHistory(state)
-                }
-
-                is SearchScreenState.NoResults -> {
-                    showNoResults()
+            if (stateContainerVisible) {
+                stateInfo.apply {
+                    text = stateInfoText
+                    setTopDrawable(stateInfoDrawable ?: 0)
                 }
             }
         }
     }
 
-    private fun showContent(state: SearchScreenState.Content) {
-        with(binding) {
-            loadingIndicator.show(false)
-            stateText.show(false)
-            stateImage.show(false)
-            retryButton.show(false)
-            historyLabel.show(false)
-            clearHistoryButton.show(false)
-            historyRecycler.show(false)
-            resultsRecycler.show(true)
-            searchResultsAdapter.submitList(state.results)
-        }
-    }
+    private fun showContent(state: SearchUiState.Content) = updateUiVisibility(
+        recyclerAdapterList = state.results,
+        loadingIndicatorVisible = false,
+        retryButtonVisible = false,
+        historyLabelVisible = false,
+        clearHistoryButtonVisible = false,
+        stateContainerVisible = false,
+        stateInfoText = null,
+        stateInfoDrawable = null
+    )
 
-    private fun showError() {
-        with(binding) {
-            loadingIndicator.show(false)
-            retryButton.show(true)
-            historyLabel.show(false)
-            clearHistoryButton.show(false)
-            historyRecycler.show(false)
-            resultsRecycler.show(false)
-            stateText.apply {
-                show(true)
-                setText(R.string.network_error)
-            }
-            stateImage.apply {
-                show(true)
-                setImageResource(R.drawable.ic_no_internet_120)
-            }
-        }
-    }
+    private fun showError() = updateUiVisibility(
+        recyclerAdapterList = emptyList(),
+        loadingIndicatorVisible = false,
+        retryButtonVisible = true,
+        historyLabelVisible = false,
+        clearHistoryButtonVisible = false,
+        stateContainerVisible = true,
+        stateInfoText = getString(R.string.network_error),
+        stateInfoDrawable = R.drawable.ic_no_internet_120
+    )
 
-    private fun showHistory(state: SearchScreenState.SearchHistory) {
-        with(binding) {
-            historyRecycler.show(true)
-            historyLabel.show(true)
-            clearHistoryButton.show(true)
-            searchHistoryAdapter.submitList(state.searchHistory)
+    private fun showNoResults() = updateUiVisibility(
+        recyclerAdapterList = emptyList(),
+        loadingIndicatorVisible = false,
+        retryButtonVisible = false,
+        historyLabelVisible = false,
+        clearHistoryButtonVisible = false,
+        stateContainerVisible = true,
+        stateInfoText = getString(R.string.no_results),
+        stateInfoDrawable = R.drawable.ic_nothing_found_120
+    )
 
-            loadingIndicator.show(false)
-            stateText.show(false)
-            stateImage.show(false)
-            retryButton.show(false)
-            resultsRecycler.show(false)
-        }
-    }
+    private fun showLoading() = updateUiVisibility(
+        recyclerAdapterList = emptyList(),
+        loadingIndicatorVisible = true,
+        retryButtonVisible = false,
+        historyLabelVisible = false,
+        clearHistoryButtonVisible = false,
+        stateContainerVisible = false,
+        stateInfoText = null,
+        stateInfoDrawable = null
+    )
 
-    private fun showNoResults() {
-        with(binding) {
-            loadingIndicator.show(false)
-            retryButton.show(false)
-            historyLabel.show(false)
-            clearHistoryButton.show(false)
-            historyRecycler.show(false)
-            resultsRecycler.show(false)
-            stateText.apply {
-                show(true)
-                setText(R.string.no_results)
-            }
-            stateImage.apply {
-                show(true)
-                setImageResource(R.drawable.ic_nothing_found_120)
-            }
-        }
-    }
+    private fun showHistory(state: SearchUiState.History) = updateUiVisibility(
+        recyclerAdapterList = state.history,
+        loadingIndicatorVisible = false,
+        retryButtonVisible = false,
+        historyLabelVisible = true,
+        clearHistoryButtonVisible = true,
+        stateContainerVisible = false,
+        stateInfoText = null,
+        stateInfoDrawable = null
+    )
 
-    private fun showLoading() {
-        with(binding) {
-            loadingIndicator.show(true)
-            stateText.show(false)
-            stateImage.show(false)
-            retryButton.show(false)
-            historyLabel.show(false)
-            clearHistoryButton.show(false)
-            historyRecycler.show(false)
-            resultsRecycler.show(false)
-        }
-    }
+    private fun showIdle() = updateUiVisibility(
+        recyclerAdapterList = emptyList(),
+        loadingIndicatorVisible = false,
+        retryButtonVisible = false,
+        historyLabelVisible = false,
+        clearHistoryButtonVisible = false,
+        stateContainerVisible = false,
+        stateInfoText = null,
+        stateInfoDrawable = null
+    )
 }
