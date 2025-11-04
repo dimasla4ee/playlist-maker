@@ -47,6 +47,36 @@
         <item name="trackTint">@color/switch_track_state</item>
     </style>
 
+    <!--Bottom Navigation styling-->
+    <style name="Widget.PlaylistMaker.BottomNavigationView.Light" parent="Widget.Material3Expressive.BottomNavigationView">
+        <item name="materialThemeOverlay">
+            @style/ThemeOverlay.PlaylistMaker.BottomNavigationView.Light
+        </item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.BottomNavigationView.Dark" parent="Widget.Material3Expressive.BottomNavigationView">
+        <item name="materialThemeOverlay">
+            @style/ThemeOverlay.PlaylistMaker.BottomNavigationView.Dark
+        </item>
+    </style>
+
+    <style name="ThemeOverlay.PlaylistMaker.BottomNavigationView.Light" parent="">
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorSurfaceContainer">@color/white</item>
+        <item name="colorOnSurfaceVariant">@color/black</item>
+        <item name="colorOnSurface">@color/blue</item>
+        <item name="colorOnSecondaryContainer">@color/blue</item>
+    </style>
+
+    <style name="ThemeOverlay.PlaylistMaker.BottomNavigationView.Dark" parent="">
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorSurfaceContainer">@color/black</item>
+        <item name="colorOnSurfaceVariant">@color/white</item>
+        <item name="colorOnSurface">@color/blue</item>
+        <item name="colorOnSecondaryContainer">@color/blue</item>
+    </style>
+
+    <!--Image styling-->
     <style name="Widget.PlaylistMaker.Image" />
 
     <style name="Widget.PlaylistMaker.Image.FixedSquare">
