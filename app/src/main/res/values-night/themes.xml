@@ -19,5 +19,7 @@
 
         <item name="bottomNavigationStyle">@style/Widget.PlaylistMaker.BottomNavigationView.Dark
         </item>
+        <item name="materialSearchBarStyle">@style/Widget.PlaylistMaker.Search.Bar.Dark</item>
+        <item name="materialSearchViewStyle">@style/Widget.PlaylistMaker.Search.View.Dark</item>
     </style>
 </resources>

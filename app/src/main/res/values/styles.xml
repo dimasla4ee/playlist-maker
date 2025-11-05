@@ -1,28 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <!-- EditText styles -->
-    <style name="EditText">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-    </style>
-
-    <style name="EditText.SearchBar" parent="EditText">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">@dimen/normal_150</item>
-        <item name="android:background">@color/transparent</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:layout_marginHorizontal">@dimen/small_100</item>
-        <item name="android:textColorHint">?attr/colorOnPrimaryContainer</item>
-        <item name="android:textAppearance">@style/Text.Regular.16</item>
-        <item name="android:textColor">?attr/colorOnPrimaryFixed</item>
-    </style>
-
     <!--Widgets-->
-    <style name="Widget" />
-
-    <style name="Widget.PlaylistMaker" />
+    <style name="Widget.PlaylistMaker" parent="" />
 
     <style name="Widget.PlaylistMaker.AppBar" parent="Widget.Material3.Toolbar">
         <item name="android:layout_height">wrap_content</item>
@@ -45,6 +24,47 @@
     <style name="Widget.PlaylistMaker.Setting.Switch" parent="Widget.PlaylistMaker.Setting.Base">
         <item name="thumbTint">@color/switch_thumb_state</item>
         <item name="trackTint">@color/switch_track_state</item>
+    </style>
+
+    <!--Search styling-->
+    <style name="Widget.PlaylistMaker.Search.Bar" parent="Widget.Material3Expressive.SearchBar">
+        <item name="liftOnScroll">false</item>
+        <item name="hideNavigationIcon">false</item>
+        <item name="navigationIconTint">?attr/colorOnSurface</item>
+        <item name="android:colorControlNormal">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.Search.Bar.Light" parent="Widget.PlaylistMaker.Search.Bar">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.PlaylistMaker.Search.Light</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.Search.Bar.Dark" parent="Widget.PlaylistMaker.Search.Bar">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.PlaylistMaker.Search.Dark</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.Search.View" parent="Widget.Material3Expressive.SearchView">
+        <item name="backgroundTint">?attr/colorSurfaceContainer</item>
+        <item name="android:colorControlNormal">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.Search.View.Light" parent="Widget.PlaylistMaker.Search.View">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.PlaylistMaker.Search.Light</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.Search.View.Dark" parent="Widget.PlaylistMaker.Search.View">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.PlaylistMaker.Search.Dark</item>
+    </style>
+
+    <style name="ThemeOverlay.PlaylistMaker.Search.Light" parent="">
+        <item name="colorSurfaceContainer">@color/ice_blue</item>
+        <item name="colorOnSurfaceVariant">@color/dark_gray</item>
+        <item name="colorOnSurface">@color/dark_gray</item>
+    </style>
+
+    <style name="ThemeOverlay.PlaylistMaker.Search.Dark" parent="">
+        <item name="colorSurfaceContainer">@color/dark_gray</item>
+        <item name="colorOnSurfaceVariant">@color/white</item>
+        <item name="colorOnSurface">@color/white</item>
     </style>
 
     <!--Bottom Navigation styling-->
@@ -96,17 +116,6 @@
         <item name="android:layout_width">@dimen/normal_150</item>
         <item name="android:layout_height">@dimen/normal_150</item>
         <item name="tint">?attr/colorOnSurfaceVariant</item>
-    </style>
-
-    <style name="Widget.PlaylistMaker.Searchbar">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/searchbar_height</item>
-        <item name="android:orientation">horizontal</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:paddingHorizontal">@dimen/small_150</item>
-        <item name="android:paddingVertical">@dimen/small_125</item>
-        <item name="android:background">@drawable/rounded_corners</item>
-        <item name="android:backgroundTint">?attr/colorSurfaceContainerHighest</item>
     </style>
 
     <!-- Weight styles -->

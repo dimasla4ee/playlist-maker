@@ -19,5 +19,7 @@
 
         <item name="bottomNavigationStyle">@style/Widget.PlaylistMaker.BottomNavigationView.Light
         </item>
+        <item name="materialSearchBarStyle">@style/Widget.PlaylistMaker.Search.Bar.Light</item>
+        <item name="materialSearchViewStyle">@style/Widget.PlaylistMaker.Search.View.Light</item>
     </style>
 </resources>
