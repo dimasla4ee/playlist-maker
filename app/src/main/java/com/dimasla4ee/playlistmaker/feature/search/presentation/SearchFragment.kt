@@ -42,6 +42,11 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         setupListeners()
     }
 
+    override fun onPause() {
+        super.onPause()
+        searchViewModel.onPause()
+    }
+
     private fun onItemClick(track: Track) {
         searchViewModel.onTrackClicked(track)
 

@@ -124,6 +124,10 @@ class SearchViewModel(
         performSearch()
     }
 
+    fun onPause() {
+        searchHistoryInteractor.saveHistory(searchHistory)
+    }
+
     override fun onCleared() {
         super.onCleared()
         searchHistoryInteractor.saveHistory(searchHistory)

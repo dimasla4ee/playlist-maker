@@ -28,6 +28,11 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         setupListeners()
     }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.onPause()
+    }
+
     fun setAppTheme(useDarkTheme: Boolean) {
         AppCompatDelegate.setDefaultNightMode(
             if (useDarkTheme) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
