@@ -15,6 +15,13 @@
         <item name="navigationIconTint">@color/black</item>
         <item name="titleTextColor">@color/black</item>
 
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="textAppearanceTitleSmall">@style/TextAppearance.PlaylistMaker.TitleSmall</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.PlaylistMaker.TitleLarge</item>
+        <item name="textAppearanceTitleMedium">@style/TextAppearance.PlaylistMaker.TitleMedium
+        </item>
+
         <item name="loadingIndicatorStyle">@style/Widget.PlaylistMaker.LoadingIndicator</item>
         <item name="materialButtonStyle">@style/Widget.PlaylistMaker.Button.Light</item>
         <item name="bottomNavigationStyle">@style/Widget.PlaylistMaker.BottomNavigationView.Light

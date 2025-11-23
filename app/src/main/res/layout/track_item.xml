@@ -19,8 +19,9 @@
 
     <TextView
         android:id="@+id/titleLabel"
-        style="@style/TextAppearance.PlaylistMaker.Track.Primary"
+        style="@style/Widget.PlaylistMaker.TextView.Track.Title"
         android:layout_width="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/artistDurationLabel"
         app:layout_constraintEnd_toStartOf="@id/toTrackIcon"
         app:layout_constraintStart_toEndOf="@id/albumCover"
@@ -30,8 +31,9 @@
 
     <TextView
         android:id="@+id/artistDurationLabel"
-        style="@style/TextAppearance.PlaylistMaker.Track.Secondary"
+        style="@style/Widget.PlaylistMaker.TextView.Track.ArtistAndTime"
         android:layout_width="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/titleLabel"
         app:layout_constraintStart_toStartOf="@id/titleLabel"
@@ -41,6 +43,8 @@
     <ImageView
         android:id="@+id/toTrackIcon"
         style="@style/Widget.PlaylistMaker.Icon.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:contentDescription="@string/open_track"
         android:src="@drawable/ic_arrow_forward_24"
         app:layout_constraintBottom_toBottomOf="parent"

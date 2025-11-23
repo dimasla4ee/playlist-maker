@@ -20,6 +20,8 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/appBar"
         style="@style/Widget.PlaylistMaker.AppBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -56,7 +58,8 @@
 
                 <TextView
                     android:id="@+id/historyLabel"
-                    style="@style/Text.Medium.19"
+                    style="@style/TextAppearance.PlaylistMaker.TitleMedium"
+                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:layout_marginVertical="@dimen/normal_150"
                     android:text="@string/been_searched" />
@@ -97,7 +100,7 @@
 
                 <TextView
                     android:id="@+id/stateInfo"
-                    style="@style/Text.Medium.19"
+                    style="@style/TextAppearance.PlaylistMaker.TitleMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawablePadding="@dimen/normal_100"

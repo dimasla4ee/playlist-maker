@@ -15,15 +15,7 @@
 
     <dimen name="searchbar_height">38dp</dimen>
 
-    <dimen name="regular_weight">400</dimen>
-    <dimen name="medium_weight">500</dimen>
-
-    <dimen name="text_11">11sp</dimen>
-    <dimen name="text_13">13sp</dimen>
-    <dimen name="text_14">14sp</dimen>
-    <dimen name="text_16">16sp</dimen>
-    <dimen name="text_19">19sp</dimen>
-    <dimen name="text_22">22sp</dimen>
+    <dimen name="m3_title_medium">19sp</dimen>
 
     <!---->
     <dimen name="BottomBar.Padding.Top">12dp</dimen>
@@ -38,6 +30,7 @@
     <dimen name="Setting.Height">61dp</dimen>
 
     <dimen name="Track.Height">61dp</dimen>
+    <dimen name="Track.Padding.Horizontal">8dp</dimen>
     <dimen name="Track.Typography.Primary">16sp</dimen>
     <dimen name="Track.Typography.Secondary">11sp</dimen>
 

@@ -6,10 +6,9 @@
     <style name="Widget.PlaylistMaker.AppBar" parent="Widget.Material3.Toolbar">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="titleTextAppearance">@style/TextAppearance.PlaylistMaker.AppBar.Title</item>
     </style>
 
-    <style name="Widget.PlaylistMaker.Setting.Base" parent="Text.Regular.16">
+    <style name="Widget.PlaylistMaker.Setting.Base" parent="TextAppearance.Material3.BodyLarge">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">@dimen/Setting.Height</item>
         <item name="android:gravity">center_vertical</item>
@@ -24,6 +23,37 @@
     <style name="Widget.PlaylistMaker.Setting.Switch" parent="Widget.PlaylistMaker.Setting.Base">
         <item name="thumbTint">@color/switch_thumb_state</item>
         <item name="trackTint">@color/switch_track_state</item>
+    </style>
+
+    <!--TextView Styling-->
+    <style name="Widget.PlaylistMaker.TextView.SongInfo" parent="">
+        <item name="android:textAppearance">@style/TextAppearance.Material3.BodySmall</item>
+        <item name="android:paddingVertical">@dimen/small_100</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.TextView.SongInfo.Label" parent="Widget.PlaylistMaker.TextView.SongInfo">
+        <item name="android:textAlignment">textStart</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.TextView.SongInfo.Fetched" parent="Widget.PlaylistMaker.TextView.SongInfo">
+        <item name="android:textAlignment">textEnd</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.TextView.Track" parent="">
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">middle</item>
+        <item name="android:paddingHorizontal">@dimen/Track.Padding.Horizontal</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.TextView.Track.Title" parent="Widget.PlaylistMaker.TextView.Track">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.BodyLarge</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.TextView.Track.ArtistAndTime" parent="Widget.PlaylistMaker.TextView.Track">
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.LabelSmall</item>
     </style>
 
     <!--Search styling-->

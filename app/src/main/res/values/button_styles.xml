@@ -18,7 +18,7 @@
 
     <style name="Widget.PlaylistMaker.Button" parent="Widget.Material3Expressive.Button">
         <item name="materialSizeOverlay">@style/SizeOverlay.Material3Expressive.Button.Medium</item>
-        <item name="android:textAppearance">@style/Text.Medium.14</item>
+        <item name="android:textAppearance">@style/TextAppearance.PlaylistMaker.TitleSmall</item>
     </style>
 
     <style name="Widget.PlaylistMaker.Button.Light" parent="Widget.PlaylistMaker.Button">

@@ -5,7 +5,7 @@
 
     <TextView
         android:id="@+id/stateInfo"
-        style="@style/Text.Medium.19"
+        style="@style/TextAppearance.PlaylistMaker.TitleMedium"
         android:layout_width="0dp"
         android:layout_height="@dimen/StateTextImage.Height"
         android:layout_marginTop="@dimen/StateTextImage.Margin.Top"
