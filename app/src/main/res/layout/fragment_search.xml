@@ -65,14 +65,14 @@
                     android:id="@+id/recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/normal_150"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="@dimen/normal_150"
                     android:requiresFadingEdge="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/clearHistoryButton"
-                    style="@style/Button.Common"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/small_100"
                     android:text="@string/clear_history" />
             </LinearLayout>
@@ -83,8 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:contentDescription="@string/loading"
-                android:visibility="gone"
-                app:indicatorColor="@color/blue" />
+                android:visibility="gone" />
 
             <LinearLayout
                 android:id="@+id/stateContainer"
@@ -107,9 +106,10 @@
                     app:drawableTopCompat="@drawable/ic_nothing_found_120"
                     tools:text="@string/no_results" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/retryButton"
-                    style="@style/Button.Common"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/normal_150"
                     android:text="@string/reload" />
             </LinearLayout>

@@ -96,6 +96,11 @@
         <item name="colorOnSecondaryContainer">@color/blue</item>
     </style>
 
+    <style name="Widget.PlaylistMaker.LoadingIndicator" parent="Widget.Material3.LoadingIndicator">
+        <item name="indicatorSize">80dp</item>
+        <item name="indicatorColor">@color/blue</item>
+    </style>
+
     <!--Image styling-->
     <style name="Widget.PlaylistMaker.Image" />
 
@@ -129,7 +134,6 @@
     <style name="Weight.Horizontal.1" parent="Weight.Horizontal">
         <item name="android:layout_weight">1</item>
     </style>
-
 
     <!-- Constraint Layout styles -->
     <style name="ConstraintLayout">

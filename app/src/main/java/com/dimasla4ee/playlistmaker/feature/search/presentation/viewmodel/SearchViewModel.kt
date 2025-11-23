@@ -34,10 +34,11 @@ class SearchViewModel(
     init {
         val searchHistory = searchHistoryInteractor.getSearchHistory()
         _searchHistory.postValue(ArrayDeque(searchHistory))
+        LogUtil.d(LOG_TAG, "SearchHistory: ${_searchHistory.value}")
     }
 
     fun onQueryChanged(newQuery: String) {
-        LogUtil.d("SearchViewModel", "onQueryChanged: $newQuery")
+        LogUtil.d(LOG_TAG, "onQueryChanged: $newQuery")
 
         when {
             newQuery.isBlank() && searchHistory.isNotEmpty() -> {
@@ -91,7 +92,6 @@ class SearchViewModel(
     }
 
     fun onTrackClicked(track: Track) {
-        if (searchHistory.isEmpty()) return
         val newTracks = ArrayDeque(searchHistory)
 
         if (track in newTracks) {
@@ -102,6 +102,7 @@ class SearchViewModel(
         }
 
         _searchHistory.postValue(newTracks)
+        LogUtil.d(LOG_TAG, "SearchHistory: ${_searchHistory.value}")
     }
 
     fun onClearSearchHistoryClicked() {
@@ -134,7 +135,7 @@ class SearchViewModel(
     }
 
     companion object {
-
+        private const val LOG_TAG = "SearchViewModel"
         private const val MAX_HISTORY_SIZE = 10
     }
 }
