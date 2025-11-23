@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
 
                 if (navController.currentDestination?.id == R.id.searchFragment) {
                     bottomNavigation.show(!isKeyboardOpened)
+                    bottomNavDivider.show(!isKeyboardOpened)
                 }
             }
 
