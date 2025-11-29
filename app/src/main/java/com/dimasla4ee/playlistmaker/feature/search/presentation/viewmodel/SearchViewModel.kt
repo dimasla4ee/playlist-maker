@@ -99,6 +99,9 @@ class SearchViewModel(
             newTracks.addFirst(track)
         } else if (newTracks.size < MAX_HISTORY_SIZE) {
             newTracks.addFirst(track)
+        } else {
+            newTracks.removeLast()
+            newTracks.addFirst(track)
         }
 
         _searchHistory.postValue(newTracks)
