@@ -13,9 +13,9 @@
     <dimen name="big_150">48dp</dimen>
     <dimen name="big_325">104dp</dimen>
 
-    <dimen name="searchbar_height">38dp</dimen>
+    <dimen name="searchbarHeight">38dp</dimen>
 
-    <dimen name="m3_title_medium">19sp</dimen>
+    <dimen name="titleMedium">19sp</dimen>
 
     <!---->
     <dimen name="BottomBar.Padding.Top">12dp</dimen>

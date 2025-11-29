@@ -7,35 +7,30 @@
     </style>
 
     <style name="Widget.PlaylistMaker.IconButton.Medium" parent="Widget.PlaylistMaker.IconButton">
-        <item name="iconTint">?attr/colorOnSecondaryContainer</item>
-        <item name="backgroundTint">?attr/colorSecondaryContainer</item>
+        <item name="iconTint">@color/fabIcon</item>
+        <item name="materialSizeOverlay">
+            @style/SizeOverlay.Material3Expressive.Button.IconButton.Medium
+        </item>
+        <item name="backgroundTint">@color/fabBackground</item>
     </style>
 
     <style name="Widget.PlaylistMaker.IconButton.Large" parent="Widget.PlaylistMaker.IconButton">
-        <item name="iconTint">?attr/colorSurface</item>
-        <item name="backgroundTint">?attr/colorOnSurface</item>
+        <item name="iconTint">@color/playbackFabIcon</item>
+        <item name="materialSizeOverlay">
+            @style/SizeOverlay.Material3Expressive.Button.IconButton.Large
+        </item>
+        <item name="backgroundTint">@color/playbackFabBackground</item>
     </style>
 
     <style name="Widget.PlaylistMaker.Button" parent="Widget.Material3Expressive.Button">
         <item name="materialSizeOverlay">@style/SizeOverlay.Material3Expressive.Button.Medium</item>
         <item name="android:textAppearance">@style/TextAppearance.PlaylistMaker.TitleSmall</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.PlaylistMaker.Button</item>
     </style>
 
-    <style name="Widget.PlaylistMaker.Button.Light" parent="Widget.PlaylistMaker.Button">
-        <item name="materialThemeOverlay">@style/ThemeOverlay.PlaylistMaker.Button.Light</item>
+    <style name="ThemeOverlay.PlaylistMaker.Button" parent="ThemeOverlay.Material3Expressive.Button.Filled">
+        <item name="colorPrimary">@color/buttonBackground</item>
+        <item name="colorOnPrimary">@color/buttonText</item>
     </style>
 
-    <style name="ThemeOverlay.PlaylistMaker.Button.Light" parent="ThemeOverlay.Material3Expressive.Button.Filled">
-        <item name="colorPrimary">@color/black</item>
-        <item name="colorOnPrimary">@color/white</item>
-    </style>
-
-    <style name="Widget.PlaylistMaker.Button.Dark" parent="Widget.PlaylistMaker.Button">
-        <item name="materialThemeOverlay">@style/ThemeOverlay.PlaylistMaker.Button.Dark</item>
-    </style>
-
-    <style name="ThemeOverlay.PlaylistMaker.Button.Dark" parent="ThemeOverlay.Material3Expressive.Button.Filled">
-        <item name="colorPrimary">@color/white</item>
-        <item name="colorOnPrimary">@color/black</item>
-    </style>
 </resources>

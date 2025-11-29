@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/ConstraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:clipToPadding="false"
     android:fitsSystemWindows="false"
     tools:context=".feature.search.presentation.SearchFragment">
@@ -59,8 +60,8 @@
                 <TextView
                     android:id="@+id/historyLabel"
                     style="@style/TextAppearance.PlaylistMaker.TitleMedium"
-                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginVertical="@dimen/normal_150"
                     android:text="@string/been_searched" />
 
@@ -100,11 +101,9 @@
 
                 <TextView
                     android:id="@+id/stateInfo"
-                    style="@style/TextAppearance.PlaylistMaker.TitleMedium"
+                    style="@style/Widget.PlaylistMaker.TextView.StateInfo"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:drawablePadding="@dimen/normal_100"
-                    android:gravity="center"
                     android:maxLines="6"
                     app:drawableTopCompat="@drawable/ic_nothing_found_120"
                     tools:text="@string/no_results" />

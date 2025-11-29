@@ -2,7 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/ConstraintLayout"
+    android:id="@+id/mainContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:context=".feature.media_library.presentation.MediaLibraryFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -17,15 +19,10 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/transparent"
         android:importantForAccessibility="no"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/appBar"
-        app:tabIndicatorColor="?attr/colorOnSurface"
-        app:tabIndicatorFullWidth="true"
-        app:tabMode="fixed"
-        app:tabTextColor="?attr/colorOnSurface" />
+        app:layout_constraintTop_toBottomOf="@id/appBar" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"

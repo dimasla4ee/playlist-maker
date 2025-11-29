@@ -1,32 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <style name="Base.Theme.PlaylistMaker" parent="Theme.Material3Expressive.DayNight.NoActionBar">
-        <item name="colorSurface">@color/white</item>
-        <item name="colorOnSurface">@color/black</item>
-        <item name="colorOnSurfaceVariant">@color/light_gray</item>
-        <item name="colorPrimaryFixed">@color/white</item>
-        <item name="colorOnPrimaryFixed">@color/black</item>
-        <item name="colorOnSecondaryContainer">@color/white</item>
-        <item name="colorSecondaryContainer">@color/light_gray</item>
-        <item name="colorOnSecondaryFixed">@color/light_gray</item>
-        <item name="colorOnPrimaryContainer">@color/light_gray</item>
 
-        <item name="colorOnTertiary">@color/dark_gray</item>
-        <item name="navigationIconTint">@color/black</item>
-        <item name="titleTextColor">@color/black</item>
+        <!-- Colors -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/onPrimary</item>
 
-        <item name="android:fontFamily">@font/ys_display_regular</item>
-        <item name="fontFamily">@font/ys_display_regular</item>
-        <item name="textAppearanceTitleSmall">@style/TextAppearance.PlaylistMaker.TitleSmall</item>
+        <item name="colorPrimaryContainer">@color/primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/onPrimaryContainer</item>
+
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorOnSecondary">@color/onSecondary</item>
+
+        <item name="colorTertiary">@color/tertiary</item>
+        <item name="colorOnTertiary">@color/onTertiary</item>
+
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorOnBackground">@color/onBackground</item>
+
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/onSurface</item>
+
+        <item name="colorSurfaceVariant">@color/surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/onSurfaceVariant</item>
+
+        <item name="colorSurfaceInverse">@color/inverseSurface</item>
+        <item name="colorOnSurfaceInverse">@color/inverseOnSurface</item>
+
+        <item name="colorOutline">@color/outline</item>
+        <item name="colorOutlineVariant">@color/outlineVariant</item>
+
+
+        <!-- Typography -->
         <item name="textAppearanceTitleLarge">@style/TextAppearance.PlaylistMaker.TitleLarge</item>
-        <item name="textAppearanceTitleMedium">@style/TextAppearance.PlaylistMaker.TitleMedium
-        </item>
+        <item name="textAppearanceTitleMedium">@style/TextAppearance.PlaylistMaker.TitleMedium</item>
+        <item name="textAppearanceTitleSmall">@style/TextAppearance.PlaylistMaker.TitleSmall</item>
+        <item name="textAppearanceLabelMedium">@style/TextAppearance.PlaylistMaker.LabelMedium</item>
+        <item name="textAppearanceLabelSmall">@style/TextAppearance.PlaylistMaker.LabelSmall</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.PlaylistMaker.BodyLarge</item>
 
+
+        <!-- Styles -->
+        <item name="tabStyle">@style/Widget.PlaylistMaker.TabLayout</item>
         <item name="loadingIndicatorStyle">@style/Widget.PlaylistMaker.LoadingIndicator</item>
-        <item name="materialButtonStyle">@style/Widget.PlaylistMaker.Button.Light</item>
-        <item name="bottomNavigationStyle">@style/Widget.PlaylistMaker.BottomNavigationView.Light
-        </item>
-        <item name="materialSearchBarStyle">@style/Widget.PlaylistMaker.Search.Bar.Light</item>
-        <item name="materialSearchViewStyle">@style/Widget.PlaylistMaker.Search.View.Light</item>
+        <item name="materialButtonStyle">@style/Widget.PlaylistMaker.Button</item>
+        <item name="bottomNavigationStyle">@style/Widget.PlaylistMaker.BottomNavigationView</item>
+        <item name="materialSearchBarStyle">@style/Widget.PlaylistMaker.SearchBar</item>
+        <item name="materialSearchViewStyle">@style/Widget.PlaylistMaker.SearchView</item>
+
     </style>
+
 </resources>

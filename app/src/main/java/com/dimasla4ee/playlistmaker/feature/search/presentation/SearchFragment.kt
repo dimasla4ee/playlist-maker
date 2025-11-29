@@ -18,7 +18,6 @@ import com.dimasla4ee.playlistmaker.core.util.LogUtil
 import com.dimasla4ee.playlistmaker.databinding.FragmentSearchBinding
 import com.dimasla4ee.playlistmaker.feature.search.presentation.model.SearchUiState
 import com.dimasla4ee.playlistmaker.feature.search.presentation.viewmodel.SearchViewModel
-import com.google.android.material.color.MaterialColors
 import com.google.android.material.search.SearchView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -64,11 +63,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         val clearButtonSearchBar = binding.searchBar.menu.findItem(
             R.id.actionClear
         ).apply {
-            val color = MaterialColors.getColor(
-                requireContext(),
-                com.google.android.material.R.attr.colorOnTertiary,
-                null
-            )
+            val color = requireContext().getColor(R.color.searchbarIcon)
             isVisible = false
             icon?.setTint(color)
         }

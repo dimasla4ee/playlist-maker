@@ -10,14 +10,14 @@
 
     <ImageView
         android:id="@+id/albumCover"
-        style="@style/Widget.PlaylistMaker.Image.FixedSquare.Small"
+        style="@style/Widget.PlaylistMaker.ImageView.FixedSquare.Small"
         android:importantForAccessibility="no"
         android:src="@drawable/ic_placeholder_45"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/titleLabel"
         style="@style/Widget.PlaylistMaker.TextView.Track.Title"
         android:layout_width="0dp"
@@ -29,7 +29,7 @@
         app:layout_constraintVertical_chainStyle="packed"
         tools:text="Track" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/artistDurationLabel"
         style="@style/Widget.PlaylistMaker.TextView.Track.ArtistAndTime"
         android:layout_width="0dp"
@@ -50,4 +50,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

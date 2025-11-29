@@ -42,7 +42,9 @@ class MainActivity : AppCompatActivity() {
             bottomNavigation.setupWithNavController(navController)
 
             navController.addOnDestinationChangedListener { _, destination, _ ->
-                bottomNavigation.show(destination.id != R.id.playerFragment)
+                val isDestinationPlayer = destination.id == R.id.playerFragment
+                bottomNavigation.show(!isDestinationPlayer)
+                bottomNavDivider.show(!isDestinationPlayer)
             }
         }
     }
