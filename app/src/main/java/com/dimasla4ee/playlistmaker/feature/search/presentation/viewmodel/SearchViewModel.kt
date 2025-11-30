@@ -3,14 +3,15 @@ package com.dimasla4ee.playlistmaker.feature.search.presentation.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dimasla4ee.playlistmaker.core.domain.consumer.Consumer
-import com.dimasla4ee.playlistmaker.core.domain.consumer.ConsumerData
+import androidx.lifecycle.viewModelScope
 import com.dimasla4ee.playlistmaker.core.domain.model.Track
-import com.dimasla4ee.playlistmaker.core.presentation.util.Debouncer
 import com.dimasla4ee.playlistmaker.core.util.LogUtil
 import com.dimasla4ee.playlistmaker.feature.search.domain.SearchHistoryInteractor
 import com.dimasla4ee.playlistmaker.feature.search.domain.SearchTracksUseCase
 import com.dimasla4ee.playlistmaker.feature.search.presentation.model.SearchUiState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class SearchViewModel(
     private val searchHistoryInteractor: SearchHistoryInteractor,
@@ -27,9 +28,8 @@ class SearchViewModel(
     private val searchHistory get() = _searchHistory.value ?: ArrayDeque()
 
     private val _results = MutableLiveData<List<Track>>()
-    private val results get() = _results.value ?: emptyList()
 
-    private val searchRunnable = Runnable { performSearch() }
+    private var searchJob: Job? = null
 
     init {
         val searchHistory = searchHistoryInteractor.getSearchHistory()
@@ -40,55 +40,60 @@ class SearchViewModel(
     fun onQueryChanged(newQuery: String) {
         LogUtil.d(LOG_TAG, "onQueryChanged: $newQuery")
 
-        when {
-            newQuery.isBlank() && searchHistory.isNotEmpty() -> {
-                Debouncer.cancel(searchRunnable)
-                _uiState.postValue(SearchUiState.History(searchHistory.toList()))
-            }
+//        when {
+//            newQuery.isBlank() && searchHistory.isNotEmpty() -> {
+//                Debouncer.cancel(searchJob)
+//                _uiState.postValue(SearchUiState.History(searchHistory.toList()))
+//            }
+//
+//            newQuery.isBlank() && searchHistory.isEmpty() -> {
+//                Debouncer.cancel(searchJob)
+//                _uiState.postValue(SearchUiState.Idle)
+//            }
+//
+//            searchQuery.isNotEmpty() && (searchQuery == newQuery) -> {
+//                _uiState.postValue(SearchUiState.Content(results))
+//            }
+//
+//            searchQuery.isNotEmpty() && (searchQuery != newQuery) -> {
+//                Debouncer.debounce(action = searchJob)
+//            }
+//        }
 
-            newQuery.isBlank() && searchHistory.isEmpty() -> {
-                Debouncer.cancel(searchRunnable)
-                _uiState.postValue(SearchUiState.Idle)
-            }
-
-            searchQuery.isNotEmpty() && (searchQuery == newQuery) -> {
-                _uiState.postValue(SearchUiState.Content(results))
-            }
-
-            searchQuery.isNotEmpty() && (searchQuery != newQuery) -> {
-                Debouncer.debounce(action = searchRunnable)
-            }
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            delay(2000L)
+            performSearch()
         }
 
         _searchQuery.value = newQuery
     }
 
-    private fun performSearch() {
+    private suspend fun performSearch() {
         if (searchQuery.isEmpty()) return
 
         _uiState.postValue(SearchUiState.Loading)
 
-        searchTracksUseCase.execute(
-            query = searchQuery,
-            consumer = object : Consumer<List<Track>> {
-                override fun consume(data: ConsumerData<List<Track>>) {
-                    val newState = when (data) {
-                        is ConsumerData.Data -> {
-                            val tracks = data.value
-                            _results.postValue(tracks)
-                            if (tracks.isEmpty()) {
-                                SearchUiState.NoResults
-                            } else {
-                                SearchUiState.Content(tracks)
-                            }
-                        }
+        searchTracksUseCase.execute(searchQuery).collect { (tracks, message) ->
+            val newState = when {
+                tracks == null -> {
+                    LogUtil.e(LOG_TAG, "performSearch error: $message")
+                    SearchUiState.Error
+                }
 
-                        is ConsumerData.Error -> SearchUiState.Error
-                    }
-                    _uiState.postValue(newState)
+                tracks.isEmpty() -> {
+                    _results.postValue(tracks)
+                    SearchUiState.NoResults
+                }
+
+                else -> {
+                    _results.postValue(tracks)
+                    SearchUiState.Content(tracks)
                 }
             }
-        )
+
+            _uiState.postValue(newState)
+        }
     }
 
     fun onTrackClicked(track: Track) {
@@ -120,12 +125,16 @@ class SearchViewModel(
     }
 
     fun onSearchClicked() {
-        Debouncer.cancel(searchRunnable)
-        performSearch()
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            performSearch()
+        }
     }
 
     fun onRetryClicked() {
-        performSearch()
+        searchJob = viewModelScope.launch {
+            performSearch()
+        }
     }
 
     fun onPause() {
