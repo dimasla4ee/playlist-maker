@@ -8,7 +8,7 @@ import com.dimasla4ee.playlistmaker.feature.settings.presentation.viewmodel.Sett
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-val viewModelModule = module {
+val ViewModelModule = module {
     viewModel {
         SettingsViewModel(get())
     }

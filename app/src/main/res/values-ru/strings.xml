@@ -13,7 +13,7 @@
     <string name="clear">Очистить</string>
     <string name="open_track">Перейти к треку</string>
     <string name="no_results">Ничего не нашлось</string>
-    <string name="network_error">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="network_error">Проблемы со связью\n\nЗагрузка не удалась.\nПроверьте подключение к интернету</string>
     <string name="reload">Обновить</string>
     <string name="been_searched">Вы искали</string>
     <string name="clear_history" >Очистить историю</string>
@@ -31,4 +31,5 @@
     <string name="empty_media_library">Ваша медиатека пуста</string>
     <string name="playlists">Плейлисты</string>
     <string name="favorite_tracks">Избранные треки</string>
+    <string name="loading">Идёт загрузка</string>
 </resources>

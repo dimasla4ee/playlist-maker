@@ -2,10 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/mainContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".feature.media_library.presentation.MediaLibraryActivity">
+    tools:context=".feature.media_library.presentation.MediaLibraryFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/appBar"
@@ -13,21 +13,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/ic_arrow_back_24"
         app:title="@string/media_library" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:importantForAccessibility="no"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/appBar"
-        app:tabTextColor="?attr/colorOnSurface"
-        app:tabIndicatorColor="?attr/colorOnSurface"
-        android:background="@color/transparent"
-        app:tabIndicatorFullWidth="true"
-        app:tabMode="fixed" />
+        app:layout_constraintTop_toBottomOf="@id/appBar" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"

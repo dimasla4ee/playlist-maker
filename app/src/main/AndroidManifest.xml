@@ -16,22 +16,9 @@
         android:theme="@style/Base.Theme.PlaylistMaker"
         tools:targetApi="31">
         <activity
-            android:name=".feature.player.presentation.PlayerActivity"
-            android:exported="false" />
-        <activity
-            android:name=".feature.settings.presentation.SettingsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".feature.search.presentation.SearchActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".feature.media_library.presentation.MediaLibraryActivity"
-            android:exported="false" />
-        <activity
             android:name=".app.main.MainActivity"
             android:exported="true"
-            android:theme="@style/Base.Theme.PlaylistMaker.MainScreen">
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

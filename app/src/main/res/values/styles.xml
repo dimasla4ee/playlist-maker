@@ -1,89 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- EditText styles -->
-    <style name="EditText">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-    </style>
-
-    <style name="EditText.SearchBar" parent="EditText">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">@dimen/normal_150</item>
-        <item name="android:background">@color/transparent</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:layout_marginHorizontal">@dimen/small_100</item>
-        <item name="android:textColorHint">?attr/colorOnPrimaryContainer</item>
-        <item name="android:textAppearance">@style/Text.Regular.16</item>
-        <item name="android:textColor">?attr/colorOnPrimaryFixed</item>
-    </style>
-
-    <!--Widgets-->
-    <style name="Widget" />
-
-    <style name="Widget.PlaylistMaker" />
-
+    <!-- AppBar -->
     <style name="Widget.PlaylistMaker.AppBar" parent="Widget.Material3.Toolbar">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="titleTextAppearance">@style/TextAppearance.PlaylistMaker.AppBar.Title</item>
+        <item name="navigationIconTint">@color/onBackground</item>
     </style>
 
-    <style name="Widget.PlaylistMaker.Setting.Base" parent="Text.Regular.16">
-        <item name="android:layout_width">0dp</item>
+
+    <!-- Settings -->
+    <style name="Widget.PlaylistMaker.Setting" parent="">
         <item name="android:layout_height">@dimen/Setting.Height</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:paddingHorizontal">@dimen/App.Padding.Horizontal</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:textAppearance">@style/TextAppearance.PlaylistMaker.BodyLarge</item>
     </style>
 
-    <style name="Widget.PlaylistMaker.Setting.Button" parent="Widget.PlaylistMaker.Setting.Base">
-        <item name="drawableTint">?colorOnSurfaceVariant</item>
+    <style name="Widget.PlaylistMaker.Setting.Button" parent="Widget.PlaylistMaker.Setting">
+        <item name="drawableTint">@color/settingDrawable</item>
     </style>
 
-    <style name="Widget.PlaylistMaker.Setting.Switch" parent="Widget.PlaylistMaker.Setting.Base">
+    <style name="Widget.PlaylistMaker.Setting.Switch" parent="Widget.PlaylistMaker.Setting">
         <item name="thumbTint">@color/switch_thumb_state</item>
         <item name="trackTint">@color/switch_track_state</item>
     </style>
 
-    <style name="Widget.PlaylistMaker.Image" />
 
-    <style name="Widget.PlaylistMaker.Image.FixedSquare">
+    <!-- TextView -->
+    <style name="Widget.PlaylistMaker.TextView.SongInfo" parent="">
+        <item name="android:textAppearance">@style/TextAppearance.Material3.BodySmall</item>
+        <item name="android:paddingVertical">@dimen/small_100</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.TextView.SongInfo.Label" parent="Widget.PlaylistMaker.TextView.SongInfo">
+        <item name="android:textAlignment">textStart</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.TextView.SongInfo.Fetched" parent="Widget.PlaylistMaker.TextView.SongInfo">
+        <item name="android:textAlignment">textEnd</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.TextView.StateInfo" parent="">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/StateTextImage.Margin.Top</item>
+        <item name="android:gravity">center</item>
+        <item name="android:maxLines">4</item>
+        <item name="android:textAppearance">@style/TextAppearance.PlaylistMaker.TitleMedium</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.TextView.Track" parent="">
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:paddingHorizontal">@dimen/Track.Padding.Horizontal</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.TextView.Track.Title" parent="Widget.PlaylistMaker.TextView.Track">
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textAppearance">@style/TextAppearance.PlaylistMaker.BodyLarge</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.TextView.Track.ArtistAndTime" parent="Widget.PlaylistMaker.TextView.Track">
+        <item name="android:textColor">@color/cardLowerText</item>
+        <item name="android:textAppearance">@style/TextAppearance.PlaylistMaker.LabelSmall</item>
+    </style>
+
+
+    <!-- Tabs -->
+    <style name="Widget.PlaylistMaker.TabLayout" parent="Widget.Material3.TabLayout">
+        <item name="tabIndicatorColor">@color/tabIndicator</item>
+        <item name="tabIndicatorFullWidth">true</item>
+        <item name="tabMode">fixed</item>
+        <item name="android:background">@color/tabBackground</item>
+        <item name="tabTextColor">@color/textPrimary</item>
+        <item name="tabRippleColor">@null</item>
+    </style>
+
+
+    <!-- Search -->
+    <style name="Widget.PlaylistMaker.SearchBar" parent="Widget.Material3Expressive.SearchBar">
+        <item name="liftOnScroll">false</item>
+        <item name="hideNavigationIcon">false</item>
+        <item name="backgroundTint">@color/searchbarBackground</item>
+        <item name="navigationIconTint">@color/searchbarIcon</item>
+        <item name="android:colorControlNormal">@color/searchbarIcon</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.PlaylistMaker.Search</item>
+        <item name="android:textAppearance">@style/TextAppearance.PlaylistMaker.SearchBar</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.SearchView" parent="Widget.Material3Expressive.SearchView">
+        <item name="backgroundTint">@color/searchbarBackground</item>
+        <item name="android:colorControlNormal">@color/searchbarIcon</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.PlaylistMaker.Search</item>
+        <item name="android:textAppearance">@style/TextAppearance.PlaylistMaker.SearchView</item>
+    </style>
+
+    <style name="ThemeOverlay.PlaylistMaker.Search" parent="">
+        <item name="colorOnSurface">@color/searchbarText</item>
+        <item name="colorOnSurfaceVariant">@color/searchbarHintText</item>
+        <item name="colorOnSecondaryContainer">@color/searchbarIcon</item>
+    </style>
+
+
+    <!-- Bottom Navigation -->
+    <style name="Widget.PlaylistMaker.BottomNavigationView" parent="Widget.Material3Expressive.BottomNavigationView">
+        <item name="itemIconTint">@color/bottom_nav_item_color</item>
+        <item name="itemTextColor">@color/bottom_nav_item_color</item>
+        <item name="itemBackground">@color/bottomNavigationItemBackground</item>
+    </style>
+
+
+    <!-- Loading Indicator -->
+    <style name="Widget.PlaylistMaker.LoadingIndicator" parent="Widget.Material3.LoadingIndicator">
+        <item name="indicatorSize">80dp</item>
+    </style>
+
+
+    <!-- Image -->
+    <style name="Widget.PlaylistMaker.ImageView.FixedSquare" parent="">
         <item name="android:scaleType">centerCrop</item>
     </style>
 
-    <style name="Widget.PlaylistMaker.Image.FixedSquare.Small">
+    <style name="Widget.PlaylistMaker.ImageView.FixedSquare.Small" parent="Widget.PlaylistMaker.ImageView.FixedSquare">
         <item name="android:layout_width">@dimen/AlbumCover.Size</item>
         <item name="android:layout_height">@dimen/AlbumCover.Size</item>
     </style>
 
-    <style name="Widget.PlaylistMaker.Icon">
-        <item name="android:backgroundTint">@color/transparent</item>
+    <style name="Widget.PlaylistMaker.Icon" parent="">
+        <!--        <item name="android:backgroundTint">@color/transparent</item>-->
     </style>
 
     <style name="Widget.PlaylistMaker.Icon.Small">
         <item name="android:layout_width">@dimen/normal_150</item>
         <item name="android:layout_height">@dimen/normal_150</item>
         <item name="tint">?attr/colorOnSurfaceVariant</item>
-    </style>
-
-    <!-- LinearLayout styles -->
-    <style name="LinearLayout">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:background">?attr/colorSurface</item>
-        <item name="android:orientation">vertical</item>
-    </style>
-
-    <style name="LinearLayout.Searchbar" parent="LinearLayout">
-        <item name="android:layout_height">@dimen/searchbar_height</item>
-        <item name="android:orientation">horizontal</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:paddingHorizontal">@dimen/small_150</item>
-        <item name="android:paddingVertical">@dimen/small_125</item>
-        <item name="android:background">@drawable/rounded_corners</item>
-        <item name="android:backgroundTint">?attr/colorSurfaceContainerHighest</item>
     </style>
 
     <!-- Weight styles -->
@@ -96,13 +148,6 @@
 
     <style name="Weight.Horizontal.1" parent="Weight.Horizontal">
         <item name="android:layout_weight">1</item>
-    </style>
-
-
-    <!-- Constraint Layout styles -->
-    <style name="ConstraintLayout">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
     </style>
 
     <!-- Guidelines -->

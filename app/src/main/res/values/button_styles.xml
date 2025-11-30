@@ -1,47 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Widget.PlaylistMaker.IconButton.Base" parent="Widget.Material3Expressive.Button.IconButton">
+    <style name="Widget.PlaylistMaker.IconButton" parent="Widget.Material3Expressive.Button.IconButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="Widget.PlaylistMaker.IconButton.Medium" parent="Widget.PlaylistMaker.IconButton.Base">
-        <item name="iconTint">?attr/colorOnSecondaryContainer</item>
-        <item name="backgroundTint">?attr/colorSecondaryContainer</item>
+    <style name="Widget.PlaylistMaker.IconButton.Medium" parent="Widget.PlaylistMaker.IconButton">
+        <item name="iconTint">@color/fabIcon</item>
+        <item name="materialSizeOverlay">
+            @style/SizeOverlay.Material3Expressive.Button.IconButton.Medium
+        </item>
+        <item name="backgroundTint">@color/fabBackground</item>
     </style>
 
-    <style name="Widget.PlaylistMaker.IconButton.Large" parent="Widget.PlaylistMaker.IconButton.Base">
-        <item name="iconTint">?attr/colorSurface</item>
-        <item name="backgroundTint">?attr/colorOnSurface</item>
+    <style name="Widget.PlaylistMaker.IconButton.Large" parent="Widget.PlaylistMaker.IconButton">
+        <item name="iconTint">@color/playbackFabIcon</item>
+        <item name="materialSizeOverlay">
+            @style/SizeOverlay.Material3Expressive.Button.IconButton.Large
+        </item>
+        <item name="backgroundTint">@color/playbackFabBackground</item>
     </style>
 
-    <!-- Button styles -->
-    <style name="Button" parent="Widget.Material3.Button.UnelevatedButton" />
-
-    <style name="Button.MainScreen" parent="Button">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">0dp</item>
-        <item name="android:layout_marginBottom">@dimen/normal_100</item>
-        <item name="android:layout_marginStart">@dimen/normal_100</item>
-        <item name="android:layout_marginEnd">@dimen/normal_100</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="cornerRadius">@dimen/normal_100</item>
-        <item name="android:backgroundTint">?attr/colorPrimaryFixed</item>
-        <item name="iconGravity">textStart</item>
-        <item name="iconPadding">@dimen/small_100</item>
-        <item name="iconTint">?attr/colorOnPrimaryFixed</item>
-        <item name="android:textColor">?attr/colorOnPrimaryFixed</item>
-        <item name="android:textAppearance">@style/Text.Medium.22</item>
+    <style name="Widget.PlaylistMaker.Button" parent="Widget.Material3Expressive.Button">
+        <item name="materialSizeOverlay">@style/SizeOverlay.Material3Expressive.Button.Medium</item>
+        <item name="android:textAppearance">@style/TextAppearance.PlaylistMaker.TitleSmall</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.PlaylistMaker.Button</item>
     </style>
 
-    <style name="Button.Common" parent="Button">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">?attr/colorSurface</item>
-        <item name="android:backgroundTint">?attr/colorOnSurface</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textAppearance">@style/Text.Medium.14</item>
-        <item name="cornerRadius">@dimen/big_150</item>
+    <style name="ThemeOverlay.PlaylistMaker.Button" parent="ThemeOverlay.Material3Expressive.Button.Filled">
+        <item name="colorPrimary">@color/buttonBackground</item>
+        <item name="colorOnPrimary">@color/buttonText</item>
     </style>
+
 </resources>

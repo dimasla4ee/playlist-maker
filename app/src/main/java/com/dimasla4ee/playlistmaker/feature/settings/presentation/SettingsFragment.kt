@@ -2,36 +2,35 @@ package com.dimasla4ee.playlistmaker.feature.settings.presentation
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
+import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.net.toUri
+import androidx.fragment.app.Fragment
 import com.dimasla4ee.playlistmaker.R
-import com.dimasla4ee.playlistmaker.core.presentation.util.setupWindowInsets
-import com.dimasla4ee.playlistmaker.databinding.ActivitySettingsBinding
+import com.dimasla4ee.playlistmaker.core.presentation.util.viewBinding
+import com.dimasla4ee.playlistmaker.databinding.FragmentSettingsBinding
 import com.dimasla4ee.playlistmaker.feature.settings.presentation.viewmodel.SettingsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
-    private lateinit var binding: ActivitySettingsBinding
+    private val binding by viewBinding(FragmentSettingsBinding::bind)
     private val viewModel: SettingsViewModel by viewModel()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        binding = ActivitySettingsBinding.inflate(layoutInflater).apply {
-            setContentView(root)
-            enableEdgeToEdge()
-            root.setupWindowInsets()
-        }
-
-        viewModel.isDarkThemeEnabled.observe(this) { isDarkTheme ->
+        viewModel.isDarkThemeEnabled.observe(viewLifecycleOwner) { isDarkTheme ->
             binding.themeSwitch.isChecked = isDarkTheme
             setAppTheme(isDarkTheme)
         }
 
         setupListeners()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.onPause()
     }
 
     fun setAppTheme(useDarkTheme: Boolean) {
@@ -42,10 +41,6 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun setupListeners() {
         with(binding) {
-            appBar.setNavigationOnClickListener {
-                finish()
-            }
-
             themeSwitch.setOnCheckedChangeListener { _, checked ->
                 viewModel.onThemeToggle(checked)
             }

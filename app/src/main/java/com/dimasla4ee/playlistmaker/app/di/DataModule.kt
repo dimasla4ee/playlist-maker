@@ -12,7 +12,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import java.time.LocalDate
 
-val dataModule = module {
+val DataModule = module {
     single<NetworkClient> {
         RetrofitNetworkClient(get())
     }
