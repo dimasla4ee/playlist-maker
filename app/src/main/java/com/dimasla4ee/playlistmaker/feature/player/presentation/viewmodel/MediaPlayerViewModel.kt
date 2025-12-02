@@ -1,34 +1,23 @@
 package com.dimasla4ee.playlistmaker.feature.player.presentation.viewmodel
 
 import android.media.MediaPlayer
-import android.os.Handler
-import android.os.Looper
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.dimasla4ee.playlistmaker.core.presentation.util.toMmSs
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 
 class MediaPlayerViewModel(
     private val sourceUrl: String,
     private val mediaPlayer: MediaPlayer
 ) : ViewModel() {
 
-    private var handler = Handler(Looper.getMainLooper())
+    private val _state = MutableStateFlow<State>(State.Default)
+    val state get() = _state
 
-    private val _state = MutableLiveData(State.DEFAULT)
-    val state: LiveData<State>
-        get() = _state
-
-    private val _timer = MutableLiveData(0.toMmSs())
-    val timer: LiveData<String>
-        get() = _timer
-
-    private val updateTimerRunnable = Runnable {
-        if (_state.value == State.PLAYING) {
-            _timer.postValue(mediaPlayer.currentPosition.toMmSs())
-            startTimer()
-        }
-    }
+    var timerJob: Job? = null
 
     init {
         preparePlayer()
@@ -39,34 +28,42 @@ class MediaPlayerViewModel(
             setDataSource(sourceUrl)
             prepareAsync()
             setOnPreparedListener {
-                _state.postValue(State.PREPARED)
+                _state.value = State.Prepared
             }
             setOnCompletionListener {
-                resetTimer()
-                _state.postValue(State.PREPARED)
+                _state.value = State.Prepared
             }
         }
     }
 
     private fun startPlayback() {
-        startTimer()
         mediaPlayer.start()
-        _state.postValue(State.PLAYING)
+        _state.value = State.Playing(getCurrentPosition())
+        startTimer()
+    }
+
+    private fun startTimer() {
+        timerJob = viewModelScope.launch {
+            while (mediaPlayer.isPlaying) {
+                delay(DELAY)
+                _state.value = State.Playing(getCurrentPosition())
+            }
+        }
     }
 
     private fun pausePlayback() {
-        pauseTimer()
         mediaPlayer.pause()
-        _state.postValue(State.PAUSED)
+        timerJob?.cancel()
+        _state.value = State.Paused(getCurrentPosition())
     }
 
     fun onPlayButtonClicked() {
         when (_state.value) {
-            State.PLAYING -> {
+            is State.Playing -> {
                 pausePlayback()
             }
 
-            State.PREPARED, State.PAUSED -> {
+            State.Prepared, is State.Paused -> {
                 startPlayback()
             }
 
@@ -74,34 +71,31 @@ class MediaPlayerViewModel(
         }
     }
 
-    private fun startTimer() {
-        handler.postDelayed(updateTimerRunnable, DELAY)
-    }
-
-    private fun pauseTimer() {
-        handler.removeCallbacks(updateTimerRunnable)
-    }
-
-    private fun resetTimer() {
-        pauseTimer()
-        _timer.postValue(0.toMmSs())
+    fun releasePlayer() {
+        mediaPlayer.pause()
+        timerJob?.cancel()
+        _state.value = State.Default
     }
 
     override fun onCleared() {
         super.onCleared()
-        pauseTimer()
-        mediaPlayer.release()
+        releasePlayer()
     }
 
-    enum class State {
-        DEFAULT,
-        PREPARED,
-        PLAYING,
-        PAUSED
+    fun onPause() {
+        pausePlayback()
+    }
+
+    private fun getCurrentPosition(): String = mediaPlayer.currentPosition.toMmSs()
+
+    sealed class State(val isPlayButtonEnabled: Boolean, val progress: String) {
+        object Default : State(isPlayButtonEnabled = false, progress = "00:00")
+        object Prepared : State(isPlayButtonEnabled = true, progress = "00:00")
+        class Playing(progress: String) : State(isPlayButtonEnabled = true, progress)
+        class Paused(progress: String) : State(isPlayButtonEnabled = true, progress)
     }
 
     companion object {
-
         private const val DELAY = 300L
     }
 }

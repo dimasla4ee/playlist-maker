@@ -5,6 +5,7 @@ import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -18,6 +19,7 @@ import com.dimasla4ee.playlistmaker.databinding.FragmentPlayerBinding
 import com.dimasla4ee.playlistmaker.feature.player.presentation.viewmodel.MediaPlayerViewModel
 import com.dimasla4ee.playlistmaker.feature.search.presentation.mapper.TrackDetailedInfoMapper
 import com.dimasla4ee.playlistmaker.feature.search.presentation.model.TrackDetailedInfo
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -41,27 +43,31 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         }
 
         with(mediaPlayerViewModel) {
-            state.observe(viewLifecycleOwner) { mediaPlayerState ->
-                binding.playButton.isEnabled =
-                    mediaPlayerState != MediaPlayerViewModel.State.DEFAULT
+            viewLifecycleOwner.lifecycleScope.launch {
+                state.collect { mediaPlayerState ->
+                    binding.playButton.isEnabled = mediaPlayerState.isPlayButtonEnabled
 
-                binding.playButton.setIconResource(
-                    if (mediaPlayerState == MediaPlayerViewModel.State.PLAYING) {
-                        R.drawable.ic_pause_24
-                    } else {
-                        R.drawable.ic_play_24
-                    }
-                )
-            }
+                    binding.playButton.setIconResource(
+                        if (mediaPlayerState is MediaPlayerViewModel.State.Playing) {
+                            R.drawable.ic_pause_24
+                        } else {
+                            R.drawable.ic_play_24
+                        }
+                    )
 
-            timer.observe(viewLifecycleOwner) { timerValue ->
-                binding.songCurrentDuration.text = timerValue
+                    binding.songCurrentDuration.text = mediaPlayerState.progress
+                }
             }
 
             binding.playButton.setOnClickListener {
                 onPlayButtonClicked()
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mediaPlayerViewModel.onPause()
     }
 
     private fun fillTrackInfo(track: TrackDetailedInfo) {

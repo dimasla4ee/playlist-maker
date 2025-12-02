@@ -1,36 +1,26 @@
 package com.dimasla4ee.playlistmaker.feature.search.domain
 
-import com.dimasla4ee.playlistmaker.core.domain.consumer.Consumer
-import com.dimasla4ee.playlistmaker.core.domain.consumer.ConsumerData
 import com.dimasla4ee.playlistmaker.core.domain.model.Resource
 import com.dimasla4ee.playlistmaker.core.domain.model.Track
 import com.dimasla4ee.playlistmaker.feature.search.domain.repository.TrackSearchRepository
-import java.util.concurrent.Executors
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class SearchTracksUseCase(
-    private val trackSearchRepository: TrackSearchRepository
+    private val repository: TrackSearchRepository
 ) {
 
-    private val executor = Executors.newSingleThreadExecutor()
-
     fun execute(
-        query: String,
-        consumer: Consumer<List<Track>>
-    ) {
-        executor.execute {
-            val tracksResource = trackSearchRepository.searchTracks(query)
+        query: String
+    ): Flow<Pair<List<Track>?, String?>> = repository.searchTracks(query).map { resource ->
+        when (resource) {
+            is Resource.Failure -> {
+                null to resource.message
+            }
 
-            consumer.consume(
-                when (tracksResource) {
-                    is Resource.Failure -> {
-                        ConsumerData.Error(tracksResource.message)
-                    }
-
-                    is Resource.Success -> {
-                        ConsumerData.Data(tracksResource.data)
-                    }
-                }
-            )
+            is Resource.Success -> {
+                resource.data to null
+            }
         }
     }
 }
