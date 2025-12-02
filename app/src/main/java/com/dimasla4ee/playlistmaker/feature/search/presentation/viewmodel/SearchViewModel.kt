@@ -1,7 +1,5 @@
 package com.dimasla4ee.playlistmaker.feature.search.presentation.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dimasla4ee.playlistmaker.core.domain.model.Track
@@ -9,131 +7,158 @@ import com.dimasla4ee.playlistmaker.core.util.LogUtil
 import com.dimasla4ee.playlistmaker.feature.search.domain.SearchHistoryInteractor
 import com.dimasla4ee.playlistmaker.feature.search.domain.SearchTracksUseCase
 import com.dimasla4ee.playlistmaker.feature.search.presentation.model.SearchUiState
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
+@OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 class SearchViewModel(
     private val searchHistoryInteractor: SearchHistoryInteractor,
     private val searchTracksUseCase: SearchTracksUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableLiveData<SearchUiState>(SearchUiState.Idle)
-    val uiState: LiveData<SearchUiState> get() = _uiState
+    /**
+     * Represents a search request initiated by the user.
+     *
+     * @property term The search query string.
+     * @property instant A flag indicating whether the search should be executed immediately,
+     * bypassing any debounce logic.
+     */
+    private data class SearchRequest(
+        val term: String,
+        val instant: Boolean = false
+    )
 
-    private val _searchQuery = MutableLiveData("")
-    private val searchQuery: String get() = _searchQuery.value ?: ""
+    private val query = MutableStateFlow("")
 
-    private val _searchHistory = MutableLiveData<ArrayDeque<Track>>(ArrayDeque())
-    private val searchHistory get() = _searchHistory.value ?: ArrayDeque()
+    private val immediateFlow = MutableSharedFlow<SearchRequest>(
+        replay = 1,
+        extraBufferCapacity = 1
+    )
 
-    private val _results = MutableLiveData<List<Track>>()
+    private val debouncedQueryFlow = query
+        .debounce(SEARCH_DELAY_MS)
+        .distinctUntilChanged { old, new -> old.trim() == new.trim() }
+        .map { SearchRequest(it, instant = false) }
 
-    private var searchJob: Job? = null
+    private val searchHistoryFlow = MutableStateFlow(
+        ArrayDeque(searchHistoryInteractor.getSearchHistory())
+    )
+    private val searchHistory get() = searchHistoryFlow.value
 
-    init {
-        val searchHistory = searchHistoryInteractor.getSearchHistory()
-        _searchHistory.postValue(ArrayDeque(searchHistory))
-        LogUtil.d(LOG_TAG, "SearchHistory: ${_searchHistory.value}")
-    }
+    val uiState: StateFlow<SearchUiState> = merge(
+        immediateFlow,
+        debouncedQueryFlow
+    )
+        .distinctUntilChanged { old, new ->
+            val areEquivalent = when {
+                old.term != new.term -> false
+                !old.instant && !new.instant -> true
+                old.instant && !new.instant -> true
+                else -> false
+            }
+
+            return@distinctUntilChanged areEquivalent
+        }
+        .flatMapLatest { request ->
+            LogUtil.d(LOG_TAG, "SearchRequest: term='${request.term}', manual=${request.instant}")
+
+            if (request.term.isBlank()) {
+                val state = when {
+                    searchHistory.isEmpty() -> SearchUiState.Idle
+                    else -> SearchUiState.History(searchHistory)
+                }
+                return@flatMapLatest flowOf(state)
+            }
+
+            flow {
+                emit(SearchUiState.Loading)
+
+                val (tracks, message) = try {
+                    searchTracksUseCase.execute(request.term).first()
+                } catch (t: Throwable) {
+                    LogUtil.e(LOG_TAG, "search exception: ${t.message}")
+                    emit(SearchUiState.Error)
+                    return@flow
+                }
+
+                val newState = when {
+                    tracks == null -> SearchUiState.Error
+                    tracks.isEmpty() -> SearchUiState.NoResults
+                    else -> SearchUiState.Content(tracks)
+                }
+
+                emit(newState)
+            }
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000L),
+            initialValue = if (searchHistory.isEmpty()) {
+                SearchUiState.Idle
+            } else {
+                SearchUiState.History(searchHistory)
+            }
+        )
 
     fun onQueryChanged(newQuery: String) {
         LogUtil.d(LOG_TAG, "onQueryChanged: $newQuery")
-
-//        when {
-//            newQuery.isBlank() && searchHistory.isNotEmpty() -> {
-//                Debouncer.cancel(searchJob)
-//                _uiState.postValue(SearchUiState.History(searchHistory.toList()))
-//            }
-//
-//            newQuery.isBlank() && searchHistory.isEmpty() -> {
-//                Debouncer.cancel(searchJob)
-//                _uiState.postValue(SearchUiState.Idle)
-//            }
-//
-//            searchQuery.isNotEmpty() && (searchQuery == newQuery) -> {
-//                _uiState.postValue(SearchUiState.Content(results))
-//            }
-//
-//            searchQuery.isNotEmpty() && (searchQuery != newQuery) -> {
-//                Debouncer.debounce(action = searchJob)
-//            }
-//        }
-
-        searchJob?.cancel()
-        searchJob = viewModelScope.launch {
-            delay(2000L)
-            performSearch()
-        }
-
-        _searchQuery.value = newQuery
-    }
-
-    private suspend fun performSearch() {
-        if (searchQuery.isEmpty()) return
-
-        _uiState.postValue(SearchUiState.Loading)
-
-        searchTracksUseCase.execute(searchQuery).collect { (tracks, message) ->
-            val newState = when {
-                tracks == null -> {
-                    LogUtil.e(LOG_TAG, "performSearch error: $message")
-                    SearchUiState.Error
-                }
-
-                tracks.isEmpty() -> {
-                    _results.postValue(tracks)
-                    SearchUiState.NoResults
-                }
-
-                else -> {
-                    _results.postValue(tracks)
-                    SearchUiState.Content(tracks)
-                }
-            }
-
-            _uiState.postValue(newState)
-        }
-    }
-
-    fun onTrackClicked(track: Track) {
-        val newTracks = ArrayDeque(searchHistory)
-
-        if (track in newTracks) {
-            newTracks.remove(track)
-            newTracks.addFirst(track)
-        } else if (newTracks.size < MAX_HISTORY_SIZE) {
-            newTracks.addFirst(track)
-        } else {
-            newTracks.removeLast()
-            newTracks.addFirst(track)
-        }
-
-        _searchHistory.postValue(newTracks)
-        LogUtil.d(LOG_TAG, "SearchHistory: ${_searchHistory.value}")
-    }
-
-    fun onClearSearchHistoryClicked() {
-        _searchHistory.postValue(ArrayDeque())
-        _uiState.postValue(SearchUiState.Idle)
-    }
-
-    fun onClearQueueClicked() {
-        _results.postValue(emptyList())
-        _searchQuery.postValue("")
-        _uiState.postValue(SearchUiState.Idle)
+        query.value = newQuery
     }
 
     fun onSearchClicked() {
-        searchJob?.cancel()
-        searchJob = viewModelScope.launch {
-            performSearch()
+        viewModelScope.launch {
+            immediateFlow.emit(SearchRequest(query.value, instant = true))
         }
     }
 
     fun onRetryClicked() {
-        searchJob = viewModelScope.launch {
-            performSearch()
+        viewModelScope.launch {
+            immediateFlow.emit(SearchRequest(query.value, instant = true))
+        }
+    }
+
+    fun onClearQueueClicked() {
+        query.value = ""
+        viewModelScope.launch {
+            immediateFlow.emit(SearchRequest("", instant = true))
+        }
+    }
+
+    fun onClearSearchHistoryClicked() {
+        searchHistoryFlow.value = ArrayDeque()
+        viewModelScope.launch {
+            immediateFlow.emit(SearchRequest("", instant = true))
+        }
+    }
+
+    fun onTrackClicked(track: Track) {
+        val updatedHistory = ArrayDeque(searchHistory)
+        if (track in updatedHistory) {
+            updatedHistory.remove(track)
+        } else if (updatedHistory.size >= MAX_HISTORY_SIZE) {
+            updatedHistory.removeLast()
+        }
+        updatedHistory.addFirst(track)
+
+        searchHistoryFlow.value = updatedHistory
+        LogUtil.d(LOG_TAG, "SearchHistory: ${searchHistoryFlow.value}")
+
+        viewModelScope.launch {
+            immediateFlow.emit(SearchRequest(query.value, instant = true))
         }
     }
 
@@ -149,5 +174,6 @@ class SearchViewModel(
     companion object {
         private const val LOG_TAG = "SearchViewModel"
         private const val MAX_HISTORY_SIZE = 10
+        private const val SEARCH_DELAY_MS = 2000L
     }
 }
