@@ -19,7 +19,7 @@
     <string name="artist_and_time" translatable="false">%1$s • %2$s</string>
     <string name="open_track">Open track</string>
     <string name="no_results">Nothing found ;(</string>
-    <string name="network_error">Network issues\n\nResults were no loaded. Check your Internet connection</string>
+    <string name="network_error">Network issues\n\nCouldn\'t retrieve data.\nCheck your Internet connection</string>
     <string name="reload">Reload</string>
     <string name="been_searched">You\'ve searched</string>
     <string name="clear_history">Clear history</string>

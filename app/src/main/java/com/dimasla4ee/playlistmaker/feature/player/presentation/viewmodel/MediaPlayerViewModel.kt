@@ -7,6 +7,7 @@ import com.dimasla4ee.playlistmaker.core.presentation.util.toMmSs
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MediaPlayerViewModel(
@@ -28,25 +29,26 @@ class MediaPlayerViewModel(
             setDataSource(sourceUrl)
             prepareAsync()
             setOnPreparedListener {
-                _state.value = State.Prepared
+                _state.update { State.Prepared }
             }
             setOnCompletionListener {
-                _state.value = State.Prepared
+                _state.update { State.Prepared }
             }
         }
     }
 
     private fun startPlayback() {
         mediaPlayer.start()
-        _state.value = State.Playing(getCurrentPosition())
+        _state.update { State.Playing(getCurrentPosition()) }
         startTimer()
     }
 
     private fun startTimer() {
+        timerJob?.cancel()
         timerJob = viewModelScope.launch {
             while (mediaPlayer.isPlaying) {
                 delay(DELAY)
-                _state.value = State.Playing(getCurrentPosition())
+                _state.update { State.Playing(getCurrentPosition()) }
             }
         }
     }
@@ -54,7 +56,7 @@ class MediaPlayerViewModel(
     private fun pausePlayback() {
         mediaPlayer.pause()
         timerJob?.cancel()
-        _state.value = State.Paused(getCurrentPosition())
+        _state.update { State.Paused(getCurrentPosition()) }
     }
 
     fun onPlayButtonClicked() {
@@ -74,7 +76,7 @@ class MediaPlayerViewModel(
     fun releasePlayer() {
         mediaPlayer.pause()
         timerJob?.cancel()
-        _state.value = State.Default
+        _state.update { State.Default }
     }
 
     override fun onCleared() {

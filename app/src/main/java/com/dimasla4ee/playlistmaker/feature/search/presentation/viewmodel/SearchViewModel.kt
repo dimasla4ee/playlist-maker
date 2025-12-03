@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
@@ -116,7 +117,7 @@ class SearchViewModel(
 
     fun onQueryChanged(newQuery: String) {
         LogUtil.d(LOG_TAG, "onQueryChanged: $newQuery")
-        query.value = newQuery
+        query.update { newQuery }
     }
 
     fun onSearchClicked() {
@@ -132,14 +133,14 @@ class SearchViewModel(
     }
 
     fun onClearQueueClicked() {
-        query.value = ""
+        query.update { "" }
         viewModelScope.launch {
             immediateFlow.emit(SearchRequest("", instant = true))
         }
     }
 
     fun onClearSearchHistoryClicked() {
-        searchHistoryFlow.value = ArrayDeque()
+        searchHistoryFlow.update { ArrayDeque() }
         viewModelScope.launch {
             immediateFlow.emit(SearchRequest("", instant = true))
         }
@@ -154,7 +155,7 @@ class SearchViewModel(
         }
         updatedHistory.addFirst(track)
 
-        searchHistoryFlow.value = updatedHistory
+        searchHistoryFlow.update { updatedHistory }
         LogUtil.d(LOG_TAG, "SearchHistory: ${searchHistoryFlow.value}")
 
         viewModelScope.launch {
