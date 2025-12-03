@@ -8,10 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import coil3.load
+import coil3.request.crossfade
+import coil3.request.error
+import coil3.request.placeholder
+import coil3.request.transformations
+import coil3.transform.RoundedCornersTransformation
 import com.dimasla4ee.playlistmaker.R
-import com.dimasla4ee.playlistmaker.core.presentation.util.dpToPx
 import com.dimasla4ee.playlistmaker.core.presentation.util.show
 import com.dimasla4ee.playlistmaker.core.presentation.util.tintedDrawable
 import com.dimasla4ee.playlistmaker.core.presentation.util.viewBinding
@@ -91,8 +94,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             songAuthor.text = track.artist
 
             requireContext().also { context ->
-                val dpRadius = resources.getDimension(R.dimen.small_100)
-                val pxRadius = dpRadius.dpToPx(context).toInt()
+                val radius = resources.getDimension(R.dimen.coverCornerRadius)
                 val placeholder = context.tintedDrawable(
                     R.drawable.ic_placeholder_45,
                     R.color.coverPlaceholder
@@ -104,12 +106,12 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                     setTint(getColor(context, R.color.coverPlaceholder))
                 }
 
-                Glide.with(root)
-                    .load(track.coverUrl)
-                    .placeholder(placeholder)
-                    .transform(RoundedCorners(pxRadius))
-                    .fitCenter()
-                    .into(songCover)
+                songCover.load(track.coverUrl) {
+                    placeholder(placeholder)
+                    error(placeholder)
+                    transformations(RoundedCornersTransformation(radius))
+                    crossfade(true)
+                }
             }
         }
     }

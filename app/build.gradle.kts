@@ -50,7 +50,8 @@ kotlin {
 }
 
 dependencies {
-    implementation(libs.glide)
+    implementation(libs.coil)
+    implementation(libs.coil.network.okhttp)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
