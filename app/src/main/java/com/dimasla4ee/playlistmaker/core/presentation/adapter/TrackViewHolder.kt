@@ -34,9 +34,10 @@ class TrackViewHolder(
 
         with(binding) {
             titleLabel.text = track.title
-            artistDurationLabel.text = context.getString(
-                R.string.artist_and_time,
-                track.artist, trackDetailedInfo.duration
+            artistLabel.text = track.artist
+            durationLabel.text = context.getString(
+                R.string.track_duration_template,
+                trackDetailedInfo.duration
             )
 
             trackContainer.setOnClickListener {

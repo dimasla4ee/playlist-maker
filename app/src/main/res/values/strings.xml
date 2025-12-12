@@ -16,7 +16,7 @@
     <string name="letter_text">Thank you for your great app!</string>
     <string name="user_agreement_link" translatable="false">https://yandex.ru/legal/practicum_offer/</string>
     <string name="clear">Clear</string>
-    <string name="artist_and_time" translatable="false">%1$s • %2$s</string>
+    <string name="track_duration_template" translatable="false">" • %1$s"</string>
     <string name="open_track">Open track</string>
     <string name="no_results">Nothing found ;(</string>
     <string name="network_error">Network issues\n\nCouldn\'t retrieve data.\nCheck your Internet connection</string>
