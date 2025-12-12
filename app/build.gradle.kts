@@ -50,7 +50,8 @@ kotlin {
 }
 
 dependencies {
-    implementation(libs.glide)
+    implementation(libs.coil)
+    implementation(libs.coil.network.okhttp)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -60,7 +61,6 @@ dependencies {
     implementation(libs.serialization.json)
     implementation(libs.serialization.converter)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.activity.ktx)
     implementation(libs.koin.android)
     implementation(libs.androidx.fragment.ktx)

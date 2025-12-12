@@ -22,7 +22,7 @@
         style="@style/Widget.PlaylistMaker.TextView.Track.Title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/artistDurationLabel"
+        app:layout_constraintBottom_toTopOf="@id/artistLabel"
         app:layout_constraintEnd_toStartOf="@id/toTrackIcon"
         app:layout_constraintStart_toEndOf="@id/albumCover"
         app:layout_constraintTop_toTopOf="parent"
@@ -30,15 +30,34 @@
         tools:text="Track" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/artistDurationLabel"
+        android:id="@+id/artistLabel"
         style="@style/Widget.PlaylistMaker.TextView.Track.ArtistAndTime"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingStart="@dimen/Track.Padding.Horizontal"
+        android:paddingEnd="0dp"
+        android:singleLine="true"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/titleLabel"
+        app:layout_constraintEnd_toStartOf="@id/durationLabel"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="@id/titleLabel"
         app:layout_constraintTop_toBottomOf="@id/titleLabel"
-        tools:text="Artist·00:00" />
+        tools:text="Artist" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/durationLabel"
+        style="@style/Widget.PlaylistMaker.TextView.Track.ArtistAndTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="0dp"
+        android:paddingEnd="@dimen/Track.Padding.Horizontal"
+        app:layout_constraintBottom_toBottomOf="@id/artistLabel"
+        app:layout_constraintEnd_toEndOf="@id/titleLabel"
+        app:layout_constraintStart_toEndOf="@id/artistLabel"
+        app:layout_constraintTop_toTopOf="@id/artistLabel"
+        tools:text=" · 00:00" />
 
     <ImageView
         android:id="@+id/toTrackIcon"

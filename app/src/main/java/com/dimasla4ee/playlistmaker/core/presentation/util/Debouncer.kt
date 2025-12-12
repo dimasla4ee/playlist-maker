@@ -1,32 +1,27 @@
 package com.dimasla4ee.playlistmaker.core.presentation.util
 
-import android.os.Handler
-import android.os.Looper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-object Debouncer {
-    private const val CLICK_DEBOUNCE_MILLIS = 1000L
-    private const val DEFAULT_DEBOUNCE_MILLIS = 2000L
+fun <T> debounce(
+    delayMillis: Long,
+    coroutineScope: CoroutineScope,
+    useLastParam: Boolean,
+    action: (T) -> Unit
+): (T) -> Unit {
+    var debounceJob: Job? = null
 
-    private var isClickAllowed = true
-
-    private val handler = Handler(Looper.getMainLooper())
-
-    fun debounce(
-        delayMillis: Long = DEFAULT_DEBOUNCE_MILLIS,
-        action: Runnable
-    ) {
-        handler.removeCallbacks(action)
-        handler.postDelayed(action, delayMillis)
-    }
-
-    fun cancel(action: Runnable) = handler.removeCallbacks(action)
-
-    fun isClickAllowed(): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            debounce(CLICK_DEBOUNCE_MILLIS) { isClickAllowed = true }
+    return { param: T ->
+        if (useLastParam) {
+            debounceJob?.cancel()
         }
-        return current
+        if (debounceJob?.isCompleted != false || useLastParam) {
+            debounceJob = coroutineScope.launch {
+                delay(delayMillis)
+                action(param)
+            }
+        }
     }
 }

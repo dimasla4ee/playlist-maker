@@ -3,12 +3,14 @@ package com.dimasla4ee.playlistmaker.core.presentation.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import coil3.load
+import coil3.request.crossfade
+import coil3.request.error
+import coil3.request.placeholder
+import coil3.request.transformations
+import coil3.transform.RoundedCornersTransformation
 import com.dimasla4ee.playlistmaker.R
 import com.dimasla4ee.playlistmaker.core.domain.model.Track
-import com.dimasla4ee.playlistmaker.core.presentation.util.Debouncer
-import com.dimasla4ee.playlistmaker.core.presentation.util.dpToPx
 import com.dimasla4ee.playlistmaker.core.presentation.util.tintedDrawable
 import com.dimasla4ee.playlistmaker.databinding.TrackItemBinding
 import com.dimasla4ee.playlistmaker.feature.search.presentation.mapper.TrackDetailedInfoMapper
@@ -24,8 +26,7 @@ class TrackViewHolder(
         onItemClick: (Track) -> Unit
     ) {
         val trackDetailedInfo = TrackDetailedInfoMapper.map(track)
-        val dpRadius = itemView.resources.getDimension(R.dimen.small_25)
-        val pxRadius = dpRadius.dpToPx(context).toInt()
+        val radius = itemView.resources.getDimension(R.dimen.thumbnailCornerRadius)
         val placeholder = context.tintedDrawable(
             R.drawable.ic_placeholder_45,
             R.color.coverPlaceholder
@@ -33,23 +34,22 @@ class TrackViewHolder(
 
         with(binding) {
             titleLabel.text = track.title
-            artistDurationLabel.text = context.getString(
-                R.string.artist_and_time,
-                track.artist, trackDetailedInfo.duration
+            artistLabel.text = track.artist
+            durationLabel.text = context.getString(
+                R.string.track_duration_template,
+                trackDetailedInfo.duration
             )
 
             trackContainer.setOnClickListener {
-                if (Debouncer.isClickAllowed()) {
-                    onItemClick(track)
-                }
+                onItemClick(track)
             }
 
-            Glide.with(itemView)
-                .load(track.thumbnailUrl)
-                .placeholder(placeholder)
-                .transform(RoundedCorners(pxRadius))
-                .fitCenter()
-                .into(albumCover)
+            albumCover.load(track.thumbnailUrl) {
+                placeholder(placeholder)
+                error(placeholder)
+                transformations(RoundedCornersTransformation(radius))
+                crossfade(true)
+            }
         }
     }
 
