@@ -1,23 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="small_25">2dp</dimen>
-    <dimen name="small_50">4dp</dimen>
     <dimen name="small_100">8dp</dimen>
-    <dimen name="small_125">10dp</dimen>
     <dimen name="small_150">12dp</dimen>
-
     <dimen name="normal_100">16dp</dimen>
     <dimen name="normal_150">24dp</dimen>
-
-    <dimen name="big_100">32dp</dimen>
     <dimen name="big_150">48dp</dimen>
-    <dimen name="big_325">104dp</dimen>
 
     <dimen name="searchbarHeight">38dp</dimen>
-
+    <dimen name="thumbnailCornerRadius">2dp</dimen>
+    <dimen name="coverCornerRadius">8dp</dimen>
     <dimen name="titleMedium">19sp</dimen>
 
-    <!---->
     <dimen name="BottomBar.Padding.Top">12dp</dimen>
 
     <dimen name="PlayerButtons.Spread">50dp</dimen>
