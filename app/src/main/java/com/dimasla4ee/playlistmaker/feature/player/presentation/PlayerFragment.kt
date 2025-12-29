@@ -2,8 +2,6 @@ package com.dimasla4ee.playlistmaker.feature.player.presentation
 
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -30,10 +28,13 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
     private val binding by viewBinding(FragmentPlayerBinding::bind)
     private lateinit var trackDetailedInfo: TrackDetailedInfo
+    private val args: PlayerFragmentArgs by navArgs()
     private val mediaPlayerViewModel: MediaPlayerViewModel by viewModel {
         parametersOf(trackDetailedInfo.audioUrl)
     }
-    private val args: PlayerFragmentArgs by navArgs()
+    private val trackPlayerViewModel: TrackPlayerViewModel by viewModel {
+        parametersOf(args.track)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -43,6 +44,32 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
         binding.appBar.setNavigationOnClickListener {
             findNavController().popBackStack()
+        }
+
+        binding.addToFavoriteButton.setOnClickListener {
+            trackPlayerViewModel.onFavoriteClicked()
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            trackPlayerViewModel.isFavorite.collect { isFavorite ->
+                val resId = if (isFavorite) {
+                    R.drawable.ic_favorite_active_24
+                } else {
+                    R.drawable.ic_favorite_inactive_24
+                }
+
+                //TODO
+                val color = if (isFavorite) {
+                    R.color.favFabActiveIcon
+                } else {
+                    R.color.fabIcon
+                }
+
+                binding.addToFavoriteButton.icon = requireContext().tintedDrawable(
+                    resId,
+                    color
+                )
+            }
         }
 
         with(mediaPlayerViewModel) {
@@ -99,12 +126,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                     R.drawable.ic_placeholder_45,
                     R.color.coverPlaceholder
                 )
-
-                AppCompatResources.getDrawable(
-                    context, R.drawable.ic_placeholder_45
-                )?.apply {
-                    setTint(getColor(context, R.color.coverPlaceholder))
-                }
 
                 songCover.load(track.coverUrl) {
                     placeholder(placeholder)

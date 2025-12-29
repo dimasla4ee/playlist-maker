@@ -90,7 +90,7 @@
             android:id="@+id/addToFavoriteButton"
             style="@style/Widget.PlaylistMaker.IconButton.Medium"
             android:contentDescription="@string/add_to_favorite"
-            app:icon="@drawable/ic_favorite_24" />
+            app:icon="@drawable/ic_favorite_inactive_24" />
 
     </com.google.android.material.button.MaterialButtonGroup>
 
