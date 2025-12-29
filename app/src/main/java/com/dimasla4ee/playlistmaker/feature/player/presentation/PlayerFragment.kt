@@ -74,13 +74,11 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                 state.collect { mediaPlayerState ->
                     binding.playButton.isEnabled = mediaPlayerState.isPlayButtonEnabled
 
-                    binding.playButton.setIconResource(
-                        if (mediaPlayerState is MediaPlayerViewModel.State.Playing) {
-                            R.drawable.ic_pause_24
-                        } else {
-                            R.drawable.ic_play_24
-                        }
-                    )
+                    val iconRes = when (mediaPlayerState) {
+                        is MediaPlayerViewModel.State.Playing -> R.drawable.ic_pause_24
+                        else -> R.drawable.ic_play_24
+                    }
+                    binding.playButton.setIconResource(iconRes)
 
                     binding.songCurrentDuration.text = mediaPlayerState.progress
                 }

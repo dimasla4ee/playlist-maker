@@ -13,7 +13,7 @@ class FavoriteViewModel(
     favoriteInteractor: FavoriteInteractor
 ) : ViewModel() {
 
-    val favoriteTracks = favoriteInteractor.favoriteTracks()
+    private val favoriteTracks = favoriteInteractor.favoriteTracks()
 
     val uiState: StateFlow<FavoriteUiState> = favoriteTracks
         .map { tracks ->
@@ -28,4 +28,5 @@ class FavoriteViewModel(
             started = SharingStarted.WhileSubscribed(5000L),
             initialValue = FavoriteUiState.Idle
         )
+
 }

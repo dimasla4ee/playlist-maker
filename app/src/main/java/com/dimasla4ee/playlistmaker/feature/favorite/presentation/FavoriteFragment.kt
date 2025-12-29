@@ -93,4 +93,5 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
         private const val LOG_TAG = "FavoriteFragment"
         fun newInstance() = FavoriteFragment()
     }
+
 }

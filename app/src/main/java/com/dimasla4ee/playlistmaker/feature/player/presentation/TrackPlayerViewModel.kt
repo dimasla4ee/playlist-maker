@@ -4,8 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dimasla4ee.playlistmaker.core.domain.model.Track
 import com.dimasla4ee.playlistmaker.feature.favorite.domain.FavoriteInteractor
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class TrackPlayerViewModel(
@@ -13,24 +14,25 @@ class TrackPlayerViewModel(
     private val track: Track
 ) : ViewModel() {
 
-    private val _isFavorite = MutableStateFlow(false)
-    val isFavorite: Flow<Boolean> get() = _isFavorite
+    val isFavorite: StateFlow<Boolean>
+        field = MutableStateFlow(false)
 
     init {
         viewModelScope.launch {
-            _isFavorite.value = favoriteInteractor.getTrackById(track.id) != null
+            isFavorite.update { favoriteInteractor.getTrackById(track.id) != null }
         }
     }
 
     fun onFavoriteClicked() {
         viewModelScope.launch {
-            if (_isFavorite.value) {
+            if (isFavorite.value) {
                 favoriteInteractor.deleteTrack(track.id)
+                isFavorite.update { false }
             } else {
                 favoriteInteractor.addTrack(track)
+                isFavorite.update { true }
             }
         }
-        _isFavorite.value = !_isFavorite.value
     }
 
 }
