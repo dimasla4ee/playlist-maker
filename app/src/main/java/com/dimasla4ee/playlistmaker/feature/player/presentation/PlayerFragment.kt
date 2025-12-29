@@ -58,17 +58,14 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                     R.drawable.ic_favorite_inactive_24
                 }
 
-                //TODO
-                val color = if (isFavorite) {
+                val colorRes = if (isFavorite) {
                     R.color.favFabActiveIcon
                 } else {
                     R.color.fabIcon
                 }
 
-                binding.addToFavoriteButton.icon = requireContext().tintedDrawable(
-                    resId,
-                    color
-                )
+                binding.addToFavoriteButton.setIconResource(resId)
+                binding.addToFavoriteButton.setIconTintResource(colorRes)
             }
         }
 

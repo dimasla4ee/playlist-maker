@@ -26,6 +26,6 @@ class FavoriteViewModel(
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000L),
-            initialValue = FavoriteUiState.Empty
+            initialValue = FavoriteUiState.Idle
         )
 }

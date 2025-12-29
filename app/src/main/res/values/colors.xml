@@ -49,7 +49,7 @@
     <color name="buttonBackground">#1A1B22</color>
     <color name="buttonText">#FFFFFF</color>
 
-    <color name="fabBackground">#96989F</color>
+    <color name="fabBackground">#CCCED8</color>
     <color name="fabIcon">#FFFFFF</color>
     <color name="favFabActiveIcon">#F56B6C</color>
 

@@ -29,8 +29,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SearchFragment : Fragment(R.layout.fragment_search) {
 
     private val binding by viewBinding(FragmentSearchBinding::bind)
-    private lateinit var recyclerAdapter: TrackAdapter
     private val searchViewModel: SearchViewModel by viewModel()
+    private lateinit var recyclerAdapter: TrackAdapter
     private lateinit var onTrackClickedDebounce: (Track) -> Unit
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

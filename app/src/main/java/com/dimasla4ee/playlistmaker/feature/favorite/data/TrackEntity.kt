@@ -15,5 +15,6 @@ data class TrackEntity(
     val genre: String,
     val duration: Long,
     val thumbnailUrl: String,
-    val audioUrl: String
+    val audioUrl: String,
+    val addedAt: Long = System.currentTimeMillis()
 )
