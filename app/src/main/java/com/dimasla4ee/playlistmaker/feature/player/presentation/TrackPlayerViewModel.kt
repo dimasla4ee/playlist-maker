@@ -17,7 +17,7 @@ class TrackPlayerViewModel(
     val isFavorite: StateFlow<Boolean>
         field = MutableStateFlow(false)
 
-    init {
+    fun onViewCreated() {
         viewModelScope.launch {
             isFavorite.update { favoriteInteractor.getTrackById(track.id) != null }
         }

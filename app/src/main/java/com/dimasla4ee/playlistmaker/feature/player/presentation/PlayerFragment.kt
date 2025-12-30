@@ -42,52 +42,10 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         trackDetailedInfo = TrackDetailedInfoMapper.map(args.track)
         fillTrackInfo(trackDetailedInfo)
 
-        binding.appBar.setNavigationOnClickListener {
-            findNavController().popBackStack()
-        }
+        trackPlayerViewModel.onViewCreated()
 
-        binding.addToFavoriteButton.setOnClickListener {
-            trackPlayerViewModel.onFavoriteClicked()
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            trackPlayerViewModel.isFavorite.collect { isFavorite ->
-                val resId = if (isFavorite) {
-                    R.drawable.ic_favorite_active_24
-                } else {
-                    R.drawable.ic_favorite_inactive_24
-                }
-
-                val colorRes = if (isFavorite) {
-                    R.color.favFabActiveIcon
-                } else {
-                    R.color.fabIcon
-                }
-
-                binding.addToFavoriteButton.setIconResource(resId)
-                binding.addToFavoriteButton.setIconTintResource(colorRes)
-            }
-        }
-
-        with(mediaPlayerViewModel) {
-            viewLifecycleOwner.lifecycleScope.launch {
-                state.collect { mediaPlayerState ->
-                    binding.playButton.isEnabled = mediaPlayerState.isPlayButtonEnabled
-
-                    val iconRes = when (mediaPlayerState) {
-                        is MediaPlayerViewModel.State.Playing -> R.drawable.ic_pause_24
-                        else -> R.drawable.ic_play_24
-                    }
-                    binding.playButton.setIconResource(iconRes)
-
-                    binding.songCurrentDuration.text = mediaPlayerState.progress
-                }
-            }
-
-            binding.playButton.setOnClickListener {
-                onPlayButtonClicked()
-            }
-        }
+        setupListeners()
+        setupObservers()
     }
 
     override fun onPause() {
@@ -95,40 +53,83 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         mediaPlayerViewModel.onPause()
     }
 
-    private fun fillTrackInfo(track: TrackDetailedInfo) {
-        with(binding) {
-            val yearIsAvailable = track.year != null
-            val albumIsAvailable = track.album != null
+    private fun setupListeners(): Unit = with(binding) {
+        playButton.setOnClickListener {
+            mediaPlayerViewModel.onPlayButtonClicked()
+        }
 
-            songDurationFetched.text = track.duration
-            songYearFetched.show(yearIsAvailable)
-            songYearLabel.show(yearIsAvailable)
-            songYearFetched.text = track.year?.toString()
+        appBar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
 
-            songAlbumFetched.show(albumIsAvailable)
-            songAlbumLabel.show(albumIsAvailable)
-            songAlbumFetched.text = track.album
+        addToFavoriteButton.setOnClickListener {
+            trackPlayerViewModel.onFavoriteClicked()
+        }
+    }
 
-            songGenreFetched.text = track.genre
-            songCountryFetched.text = track.country
-
-            songTitle.text = track.title
-            songAuthor.text = track.artist
-
-            requireContext().also { context ->
-                val radius = resources.getDimension(R.dimen.coverCornerRadius)
-                val placeholder = context.tintedDrawable(
-                    R.drawable.ic_placeholder_45,
-                    R.color.coverPlaceholder
-                )
-
-                songCover.load(track.coverUrl) {
-                    placeholder(placeholder)
-                    error(placeholder)
-                    transformations(RoundedCornersTransformation(radius))
-                    crossfade(true)
+    private fun setupObservers(): Unit = with(binding) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            trackPlayerViewModel.isFavorite.collect { isFavorite ->
+                val (resId, colorRes) = if (isFavorite) {
+                    R.drawable.ic_favorite_active_24 to R.color.favFabActiveIcon
+                } else {
+                    R.drawable.ic_favorite_inactive_24 to R.color.fabIcon
                 }
+
+                addToFavoriteButton.setIconResource(resId)
+                addToFavoriteButton.setIconTintResource(colorRes)
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            mediaPlayerViewModel.state.collect { mediaPlayerState ->
+                playButton.isEnabled = mediaPlayerState.isPlayButtonEnabled
+
+                val iconRes = if (mediaPlayerState is MediaPlayerViewModel.State.Playing) {
+                    R.drawable.ic_pause_24
+                } else {
+                    R.drawable.ic_play_24
+                }
+                playButton.setIconResource(iconRes)
+
+                songCurrentDuration.text = mediaPlayerState.progress
             }
         }
     }
+
+    private fun fillTrackInfo(track: TrackDetailedInfo): Unit = with(binding) {
+        val yearIsAvailable = track.year != null
+        val albumIsAvailable = track.album != null
+
+        songDurationFetched.text = track.duration
+        songYearFetched.show(yearIsAvailable)
+        songYearLabel.show(yearIsAvailable)
+        songYearFetched.text = track.year?.toString()
+
+        songAlbumFetched.show(albumIsAvailable)
+        songAlbumLabel.show(albumIsAvailable)
+        songAlbumFetched.text = track.album
+
+        songGenreFetched.text = track.genre
+        songCountryFetched.text = track.country
+
+        songTitle.text = track.title
+        songAuthor.text = track.artist
+
+        requireContext().also { context ->
+            val radius = resources.getDimension(R.dimen.coverCornerRadius)
+            val placeholder = context.tintedDrawable(
+                R.drawable.ic_placeholder_45,
+                R.color.coverPlaceholder
+            )
+
+            songCover.load(track.coverUrl) {
+                placeholder(placeholder)
+                error(placeholder)
+                transformations(RoundedCornersTransformation(radius))
+                crossfade(true)
+            }
+        }
+    }
+
 }
