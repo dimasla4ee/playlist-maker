@@ -2,8 +2,6 @@ package com.dimasla4ee.playlistmaker.feature.player.presentation
 
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -30,10 +28,13 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
     private val binding by viewBinding(FragmentPlayerBinding::bind)
     private lateinit var trackDetailedInfo: TrackDetailedInfo
+    private val args: PlayerFragmentArgs by navArgs()
     private val mediaPlayerViewModel: MediaPlayerViewModel by viewModel {
         parametersOf(trackDetailedInfo.audioUrl)
     }
-    private val args: PlayerFragmentArgs by navArgs()
+    private val trackPlayerViewModel: TrackPlayerViewModel by viewModel {
+        parametersOf(args.track)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -41,31 +42,10 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         trackDetailedInfo = TrackDetailedInfoMapper.map(args.track)
         fillTrackInfo(trackDetailedInfo)
 
-        binding.appBar.setNavigationOnClickListener {
-            findNavController().popBackStack()
-        }
+        trackPlayerViewModel.onViewCreated()
 
-        with(mediaPlayerViewModel) {
-            viewLifecycleOwner.lifecycleScope.launch {
-                state.collect { mediaPlayerState ->
-                    binding.playButton.isEnabled = mediaPlayerState.isPlayButtonEnabled
-
-                    binding.playButton.setIconResource(
-                        if (mediaPlayerState is MediaPlayerViewModel.State.Playing) {
-                            R.drawable.ic_pause_24
-                        } else {
-                            R.drawable.ic_play_24
-                        }
-                    )
-
-                    binding.songCurrentDuration.text = mediaPlayerState.progress
-                }
-            }
-
-            binding.playButton.setOnClickListener {
-                onPlayButtonClicked()
-            }
-        }
+        setupListeners()
+        setupObservers()
     }
 
     override fun onPause() {
@@ -73,46 +53,83 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         mediaPlayerViewModel.onPause()
     }
 
-    private fun fillTrackInfo(track: TrackDetailedInfo) {
-        with(binding) {
-            val yearIsAvailable = track.year != null
-            val albumIsAvailable = track.album != null
+    private fun setupListeners(): Unit = with(binding) {
+        playButton.setOnClickListener {
+            mediaPlayerViewModel.onPlayButtonClicked()
+        }
 
-            songDurationFetched.text = track.duration
-            songYearFetched.show(yearIsAvailable)
-            songYearLabel.show(yearIsAvailable)
-            songYearFetched.text = track.year?.toString()
+        appBar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
 
-            songAlbumFetched.show(albumIsAvailable)
-            songAlbumLabel.show(albumIsAvailable)
-            songAlbumFetched.text = track.album
+        addToFavoriteButton.setOnClickListener {
+            trackPlayerViewModel.onFavoriteClicked()
+        }
+    }
 
-            songGenreFetched.text = track.genre
-            songCountryFetched.text = track.country
-
-            songTitle.text = track.title
-            songAuthor.text = track.artist
-
-            requireContext().also { context ->
-                val radius = resources.getDimension(R.dimen.coverCornerRadius)
-                val placeholder = context.tintedDrawable(
-                    R.drawable.ic_placeholder_45,
-                    R.color.coverPlaceholder
-                )
-
-                AppCompatResources.getDrawable(
-                    context, R.drawable.ic_placeholder_45
-                )?.apply {
-                    setTint(getColor(context, R.color.coverPlaceholder))
+    private fun setupObservers(): Unit = with(binding) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            trackPlayerViewModel.isFavorite.collect { isFavorite ->
+                val (resId, colorRes) = if (isFavorite) {
+                    R.drawable.ic_favorite_active_24 to R.color.favFabActiveIcon
+                } else {
+                    R.drawable.ic_favorite_inactive_24 to R.color.fabIcon
                 }
 
-                songCover.load(track.coverUrl) {
-                    placeholder(placeholder)
-                    error(placeholder)
-                    transformations(RoundedCornersTransformation(radius))
-                    crossfade(true)
+                addToFavoriteButton.setIconResource(resId)
+                addToFavoriteButton.setIconTintResource(colorRes)
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            mediaPlayerViewModel.state.collect { mediaPlayerState ->
+                playButton.isEnabled = mediaPlayerState.isPlayButtonEnabled
+
+                val iconRes = if (mediaPlayerState is MediaPlayerViewModel.State.Playing) {
+                    R.drawable.ic_pause_24
+                } else {
+                    R.drawable.ic_play_24
                 }
+                playButton.setIconResource(iconRes)
+
+                songCurrentDuration.text = mediaPlayerState.progress
             }
         }
     }
+
+    private fun fillTrackInfo(track: TrackDetailedInfo): Unit = with(binding) {
+        val yearIsAvailable = track.year != null
+        val albumIsAvailable = track.album != null
+
+        songDurationFetched.text = track.duration
+        songYearFetched.show(yearIsAvailable)
+        songYearLabel.show(yearIsAvailable)
+        songYearFetched.text = track.year?.toString()
+
+        songAlbumFetched.show(albumIsAvailable)
+        songAlbumLabel.show(albumIsAvailable)
+        songAlbumFetched.text = track.album
+
+        songGenreFetched.text = track.genre
+        songCountryFetched.text = track.country
+
+        songTitle.text = track.title
+        songAuthor.text = track.artist
+
+        requireContext().also { context ->
+            val radius = resources.getDimension(R.dimen.coverCornerRadius)
+            val placeholder = context.tintedDrawable(
+                R.drawable.ic_placeholder_45,
+                R.color.coverPlaceholder
+            )
+
+            songCover.load(track.coverUrl) {
+                placeholder(placeholder)
+                error(placeholder)
+                transformations(RoundedCornersTransformation(radius))
+                crossfade(true)
+            }
+        }
+    }
+
 }

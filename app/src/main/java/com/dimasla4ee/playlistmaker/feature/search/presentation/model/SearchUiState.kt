@@ -10,4 +10,5 @@ sealed interface SearchUiState {
     data class Content(val results: List<Track> = listOf()) : SearchUiState
     data object Error : SearchUiState
     data object NoResults : SearchUiState
+
 }

@@ -1,3 +1,4 @@
+import org.gradle.kotlin.dsl.dependencies
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -6,6 +7,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     id("kotlin-parcelize")
     id("androidx.navigation.safeargs.kotlin")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -46,10 +48,12 @@ android {
 kotlin {
     compilerOptions {
         jvmTarget.set(JvmTarget.JVM_11)
+        freeCompilerArgs.add("-XXLanguage:+ExplicitBackingFields")
     }
 }
 
 dependencies {
+    ksp(libs.androidx.room.compiler)
     implementation(libs.coil)
     implementation(libs.coil.network.okhttp)
     implementation(libs.androidx.core.ktx)
@@ -66,6 +70,8 @@ dependencies {
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

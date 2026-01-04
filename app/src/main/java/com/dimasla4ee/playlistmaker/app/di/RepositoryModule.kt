@@ -4,6 +4,9 @@ import com.dimasla4ee.playlistmaker.core.data.local.PrefsStorageClient
 import com.dimasla4ee.playlistmaker.core.data.local.StorageClient
 import com.dimasla4ee.playlistmaker.core.domain.model.Track
 import com.dimasla4ee.playlistmaker.core.util.Keys
+import com.dimasla4ee.playlistmaker.feature.favorite.data.FavoriteRepositoryImpl
+import com.dimasla4ee.playlistmaker.feature.favorite.data.TrackDbConvertor
+import com.dimasla4ee.playlistmaker.feature.favorite.domain.FavoriteRepository
 import com.dimasla4ee.playlistmaker.feature.search.data.repository.SearchHistoryRepositoryImpl
 import com.dimasla4ee.playlistmaker.feature.search.data.repository.TrackSearchRepositoryImpl
 import com.dimasla4ee.playlistmaker.feature.search.domain.repository.SearchHistoryRepository
@@ -16,6 +19,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val RepositoryModule = module {
+
     single<StorageClient<Boolean>>(named("theme_storage")) {
         PrefsStorageClient(
             context = androidContext(),
@@ -44,4 +48,13 @@ val RepositoryModule = module {
     factory<TrackSearchRepository> {
         TrackSearchRepositoryImpl(get())
     }
+
+    factory<TrackDbConvertor> {
+        TrackDbConvertor()
+    }
+
+    factory<FavoriteRepository> {
+        FavoriteRepositoryImpl(get(), get())
+    }
+
 }
