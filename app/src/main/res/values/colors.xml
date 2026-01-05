@@ -68,7 +68,10 @@
     <color name="playerLabel">#AEAFB4</color>
 
     <color name="coverPlaceholder">#AEAFB4</color>
-    
+
+    <color name="newPlaylistDrawable">#A6A7AC</color>
+
+    <color name="outlinedBoxInactive">#A6A7AC</color>
 
     <!-- fallback -->
     <color name="error">#B3261E</color>

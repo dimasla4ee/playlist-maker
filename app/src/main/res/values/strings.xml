@@ -38,4 +38,8 @@
     <string name="playlists">Playlists</string>
     <string name="favorite_tracks">Favorite tracks</string>
     <string name="loading">Loading</string>
+    <string name="change_playlist_cover">Change playlist cover</string>
+    <string name="playlist_name">Name*</string>
+    <string name="playlist_description">Description</string>
+    <string name="create_playlist">Create</string>
 </resources>
