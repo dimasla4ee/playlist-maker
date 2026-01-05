@@ -42,4 +42,9 @@
     <string name="playlist_name">Name*</string>
     <string name="playlist_description">Description</string>
     <string name="create_playlist">Create</string>
+    <string name="exit_confirmation_title">Are you sure you want to exit?</string>
+    <string name="exit_confirmation_message">All unsaved data will be lost</string>
+    <string name="dismiss">Cancel</string>
+    <string name="done">Exit</string>
+    <string name="playlist_created">Playlist %1$s was created</string>
 </resources>

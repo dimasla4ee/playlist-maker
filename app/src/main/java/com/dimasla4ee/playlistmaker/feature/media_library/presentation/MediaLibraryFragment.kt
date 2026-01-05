@@ -33,4 +33,5 @@ class MediaLibraryFragment : Fragment(R.layout.fragment_media_library) {
         tabMediator?.detach()
         tabMediator = null
     }
+
 }

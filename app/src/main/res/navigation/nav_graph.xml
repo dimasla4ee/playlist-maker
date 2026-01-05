@@ -26,6 +26,9 @@
         <action
             android:id="@+id/action_mediaLibraryFragment_to_playerFragment"
             app:destination="@id/playerFragment" />
+        <action
+            android:id="@+id/action_mediaLibraryFragment_to_newPlaylistFragment"
+            app:destination="@id/newPlaylistFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -36,4 +39,13 @@
             android:id="@+id/action_searchFragment_to_playerFragment"
             app:destination="@id/playerFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/newPlaylistFragment"
+        android:name="com.dimasla4ee.playlistmaker.feature.new_playlist.presentation.NewPlaylistFragment"
+        android:label="fragment_new_playlist"
+        tools:layout="@layout/fragment_new_playlist" />
+    <fragment
+        android:id="@+id/playlistFragment"
+        android:name="com.dimasla4ee.playlistmaker.feature.media_library.presentation.PlaylistFragment"
+        android:label="PlaylistFragment" />
 </navigation>

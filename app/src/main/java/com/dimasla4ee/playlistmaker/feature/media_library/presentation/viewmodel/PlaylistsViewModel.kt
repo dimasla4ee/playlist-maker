@@ -2,4 +2,7 @@ package com.dimasla4ee.playlistmaker.feature.media_library.presentation.viewmode
 
 import androidx.lifecycle.ViewModel
 
-class PlaylistsViewModel : ViewModel()
+class PlaylistsViewModel : ViewModel() {
+
+
+}

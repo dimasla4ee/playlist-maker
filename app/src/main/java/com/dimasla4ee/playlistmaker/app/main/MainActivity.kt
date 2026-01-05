@@ -42,9 +42,15 @@ class MainActivity : AppCompatActivity() {
             bottomNavigation.setupWithNavController(navController)
 
             navController.addOnDestinationChangedListener { _, destination, _ ->
-                val isDestinationPlayer = destination.id == R.id.playerFragment
-                bottomNavigation.show(!isDestinationPlayer)
-                bottomNavDivider.show(!isDestinationPlayer)
+                val shouldShowNavigationBar = when (destination.id) {
+                    R.id.playerFragment,
+                    R.id.newPlaylistFragment -> false
+
+                    else -> true
+                }
+
+                bottomNavigation.show(shouldShowNavigationBar)
+                bottomNavDivider.show(shouldShowNavigationBar)
             }
         }
     }

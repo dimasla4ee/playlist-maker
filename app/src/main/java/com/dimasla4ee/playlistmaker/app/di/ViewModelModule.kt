@@ -3,6 +3,7 @@ package com.dimasla4ee.playlistmaker.app.di
 import com.dimasla4ee.playlistmaker.core.domain.model.Track
 import com.dimasla4ee.playlistmaker.feature.favorite.presentation.viewmodel.FavoriteViewModel
 import com.dimasla4ee.playlistmaker.feature.media_library.presentation.viewmodel.PlaylistsViewModel
+import com.dimasla4ee.playlistmaker.feature.new_playlist.presentation.viewmodel.NewPlaylistViewModel
 import com.dimasla4ee.playlistmaker.feature.player.presentation.TrackPlayerViewModel
 import com.dimasla4ee.playlistmaker.feature.player.presentation.viewmodel.MediaPlayerViewModel
 import com.dimasla4ee.playlistmaker.feature.search.presentation.viewmodel.SearchViewModel
@@ -34,6 +35,10 @@ val ViewModelModule = module {
 
     viewModel { (track: Track) ->
         TrackPlayerViewModel(get(), track)
+    }
+
+    viewModel {
+        NewPlaylistViewModel()
     }
 
 }
