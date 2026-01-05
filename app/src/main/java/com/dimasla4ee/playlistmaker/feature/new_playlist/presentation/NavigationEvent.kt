@@ -1,4 +1,4 @@
-package com.dimasla4ee.playlistmaker.feature.new_playlist.presentation.viewmodel
+package com.dimasla4ee.playlistmaker.feature.new_playlist.presentation
 
 sealed interface NavigationEvent {
     data object ShowExitConfirmation : NavigationEvent

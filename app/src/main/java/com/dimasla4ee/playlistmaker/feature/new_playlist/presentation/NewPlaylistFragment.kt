@@ -22,7 +22,6 @@ import coil3.transform.RoundedCornersTransformation
 import com.dimasla4ee.playlistmaker.R
 import com.dimasla4ee.playlistmaker.core.presentation.util.viewBinding
 import com.dimasla4ee.playlistmaker.databinding.FragmentNewPlaylistBinding
-import com.dimasla4ee.playlistmaker.feature.new_playlist.presentation.viewmodel.NavigationEvent
 import com.dimasla4ee.playlistmaker.feature.new_playlist.presentation.viewmodel.NewPlaylistViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch

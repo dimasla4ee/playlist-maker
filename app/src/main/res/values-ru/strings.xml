@@ -41,4 +41,10 @@
     <string name="dismiss">Отмена</string>
     <string name="done">Завершить</string>
     <string name="playlist_created">Плейлист %1$s создан</string>
+    <plurals name="tracks_number">
+        <item quantity="one">%d трек</item>
+        <item quantity="few">%d трека</item>
+        <item quantity="many">%d треков</item>
+        <item quantity="other">%d трека</item>
+    </plurals>
 </resources>

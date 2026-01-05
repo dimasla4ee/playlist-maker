@@ -7,6 +7,9 @@ import com.dimasla4ee.playlistmaker.core.util.Keys
 import com.dimasla4ee.playlistmaker.feature.favorite.data.FavoriteRepositoryImpl
 import com.dimasla4ee.playlistmaker.feature.favorite.data.TrackDbConvertor
 import com.dimasla4ee.playlistmaker.feature.favorite.domain.FavoriteRepository
+import com.dimasla4ee.playlistmaker.feature.media_library.presentation.PlaylistDbConverter
+import com.dimasla4ee.playlistmaker.feature.new_playlist.data.PlaylistRepositoryImpl
+import com.dimasla4ee.playlistmaker.feature.new_playlist.domain.PlaylistRepository
 import com.dimasla4ee.playlistmaker.feature.search.data.repository.SearchHistoryRepositoryImpl
 import com.dimasla4ee.playlistmaker.feature.search.data.repository.TrackSearchRepositoryImpl
 import com.dimasla4ee.playlistmaker.feature.search.domain.repository.SearchHistoryRepository
@@ -53,8 +56,16 @@ val RepositoryModule = module {
         TrackDbConvertor()
     }
 
+    factory<PlaylistDbConverter> {
+        PlaylistDbConverter()
+    }
+
     factory<FavoriteRepository> {
         FavoriteRepositoryImpl(get(), get())
+    }
+
+    factory<PlaylistRepository> {
+        PlaylistRepositoryImpl(get(), get())
     }
 
 }

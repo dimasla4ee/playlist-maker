@@ -2,11 +2,13 @@ package com.dimasla4ee.playlistmaker.app.di
 
 import androidx.room.Room
 import com.dimasla4ee.playlistmaker.core.data.database.AppDatabase
+import com.dimasla4ee.playlistmaker.core.data.local.ImageStorageManager
 import com.dimasla4ee.playlistmaker.core.data.local.LocalDateSerializer
 import com.dimasla4ee.playlistmaker.core.data.network.ItunesService
 import com.dimasla4ee.playlistmaker.core.data.network.NetworkClient
 import com.dimasla4ee.playlistmaker.core.data.network.RetrofitNetworkClient
 import com.dimasla4ee.playlistmaker.feature.favorite.data.FavoriteDao
+import com.dimasla4ee.playlistmaker.feature.new_playlist.data.dao.PlaylistDao
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import okhttp3.MediaType.Companion.toMediaType
@@ -51,11 +53,19 @@ val DataModule = module {
             androidContext(),
             AppDatabase::class.java,
             "database.db"
-        ).build()
+        ).fallbackToDestructiveMigration(false).build()
     }
 
     single<FavoriteDao> {
         get<AppDatabase>().favoriteDao()
+    }
+
+    single<PlaylistDao> {
+        get<AppDatabase>().playlistDao()
+    }
+
+    single {
+        ImageStorageManager(androidContext())
     }
 
 }
