@@ -34,7 +34,7 @@ val ViewModelModule = module {
     }
 
     viewModel { (track: Track) ->
-        TrackPlayerViewModel(get(), track)
+        TrackPlayerViewModel(get(), get(), track)
     }
 
     viewModel {

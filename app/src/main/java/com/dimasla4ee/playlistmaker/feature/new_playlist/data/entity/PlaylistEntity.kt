@@ -2,14 +2,14 @@ package com.dimasla4ee.playlistmaker.feature.new_playlist.data.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.serialization.Contextual
 
 @Entity(tableName = "playlist_table")
 data class PlaylistEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String,
     val description: String,
     val coverPath: String,
-    val trackIds: String = "",
+    @Contextual val trackIds: List<Int> = emptyList(),
     val tracksCount: Int = 0
 )

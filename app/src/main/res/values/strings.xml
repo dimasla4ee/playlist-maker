@@ -47,6 +47,8 @@
     <string name="dismiss">Cancel</string>
     <string name="done">Exit</string>
     <string name="playlist_created">Playlist %1$s was created</string>
+    <string name="added_to_playlist">Added to playlist %1$s</string>
+    <string name="track_already_in_playlist">Track already in playlist %1$s</string>
     <plurals name="tracks_number">
         <item quantity="one">%d track</item>
         <item quantity="other">%d tracks</item>

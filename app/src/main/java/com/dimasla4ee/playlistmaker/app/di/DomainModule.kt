@@ -2,8 +2,8 @@ package com.dimasla4ee.playlistmaker.app.di
 
 import com.dimasla4ee.playlistmaker.feature.favorite.domain.FavoriteInteractor
 import com.dimasla4ee.playlistmaker.feature.favorite.domain.FavoriteInteractorImpl
-import com.dimasla4ee.playlistmaker.feature.new_playlist.domain.PlaylistInteractor
-import com.dimasla4ee.playlistmaker.feature.new_playlist.domain.PlaylistInteractorImpl
+import com.dimasla4ee.playlistmaker.feature.playlist.domain.PlaylistInteractor
+import com.dimasla4ee.playlistmaker.feature.playlist.domain.PlaylistInteractorImpl
 import com.dimasla4ee.playlistmaker.feature.search.domain.SearchHistoryInteractor
 import com.dimasla4ee.playlistmaker.feature.search.domain.SearchHistoryInteractorImpl
 import com.dimasla4ee.playlistmaker.feature.search.domain.SearchTracksUseCase

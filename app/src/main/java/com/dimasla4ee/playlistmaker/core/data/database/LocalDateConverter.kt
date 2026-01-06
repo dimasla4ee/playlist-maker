@@ -10,4 +10,5 @@ class LocalDateConverter {
 
     @TypeConverter
     fun localDateToTimestamp(date: LocalDate?): Long? = date?.toEpochDay()
+
 }

@@ -6,15 +6,21 @@ import com.dimasla4ee.playlistmaker.feature.new_playlist.data.entity.PlaylistEnt
 class PlaylistDbConverter {
 
     fun map(playlist: Playlist): PlaylistEntity = PlaylistEntity(
+        id = playlist.id,
         name = playlist.name,
         description = playlist.description,
-        coverPath = playlist.coverPath
+        coverPath = playlist.coverPath,
+        trackIds = playlist.trackIds,
+        tracksCount = playlist.tracksCount
     )
 
     fun map(playlist: PlaylistEntity): Playlist = Playlist(
+        id = playlist.id,
         name = playlist.name,
         description = playlist.description,
-        coverPath = playlist.coverPath
+        coverPath = playlist.coverPath,
+        trackIds = playlist.trackIds,
+        tracksCount = playlist.tracksCount
     )
 
 }

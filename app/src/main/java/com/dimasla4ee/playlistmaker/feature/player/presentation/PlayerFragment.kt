@@ -2,10 +2,12 @@ package com.dimasla4ee.playlistmaker.feature.player.presentation
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import coil3.load
 import coil3.request.crossfade
 import coil3.request.error
@@ -17,9 +19,12 @@ import com.dimasla4ee.playlistmaker.core.presentation.util.show
 import com.dimasla4ee.playlistmaker.core.presentation.util.tintedDrawable
 import com.dimasla4ee.playlistmaker.core.presentation.util.viewBinding
 import com.dimasla4ee.playlistmaker.databinding.FragmentPlayerBinding
+import com.dimasla4ee.playlistmaker.feature.player.presentation.bottom_sheet_adapter.PlaylistBottomSheetAdapter
+import com.dimasla4ee.playlistmaker.feature.player.presentation.model.PlaylistAddTrackState
 import com.dimasla4ee.playlistmaker.feature.player.presentation.viewmodel.MediaPlayerViewModel
 import com.dimasla4ee.playlistmaker.feature.search.presentation.mapper.TrackDetailedInfoMapper
 import com.dimasla4ee.playlistmaker.feature.search.presentation.model.TrackDetailedInfo
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -35,6 +40,9 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     private val trackPlayerViewModel: TrackPlayerViewModel by viewModel {
         parametersOf(args.track)
     }
+    private val bottomSheetAdapter = PlaylistBottomSheetAdapter { playlist ->
+        trackPlayerViewModel.onPlaylistClicked(playlist)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -44,6 +52,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
         trackPlayerViewModel.onViewCreated()
 
+        setupBottomSheet()
         setupListeners()
         setupObservers()
     }
@@ -51,6 +60,30 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     override fun onPause() {
         super.onPause()
         mediaPlayerViewModel.onPause()
+    }
+
+    private fun setupBottomSheet() {
+        binding.playlistsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.playlistsRecyclerView.adapter = bottomSheetAdapter
+
+        val bottomSheetBehavior = BottomSheetBehavior.from(binding.playlistsBottomSheet).apply {
+            state = BottomSheetBehavior.STATE_HIDDEN
+        }
+
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                binding.overlay.visibility =
+                    if (newState == BottomSheetBehavior.STATE_HIDDEN) View.GONE else View.VISIBLE
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+        })
+
+        binding.addToPlaylistButton.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            trackPlayerViewModel.onShowPlaylists()
+        }
     }
 
     private fun setupListeners(): Unit = with(binding) {
@@ -64,6 +97,10 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
         addToFavoriteButton.setOnClickListener {
             trackPlayerViewModel.onFavoriteClicked()
+        }
+
+        newPlaylistButton.setOnClickListener {
+            findNavController().navigate(PlayerFragmentDirections.actionPlayerFragmentToNewPlaylistFragment())
         }
     }
 
@@ -93,6 +130,32 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                 playButton.setIconResource(iconRes)
 
                 songCurrentDuration.text = mediaPlayerState.progress
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            trackPlayerViewModel.playlists.collect {
+                bottomSheetAdapter.playlists = it
+                bottomSheetAdapter.notifyDataSetChanged()
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            trackPlayerViewModel.playlistAddTrackState.collect { state ->
+                val message = when (state) {
+                    is PlaylistAddTrackState.Success -> getString(
+                        R.string.added_to_playlist,
+                        state.playlistName
+                    )
+
+                    is PlaylistAddTrackState.AlreadyExists -> getString(
+                        R.string.track_already_in_playlist,
+                        state.playlistName
+                    )
+                }
+                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                val bottomSheetBehavior = BottomSheetBehavior.from(binding.playlistsBottomSheet)
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
             }
         }
     }

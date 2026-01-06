@@ -9,7 +9,7 @@ import com.dimasla4ee.playlistmaker.feature.new_playlist.data.dao.PlaylistDao
 import com.dimasla4ee.playlistmaker.feature.new_playlist.data.entity.PlaylistEntity
 
 @Database(version = 2, entities = [TrackEntity::class, PlaylistEntity::class])
-@TypeConverters(LocalDateConverter::class)
+@TypeConverters(LocalDateConverter::class, TrackIdsConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun favoriteDao(): FavoriteDao

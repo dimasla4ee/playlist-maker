@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dimasla4ee.playlistmaker.core.data.local.ImageStorageManager
 import com.dimasla4ee.playlistmaker.core.domain.model.Playlist
-import com.dimasla4ee.playlistmaker.feature.new_playlist.domain.PlaylistInteractor
 import com.dimasla4ee.playlistmaker.feature.new_playlist.presentation.NavigationEvent
+import com.dimasla4ee.playlistmaker.feature.playlist.domain.PlaylistInteractor
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -22,8 +22,8 @@ class NewPlaylistViewModel(
     val description = MutableStateFlow("")
     val cover = MutableStateFlow(Uri.EMPTY)
 
-    private val _showExitConfirmation = MutableSharedFlow<NavigationEvent>()
-    val showExitConfirmation: SharedFlow<NavigationEvent> = _showExitConfirmation
+    val showExitConfirmation: SharedFlow<NavigationEvent>
+        field = MutableSharedFlow<NavigationEvent>()
 
     private val hasChanges: Boolean
         get() = name.value.isNotBlank() || description.value.isNotBlank() || cover.value != Uri.EMPTY
@@ -47,7 +47,7 @@ class NewPlaylistViewModel(
             } else {
                 NavigationEvent.PopBackStack
             }
-            _showExitConfirmation.emit(event)
+            showExitConfirmation.emit(event)
         }
     }
 

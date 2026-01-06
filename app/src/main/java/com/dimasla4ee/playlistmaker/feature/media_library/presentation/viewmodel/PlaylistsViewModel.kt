@@ -3,15 +3,16 @@ package com.dimasla4ee.playlistmaker.feature.media_library.presentation.viewmode
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dimasla4ee.playlistmaker.feature.media_library.presentation.model.PlaylistsState
-import com.dimasla4ee.playlistmaker.feature.new_playlist.domain.PlaylistInteractor
+import com.dimasla4ee.playlistmaker.feature.playlist.domain.PlaylistInteractor
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class PlaylistsViewModel(private val playlistInteractor: PlaylistInteractor) : ViewModel() {
 
-    private val _state = MutableStateFlow<PlaylistsState>(PlaylistsState.Loading)
-    val state = _state.asStateFlow()
+    val state: StateFlow<PlaylistsState>
+        field = MutableStateFlow<PlaylistsState>(PlaylistsState.Loading)
 
     init {
         getPlaylists()
@@ -20,11 +21,12 @@ class PlaylistsViewModel(private val playlistInteractor: PlaylistInteractor) : V
     private fun getPlaylists() {
         viewModelScope.launch {
             playlistInteractor.getAllPlaylists().collect { playlists ->
-                if (playlists.isEmpty()) {
-                    _state.value = PlaylistsState.Empty
+                val newState = if (playlists.isEmpty()) {
+                    PlaylistsState.Empty
                 } else {
-                    _state.value = PlaylistsState.Content(playlists)
+                    PlaylistsState.Content(playlists)
                 }
+                state.update { newState }
             }
         }
     }

@@ -1,9 +1,10 @@
-package com.dimasla4ee.playlistmaker.feature.new_playlist.domain
+package com.dimasla4ee.playlistmaker.feature.playlist.domain
 
 import com.dimasla4ee.playlistmaker.core.domain.model.Playlist
 import kotlinx.coroutines.flow.Flow
 
-interface PlaylistRepository {
+interface PlaylistInteractor {
     suspend fun createPlaylist(playlist: Playlist)
     fun getAllPlaylists(): Flow<List<Playlist>>
+    suspend fun addTrackToPlaylist(playlistId: Int, trackId: Int): Boolean
 }
