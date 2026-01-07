@@ -78,7 +78,10 @@ class NewPlaylistFragment : Fragment(R.layout.fragment_new_playlist) {
             viewModel.onCreatePlaylist()
             Toast.makeText(
                 requireContext(),
-                requireContext().getString(R.string.playlist_created, viewModel.name.value),
+                requireContext().getString(
+                    R.string.playlist_created,
+                    viewModel.uiState.value.name
+                ),
                 Toast.LENGTH_SHORT
             ).show()
             findNavController().popBackStack()
@@ -92,29 +95,25 @@ class NewPlaylistFragment : Fragment(R.layout.fragment_new_playlist) {
     }
 
     private fun setupObservers(): Unit = with(binding) {
-
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.name.collect { name ->
-                        val isCreationAllowed = name.isNotBlank()
-                        createButton.isEnabled = isCreationAllowed
-                    }
-                }
+                    viewModel.uiState.collect { state ->
+                        val isCreationAllowed = !state.nameIsBlank()
 
-                launch {
-                    viewModel.cover.collect { uri ->
-                        val (data, scaleType) = when (uri) {
+                        val (data, scaleType) = when (state.coverUri) {
                             Uri.EMPTY -> R.drawable.ic_add_photo_100 to ImageView.ScaleType.CENTER
-                            else -> uri to ImageView.ScaleType.CENTER_CROP
+                            else -> state.coverUri to ImageView.ScaleType.CENTER_CROP
                         }
                         val radius = resources.getDimension(R.dimen.coverCornerRadius)
 
+                        createButton.isEnabled = isCreationAllowed
                         playlistCover.load(data) {
                             transformations(RoundedCornersTransformation(radius))
                             crossfade(true)
                             playlistCover.scaleType = scaleType
                         }
+
                     }
                 }
 
@@ -127,7 +126,6 @@ class NewPlaylistFragment : Fragment(R.layout.fragment_new_playlist) {
                     }
                 }
             }
-
         }
     }
 

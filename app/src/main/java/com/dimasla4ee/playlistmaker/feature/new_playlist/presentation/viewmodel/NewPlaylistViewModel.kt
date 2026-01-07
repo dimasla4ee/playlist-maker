@@ -10,6 +10,7 @@ import com.dimasla4ee.playlistmaker.feature.playlist.domain.PlaylistInteractor
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -18,26 +19,29 @@ class NewPlaylistViewModel(
     private val imageStorageManager: ImageStorageManager
 ) : ViewModel() {
 
-    val name = MutableStateFlow("")
-    val description = MutableStateFlow("")
-    val cover = MutableStateFlow(Uri.EMPTY)
+    val uiState: StateFlow<NewPlaylistUiState>
+        field = MutableStateFlow(NewPlaylistUiState())
 
     val showExitConfirmation: SharedFlow<NavigationEvent>
         field = MutableSharedFlow<NavigationEvent>()
 
     private val hasChanges: Boolean
-        get() = name.value.isNotBlank() || description.value.isNotBlank() || cover.value != Uri.EMPTY
+        get() = with(uiState.value) {
+            !nameIsBlank() || !descriptionIsBlank() || !coverIsEmpty()
+        }
 
-    fun onNameChanged(newName: String) {
-        name.update { newName }
+    fun onNameChanged(newName: String) = uiState.update { currentState ->
+        currentState.copy(name = newName)
     }
 
-    fun onDescriptionChanged(newDescription: String) {
-        description.update { newDescription }
+
+    fun onDescriptionChanged(newDescription: String) = uiState.update { currentState ->
+        currentState.copy(description = newDescription)
     }
 
-    fun onCoverChanged(newCover: Uri) {
-        cover.update { newCover }
+
+    fun onCoverChanged(newCoverUri: Uri) = uiState.update { currentState ->
+        currentState.copy(coverUri = newCoverUri)
     }
 
     fun onBackButtonPressed() {
@@ -53,18 +57,30 @@ class NewPlaylistViewModel(
 
     fun onCreatePlaylist() {
         viewModelScope.launch {
-            val coverPath = if (cover.value != Uri.EMPTY) {
-                imageStorageManager.saveImage(cover.value)
+            val currentState = uiState.value
+            val coverPath = if (!currentState.coverIsEmpty()) {
+                imageStorageManager.saveImage(currentState.coverUri)
             } else {
                 ""
             }
             playlistInteractor.createPlaylist(
                 Playlist(
-                    name = name.value,
-                    description = description.value,
+                    name = currentState.name,
+                    description = currentState.description,
                     coverPath = coverPath
                 )
             )
         }
     }
+
+    data class NewPlaylistUiState(
+        val name: String = "",
+        val description: String = "",
+        val coverUri: Uri = Uri.EMPTY
+    ) {
+        fun nameIsBlank() = name.isBlank()
+        fun descriptionIsBlank() = description.isBlank()
+        fun coverIsEmpty() = coverUri == Uri.EMPTY
+    }
+
 }
