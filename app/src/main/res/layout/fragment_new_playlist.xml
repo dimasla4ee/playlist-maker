@@ -107,6 +107,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
+        app:cornerRadius="@dimen/createPlaylistButtonRadius"
         android:text="@string/create_playlist"
         style="@style/Widget.PlaylistMaker.Button.CreatePlaylist"
         app:layout_constraintBottom_toBottomOf="parent"

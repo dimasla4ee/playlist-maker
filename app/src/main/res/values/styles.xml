@@ -67,6 +67,16 @@
         <item name="android:textAppearance">@style/TextAppearance.PlaylistMaker.LabelSmall</item>
     </style>
 
+    <style name="Widget.PlaylistMaker.TextView.Playlist.Title" parent="Widget.PlaylistMaker.TextView.Track">
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textAppearance">@style/TextAppearance.PlaylistMaker.LabelMedium</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.TextView.Playlist.Tracklist" parent="Widget.PlaylistMaker.TextView.Track">
+        <item name="android:textColor">@color/cardLowerText</item>
+        <item name="android:textAppearance">@style/TextAppearance.PlaylistMaker.LabelMedium</item>
+    </style>
+
 
     <!-- Tabs -->
     <style name="Widget.PlaylistMaker.TabLayout" parent="Widget.Material3.TabLayout">

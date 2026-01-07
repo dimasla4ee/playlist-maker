@@ -10,6 +10,7 @@
     <dimen name="thumbnailCornerRadius">2dp</dimen>
     <dimen name="coverCornerRadius">8dp</dimen>
     <dimen name="titleMedium">19sp</dimen>
+    <dimen name="createPlaylistButtonRadius">8dp</dimen>
 
     <dimen name="BottomBar.Padding.Top">12dp</dimen>
 
