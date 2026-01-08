@@ -1,9 +1,9 @@
 package com.dimasla4ee.playlistmaker.feature.playlist.data
 
 import com.dimasla4ee.playlistmaker.core.domain.model.Playlist
-import com.dimasla4ee.playlistmaker.feature.media_library.presentation.PlaylistDbConverter
-import com.dimasla4ee.playlistmaker.feature.new_playlist.data.dao.PlaylistDao
-import com.dimasla4ee.playlistmaker.feature.new_playlist.data.entity.PlaylistEntity
+import com.dimasla4ee.playlistmaker.feature.playlist.data.converter.PlaylistDbConverter
+import com.dimasla4ee.playlistmaker.feature.playlist.data.dao.PlaylistDao
+import com.dimasla4ee.playlistmaker.feature.playlist.data.entity.PlaylistEntity
 import com.dimasla4ee.playlistmaker.feature.playlist.domain.PlaylistRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged

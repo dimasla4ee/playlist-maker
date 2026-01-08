@@ -7,8 +7,8 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.dimasla4ee.playlistmaker.R
-import com.dimasla4ee.playlistmaker.core.presentation.util.setupWindowInsets
-import com.dimasla4ee.playlistmaker.core.presentation.util.show
+import com.dimasla4ee.playlistmaker.core.utils.setupWindowInsets
+import com.dimasla4ee.playlistmaker.core.utils.show
 import com.dimasla4ee.playlistmaker.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

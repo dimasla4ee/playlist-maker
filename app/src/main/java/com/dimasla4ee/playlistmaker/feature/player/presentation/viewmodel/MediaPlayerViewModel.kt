@@ -3,7 +3,7 @@ package com.dimasla4ee.playlistmaker.feature.player.presentation.viewmodel
 import android.media.MediaPlayer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dimasla4ee.playlistmaker.core.presentation.util.toMmSs
+import com.dimasla4ee.playlistmaker.core.utils.toMmSs
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow

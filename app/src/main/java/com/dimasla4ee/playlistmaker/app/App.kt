@@ -2,11 +2,11 @@ package com.dimasla4ee.playlistmaker.app
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
-import com.dimasla4ee.playlistmaker.app.di.DataModule
-import com.dimasla4ee.playlistmaker.app.di.DomainModule
-import com.dimasla4ee.playlistmaker.app.di.PresentationModule
-import com.dimasla4ee.playlistmaker.app.di.RepositoryModule
-import com.dimasla4ee.playlistmaker.app.di.ViewModelModule
+import com.dimasla4ee.playlistmaker.app.di.dataModule
+import com.dimasla4ee.playlistmaker.app.di.domainModule
+import com.dimasla4ee.playlistmaker.app.di.presentationModule
+import com.dimasla4ee.playlistmaker.app.di.repositoryModule
+import com.dimasla4ee.playlistmaker.app.di.viewModelModule
 import com.dimasla4ee.playlistmaker.feature.settings.domain.SettingsInteractor
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
@@ -21,7 +21,13 @@ class App : Application() {
 
         startKoin {
             androidContext(this@App)
-            modules(ViewModelModule, RepositoryModule, DomainModule, DataModule, PresentationModule)
+            modules(
+                viewModelModule,
+                repositoryModule,
+                domainModule,
+                dataModule,
+                presentationModule
+            )
         }
 
         val isDarkThemeEnabled = settingsInteractor.isDarkThemeEnabled()
@@ -30,4 +36,5 @@ class App : Application() {
             if (isDarkThemeEnabled) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
         )
     }
+
 }

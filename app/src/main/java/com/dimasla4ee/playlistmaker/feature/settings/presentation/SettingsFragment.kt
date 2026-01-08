@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import com.dimasla4ee.playlistmaker.R
-import com.dimasla4ee.playlistmaker.core.presentation.util.viewBinding
+import com.dimasla4ee.playlistmaker.core.utils.viewBinding
 import com.dimasla4ee.playlistmaker.databinding.FragmentSettingsBinding
 import com.dimasla4ee.playlistmaker.feature.settings.presentation.viewmodel.SettingsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel

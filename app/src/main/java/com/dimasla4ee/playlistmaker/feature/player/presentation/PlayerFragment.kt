@@ -15,11 +15,11 @@ import coil3.request.placeholder
 import coil3.request.transformations
 import coil3.transform.RoundedCornersTransformation
 import com.dimasla4ee.playlistmaker.R
-import com.dimasla4ee.playlistmaker.core.presentation.util.show
-import com.dimasla4ee.playlistmaker.core.presentation.util.tintedDrawable
-import com.dimasla4ee.playlistmaker.core.presentation.util.viewBinding
+import com.dimasla4ee.playlistmaker.core.utils.show
+import com.dimasla4ee.playlistmaker.core.utils.tintedDrawable
+import com.dimasla4ee.playlistmaker.core.utils.viewBinding
 import com.dimasla4ee.playlistmaker.databinding.FragmentPlayerBinding
-import com.dimasla4ee.playlistmaker.feature.player.presentation.bottom_sheet_adapter.PlaylistBottomSheetAdapter
+import com.dimasla4ee.playlistmaker.feature.player.presentation.adapter.PlaylistBottomSheetAdapter
 import com.dimasla4ee.playlistmaker.feature.player.presentation.model.PlaylistAddTrackState
 import com.dimasla4ee.playlistmaker.feature.player.presentation.viewmodel.MediaPlayerViewModel
 import com.dimasla4ee.playlistmaker.feature.search.presentation.mapper.TrackDetailedInfoMapper

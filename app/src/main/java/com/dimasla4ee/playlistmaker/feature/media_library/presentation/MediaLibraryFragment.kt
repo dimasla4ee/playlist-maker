@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.dimasla4ee.playlistmaker.R
-import com.dimasla4ee.playlistmaker.core.presentation.util.viewBinding
+import com.dimasla4ee.playlistmaker.core.utils.viewBinding
 import com.dimasla4ee.playlistmaker.databinding.FragmentMediaLibraryBinding
 import com.google.android.material.tabs.TabLayoutMediator
 

@@ -1,13 +1,16 @@
 package com.dimasla4ee.playlistmaker.feature.favorite.data
 
 import com.dimasla4ee.playlistmaker.core.domain.model.Track
+import com.dimasla4ee.playlistmaker.feature.favorite.data.converter.TrackDbConverter
+import com.dimasla4ee.playlistmaker.feature.favorite.data.dao.FavoriteDao
+import com.dimasla4ee.playlistmaker.feature.favorite.data.entity.TrackEntity
 import com.dimasla4ee.playlistmaker.feature.favorite.domain.FavoriteRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class FavoriteRepositoryImpl(
     private val favoriteDao: FavoriteDao,
-    private val trackDbConvertor: TrackDbConvertor
+    private val trackDbConverter: TrackDbConverter
 ) : FavoriteRepository {
 
     override fun favoriteTracks(): Flow<List<Track>> =
@@ -15,11 +18,11 @@ class FavoriteRepositoryImpl(
 
     override suspend fun getTrackById(trackId: Int): Track? {
         val trackEntity = favoriteDao.getTrackById(trackId) ?: return null
-        return trackDbConvertor.map(trackEntity)
+        return trackDbConverter.map(trackEntity)
     }
 
     override suspend fun insertTrack(track: Track) {
-        favoriteDao.insertTrack(trackDbConvertor.map(track))
+        favoriteDao.insertTrack(trackDbConverter.map(track))
     }
 
     override suspend fun deleteTrack(trackId: Int) {
@@ -31,7 +34,7 @@ class FavoriteRepositoryImpl(
 
     private fun convertFromTrackEntity(tracks: List<TrackEntity>): List<Track> =
         tracks.map { track ->
-            trackDbConvertor.map(track)
+            trackDbConverter.map(track)
         }
 
 }

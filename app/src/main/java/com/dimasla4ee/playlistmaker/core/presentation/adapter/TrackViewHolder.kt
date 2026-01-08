@@ -11,7 +11,7 @@ import coil3.request.transformations
 import coil3.transform.RoundedCornersTransformation
 import com.dimasla4ee.playlistmaker.R
 import com.dimasla4ee.playlistmaker.core.domain.model.Track
-import com.dimasla4ee.playlistmaker.core.presentation.util.tintedDrawable
+import com.dimasla4ee.playlistmaker.core.utils.tintedDrawable
 import com.dimasla4ee.playlistmaker.databinding.TrackItemBinding
 import com.dimasla4ee.playlistmaker.feature.search.presentation.mapper.TrackDetailedInfoMapper
 
