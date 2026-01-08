@@ -2,7 +2,7 @@ package com.dimasla4ee.playlistmaker.core.data.network
 
 import com.dimasla4ee.playlistmaker.core.domain.model.Response
 import com.dimasla4ee.playlistmaker.core.domain.model.ResultCode
-import com.dimasla4ee.playlistmaker.core.util.LogUtil
+import com.dimasla4ee.playlistmaker.core.utils.LogUtil
 import com.dimasla4ee.playlistmaker.feature.search.data.model.TrackSearchRequest
 import java.net.UnknownHostException
 

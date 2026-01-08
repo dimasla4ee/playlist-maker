@@ -11,26 +11,36 @@ import com.dimasla4ee.playlistmaker.feature.settings.domain.SettingsInteractor
 import com.dimasla4ee.playlistmaker.feature.settings.domain.SettingsInteractorImpl
 import org.koin.dsl.module
 
-val DomainModule = module {
+val domainModule = module {
 
     factory<SettingsInteractor> {
-        SettingsInteractorImpl(get())
+        SettingsInteractorImpl(
+            repository = get()
+        )
     }
 
     factory<SearchHistoryInteractor> {
-        SearchHistoryInteractorImpl(get())
+        SearchHistoryInteractorImpl(
+            repository = get()
+        )
     }
 
     factory<SearchTracksUseCase> {
-        SearchTracksUseCase(get())
+        SearchTracksUseCase(
+            repository = get()
+        )
     }
 
     factory<FavoriteInteractor> {
-        FavoriteInteractorImpl(get())
+        FavoriteInteractorImpl(
+            repository = get()
+        )
     }
 
     factory<PlaylistInteractor> {
-        PlaylistInteractorImpl(get())
+        PlaylistInteractorImpl(
+            repository = get()
+        )
     }
 
 }

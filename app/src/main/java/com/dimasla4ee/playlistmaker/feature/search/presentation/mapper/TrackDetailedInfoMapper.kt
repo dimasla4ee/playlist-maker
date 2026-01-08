@@ -1,7 +1,7 @@
 package com.dimasla4ee.playlistmaker.feature.search.presentation.mapper
 
 import com.dimasla4ee.playlistmaker.core.domain.model.Track
-import com.dimasla4ee.playlistmaker.core.presentation.util.toMmSs
+import com.dimasla4ee.playlistmaker.core.utils.toMmSs
 import com.dimasla4ee.playlistmaker.feature.search.presentation.model.TrackDetailedInfo
 
 object TrackDetailedInfoMapper {

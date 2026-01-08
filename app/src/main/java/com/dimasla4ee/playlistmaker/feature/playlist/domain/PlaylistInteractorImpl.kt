@@ -1,7 +1,7 @@
 package com.dimasla4ee.playlistmaker.feature.playlist.domain
 
 import com.dimasla4ee.playlistmaker.core.domain.model.Playlist
-import com.dimasla4ee.playlistmaker.core.util.LogUtil
+import com.dimasla4ee.playlistmaker.core.utils.LogUtil
 import kotlinx.coroutines.flow.Flow
 
 class PlaylistInteractorImpl(private val repository: PlaylistRepository) : PlaylistInteractor {

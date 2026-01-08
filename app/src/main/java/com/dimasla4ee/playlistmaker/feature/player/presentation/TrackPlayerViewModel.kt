@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dimasla4ee.playlistmaker.core.domain.model.Playlist
 import com.dimasla4ee.playlistmaker.core.domain.model.Track
-import com.dimasla4ee.playlistmaker.core.util.LogUtil
+import com.dimasla4ee.playlistmaker.core.utils.LogUtil
 import com.dimasla4ee.playlistmaker.feature.favorite.domain.FavoriteInteractor
 import com.dimasla4ee.playlistmaker.feature.player.presentation.model.PlaylistAddTrackState
 import com.dimasla4ee.playlistmaker.feature.playlist.domain.PlaylistInteractor

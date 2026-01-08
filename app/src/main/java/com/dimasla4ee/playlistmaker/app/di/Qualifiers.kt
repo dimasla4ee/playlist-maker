@@ -1,0 +1,4 @@
+package com.dimasla4ee.playlistmaker.app.di
+
+object ThemeStorageQualifier
+object SearchHistoryStorageQualifier

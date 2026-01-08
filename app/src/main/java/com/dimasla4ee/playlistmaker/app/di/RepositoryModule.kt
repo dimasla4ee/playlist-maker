@@ -1,75 +1,97 @@
 package com.dimasla4ee.playlistmaker.app.di
 
-import com.dimasla4ee.playlistmaker.core.data.local.PrefsStorageClient
-import com.dimasla4ee.playlistmaker.core.data.local.StorageClient
+import com.dimasla4ee.playlistmaker.core.data.storage.PrefsStorageClient
+import com.dimasla4ee.playlistmaker.core.data.storage.StorageClient
 import com.dimasla4ee.playlistmaker.core.domain.model.Track
-import com.dimasla4ee.playlistmaker.core.util.Keys
+import com.dimasla4ee.playlistmaker.core.data.network.NetworkClient
+import com.dimasla4ee.playlistmaker.core.utils.KeyConstants
+import com.dimasla4ee.playlistmaker.feature.favorite.data.dao.FavoriteDao
 import com.dimasla4ee.playlistmaker.feature.favorite.data.FavoriteRepositoryImpl
-import com.dimasla4ee.playlistmaker.feature.favorite.data.TrackDbConvertor
+import com.dimasla4ee.playlistmaker.feature.favorite.data.converter.TrackDbConverter
 import com.dimasla4ee.playlistmaker.feature.favorite.domain.FavoriteRepository
-import com.dimasla4ee.playlistmaker.feature.media_library.presentation.PlaylistDbConverter
+import com.dimasla4ee.playlistmaker.feature.playlist.data.converter.PlaylistDbConverter
 import com.dimasla4ee.playlistmaker.feature.playlist.data.PlaylistRepositoryImpl
+import com.dimasla4ee.playlistmaker.feature.playlist.data.dao.PlaylistDao
 import com.dimasla4ee.playlistmaker.feature.playlist.domain.PlaylistInteractor
 import com.dimasla4ee.playlistmaker.feature.playlist.domain.PlaylistInteractorImpl
 import com.dimasla4ee.playlistmaker.feature.playlist.domain.PlaylistRepository
-import com.dimasla4ee.playlistmaker.feature.search.data.repository.SearchHistoryRepositoryImpl
-import com.dimasla4ee.playlistmaker.feature.search.data.repository.TrackSearchRepositoryImpl
+import com.dimasla4ee.playlistmaker.feature.search.data.SearchHistoryRepositoryImpl
+import com.dimasla4ee.playlistmaker.feature.search.data.TrackSearchRepositoryImpl
 import com.dimasla4ee.playlistmaker.feature.search.domain.repository.SearchHistoryRepository
 import com.dimasla4ee.playlistmaker.feature.search.domain.repository.TrackSearchRepository
-import com.dimasla4ee.playlistmaker.feature.settings.data.repository.SettingsRepositoryImpl
+import com.dimasla4ee.playlistmaker.feature.settings.data.SettingsRepositoryImpl
 import com.dimasla4ee.playlistmaker.feature.settings.domain.repository.SettingsRepository
 import kotlinx.serialization.builtins.ListSerializer
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-val RepositoryModule = module {
+val repositoryModule = module {
 
-    single<StorageClient<Boolean>>(named("theme_storage")) {
+    single<ThemeStorage>(named<ThemeStorageQualifier>()) {
         PrefsStorageClient(
             context = androidContext(),
-            prefsName = Keys.APP_PREFERENCES,
-            dataKey = Keys.Preference.DARK_THEME
+            prefsName = KeyConstants.APP_PREFERENCES,
+            dataKey = KeyConstants.Preference.DARK_THEME
         )
     }
 
-    single<StorageClient<List<Track>>>(named("search_history_storage")) {
+    single<SearchHistoryStorage>(named<SearchHistoryStorageQualifier>()) {
         PrefsStorageClient(
             context = androidContext(),
-            prefsName = Keys.SEARCH_PREFERENCES,
-            dataKey = Keys.Preference.SEARCH_HISTORY,
+            prefsName = KeyConstants.SEARCH_PREFERENCES,
+            dataKey = KeyConstants.Preference.SEARCH_HISTORY,
             serializer = ListSerializer(Track.serializer())
         )
     }
 
     factory<SettingsRepository> {
-        SettingsRepositoryImpl(get<StorageClient<Boolean>>(named("theme_storage")))
+        SettingsRepositoryImpl(
+            storage = get<ThemeStorage>(named<ThemeStorageQualifier>())
+        )
     }
 
     factory<SearchHistoryRepository> {
-        SearchHistoryRepositoryImpl(get(named("search_history_storage")))
+        SearchHistoryRepositoryImpl(
+            storage = get<SearchHistoryStorage>(named<SearchHistoryStorageQualifier>())
+        )
     }
 
     factory<TrackSearchRepository> {
-        TrackSearchRepositoryImpl(get())
+        TrackSearchRepositoryImpl(
+            networkClient = get<NetworkClient>()
+        )
     }
 
-    factory<TrackDbConvertor> {
-        TrackDbConvertor()
+    factory<TrackDbConverter> {
+        TrackDbConverter()
     }
 
     factory<FavoriteRepository> {
-        FavoriteRepositoryImpl(get(), get())
+        FavoriteRepositoryImpl(
+            favoriteDao = get<FavoriteDao>(),
+            trackDbConverter = get<TrackDbConverter>()
+        )
     }
 
     factory<PlaylistRepository> {
-        PlaylistRepositoryImpl(get(), get())
+        PlaylistRepositoryImpl(
+            playlistDao = get<PlaylistDao>(),
+            playlistConverter = get<PlaylistDbConverter>()
+        )
     }
 
-    factory { PlaylistDbConverter() }
+    factory<PlaylistDbConverter> {
+        PlaylistDbConverter()
+    }
 
     factory<PlaylistInteractor> {
-        PlaylistInteractorImpl(get())
+        PlaylistInteractorImpl(
+            repository = get<PlaylistRepository>()
+        )
     }
 
 }
+
+private typealias ThemeStorage = StorageClient<Boolean>
+private typealias SearchHistoryStorage = StorageClient<List<Track>>

@@ -14,11 +14,11 @@ import androidx.navigation.fragment.findNavController
 import com.dimasla4ee.playlistmaker.R
 import com.dimasla4ee.playlistmaker.core.domain.model.Track
 import com.dimasla4ee.playlistmaker.core.presentation.adapter.TrackAdapter
-import com.dimasla4ee.playlistmaker.core.presentation.util.debounce
-import com.dimasla4ee.playlistmaker.core.presentation.util.setTopDrawable
-import com.dimasla4ee.playlistmaker.core.presentation.util.show
-import com.dimasla4ee.playlistmaker.core.presentation.util.viewBinding
-import com.dimasla4ee.playlistmaker.core.util.LogUtil
+import com.dimasla4ee.playlistmaker.core.utils.debounce
+import com.dimasla4ee.playlistmaker.core.utils.setTopDrawable
+import com.dimasla4ee.playlistmaker.core.utils.show
+import com.dimasla4ee.playlistmaker.core.utils.viewBinding
+import com.dimasla4ee.playlistmaker.core.utils.LogUtil
 import com.dimasla4ee.playlistmaker.databinding.FragmentSearchBinding
 import com.dimasla4ee.playlistmaker.feature.search.presentation.model.SearchUiState
 import com.dimasla4ee.playlistmaker.feature.search.presentation.viewmodel.SearchViewModel
