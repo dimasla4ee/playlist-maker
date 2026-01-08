@@ -236,7 +236,8 @@
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="30dp"
             android:text="@string/add_to_playlist"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
@@ -246,7 +247,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
             android:text="@string/new_playlist" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -254,7 +254,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="16dp"
-            android:paddingHorizontal="@dimen/Track.Padding.Horizontal"
+            android:paddingHorizontal="@dimen/normal_100"
             android:requiresFadingEdge="vertical"
             tools:listitem="@layout/playlist_item_small" />
 
