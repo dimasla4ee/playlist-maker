@@ -1,37 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="small_100">8dp</dimen>
-    <dimen name="small_150">12dp</dimen>
-    <dimen name="normal_100">16dp</dimen>
-    <dimen name="normal_150">24dp</dimen>
-    <dimen name="big_150">48dp</dimen>
 
-    <dimen name="searchbarHeight">38dp</dimen>
+    <dimen name="bottomSheetCornerRadius">16dp</dimen>
+    <dimen name="searchViewMarginHorizontal">16dp</dimen>
+    <dimen name="stateInfoDrawablePadding">16dp</dimen>
+    <dimen name="playlistBottomSheetPaddingHorizontal">16dp</dimen>
+    <dimen name="playlistBottomSheetMarginTop">16dp</dimen>
+    <dimen name="favoriteRecyclerMarginBottom">24dp</dimen>
+    <dimen name="favoriteRecyclerMarginHorizontal">16dp</dimen>
+    <dimen name="retryButtonMarginTop">24dp</dimen>
+    <dimen name="searchRecyclerMarginBottom">24dp</dimen>
+    <dimen name="historyLabelMarginVertical">24dp</dimen>
+    <dimen name="smallIconSize">24dp</dimen>
+    <dimen name="songInfoPaddingVertical">8dp</dimen>
+    <dimen name="clearButtonMarginBottom">8dp</dimen>
     <dimen name="thumbnailCornerRadius">2dp</dimen>
     <dimen name="coverCornerRadius">8dp</dimen>
-    <dimen name="titleMedium">19sp</dimen>
-
-    <dimen name="BottomBar.Padding.Top">12dp</dimen>
-
-    <dimen name="PlayerButtons.Spread">50dp</dimen>
-
-    <dimen name="AppBar.Height">56dp</dimen>
-    <dimen name="AppBar.Title.TextSize">22sp</dimen>
-    <dimen name="AppBar.Title.Margin.Top">10dp</dimen>
-    <dimen name="AppBar.Title.Margin.Base">12dp</dimen>
-
-    <dimen name="Setting.Height">61dp</dimen>
-
-    <dimen name="Track.Height">61dp</dimen>
-    <dimen name="Track.Padding.Horizontal">8dp</dimen>
-    <dimen name="Track.Typography.Primary">16sp</dimen>
-    <dimen name="Track.Typography.Secondary">11sp</dimen>
-
-    <dimen name="App.Padding.Horizontal">16dp</dimen>
-
-    <dimen name="StateTextImage.Height">182dp</dimen>
-    <dimen name="StateTextImage.Margin.Top">46dp</dimen>
-
-    <dimen name="AlbumCover.Size">48dp</dimen>
+    <dimen name="titleMediumTextSize">19sp</dimen>
+    <dimen name="createPlaylistButtonRadius">8dp</dimen>
+    <dimen name="bottomBarPaddingTop">12dp</dimen>
+    <dimen name="playerButtonsSpread">50dp</dimen>
+    <dimen name="settingItemHeight">61dp</dimen>
+    <dimen name="trackItemHeight">61dp</dimen>
+    <dimen name="trackPaddingHorizontal">8dp</dimen>
+    <dimen name="appPaddingHorizontal">16dp</dimen>
+    <dimen name="stateTextImageMarginTop">46dp</dimen>
+    <dimen name="albumCoverSize">48dp</dimen>
 
 </resources>

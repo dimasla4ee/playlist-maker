@@ -1,205 +1,263 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".feature.player.presentation.PlayerFragment">
+    android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideStart"
-        style="@style/Guideline.Vertical"
-        app:layout_constraintGuide_begin="24dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideEnd"
-        style="@style/Guideline.Vertical"
-        app:layout_constraintGuide_end="24dp" />
-
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/appBar"
-        style="@style/Widget.PlaylistMaker.AppBar"
-        app:layout_constraintEnd_toEndOf="@id/guideEnd"
-        app:layout_constraintStart_toStartOf="@id/guideStart"
-        app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/ic_arrow_back_24" />
-
-    <ImageView
-        android:id="@+id/songCover"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:importantForAccessibility="no"
-        android:src="@drawable/ic_placeholder_45"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toStartOf="@id/guideEnd"
-        app:layout_constraintStart_toStartOf="@id/guideStart"
-        app:layout_constraintTop_toBottomOf="@id/appBar"
-        app:layout_constraintWidth_max="500dp" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/songTitle"
-        style="@style/TextAppearance.PlaylistMaker.TitleLarge"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:singleLine="true"
-        app:layout_constraintEnd_toEndOf="@id/songCover"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@id/songCover"
-        app:layout_constraintTop_toBottomOf="@id/songCover"
-        app:layout_constraintWidth="wrap_content_constrained"
-        tools:text="Name" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/songAuthor"
-        style="@style/TextAppearance.PlaylistMaker.TitleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        app:layout_constraintEnd_toEndOf="@id/songCover"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@id/songTitle"
-        app:layout_constraintTop_toBottomOf="@id/songTitle"
-        app:layout_constraintVertical_chainStyle="spread"
-        tools:text="Author" />
-
-    <com.google.android.material.button.MaterialButtonGroup
-        android:id="@+id/buttonGroup"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:spacing="@dimen/PlayerButtons.Spread"
-        app:layout_constraintBottom_toTopOf="@id/songInfoFlow"
-        app:layout_constraintEnd_toEndOf="@id/guideEnd"
-        app:layout_constraintStart_toStartOf="@id/guideStart"
-        app:layout_constraintTop_toBottomOf="@id/songAuthor">
+        android:layout_height="match_parent"
+        tools:context=".feature.player.presentation.PlayerFragment">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideStart"
+            style="@style/Guideline.Vertical"
+            app:layout_constraintGuide_begin="24dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideEnd"
+            style="@style/Guideline.Vertical"
+            app:layout_constraintGuide_end="24dp" />
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/appBar"
+            style="@style/Widget.PlaylistMaker.AppBar"
+            app:layout_constraintEnd_toEndOf="@id/guideEnd"
+            app:layout_constraintStart_toStartOf="@id/guideStart"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/ic_arrow_back_24" />
+
+        <ImageView
+            android:id="@+id/songCover"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_placeholder_45"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toStartOf="@id/guideEnd"
+            app:layout_constraintStart_toStartOf="@id/guideStart"
+            app:layout_constraintTop_toBottomOf="@id/appBar"
+            app:layout_constraintWidth_max="500dp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/songTitle"
+            style="@style/TextAppearance.PlaylistMaker.TitleLarge"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:singleLine="true"
+            app:layout_constraintEnd_toEndOf="@id/songCover"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/songCover"
+            app:layout_constraintTop_toBottomOf="@id/songCover"
+            app:layout_constraintWidth="wrap_content_constrained"
+            tools:text="Name" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/songAuthor"
+            style="@style/TextAppearance.PlaylistMaker.TitleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:layout_constraintEnd_toEndOf="@id/songCover"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/songTitle"
+            app:layout_constraintTop_toBottomOf="@id/songTitle"
+            app:layout_constraintVertical_chainStyle="spread"
+            tools:text="Author" />
+
+        <com.google.android.material.button.MaterialButtonGroup
+            android:id="@+id/buttonGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:spacing="@dimen/playerButtonsSpread"
+            app:layout_constraintBottom_toTopOf="@id/songInfoFlow"
+            app:layout_constraintEnd_toEndOf="@id/guideEnd"
+            app:layout_constraintStart_toStartOf="@id/guideStart"
+            app:layout_constraintTop_toBottomOf="@id/songAuthor">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/addToPlaylistButton"
+                style="@style/Widget.PlaylistMaker.IconButton.Medium"
+                android:contentDescription="@string/add_to_playlist"
+                app:icon="@drawable/ic_add_to_playlist_24" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/playButton"
+                style="@style/Widget.PlaylistMaker.IconButton.Large"
+                android:contentDescription="@string/play"
+                app:icon="@drawable/ic_play_24" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/addToFavoriteButton"
+                style="@style/Widget.PlaylistMaker.IconButton.Medium"
+                android:contentDescription="@string/add_to_favorite"
+                app:icon="@drawable/ic_favorite_inactive_24" />
+
+        </com.google.android.material.button.MaterialButtonGroup>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/songCurrentDuration"
+            style="@style/TextAppearance.PlaylistMaker.TitleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@+id/songInfoFlow"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/buttonGroup"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="00:00" />
+
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/songInfoFlow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="songDurationLabel,songDurationFetched,songAlbumLabel,songAlbumFetched,songYearLabel,songYearFetched,songGenreLabel,songGenreFetched,songCountryLabel,songCountryFetched"
+            app:flow_horizontalStyle="spread"
+            app:flow_maxElementsWrap="2"
+            app:flow_verticalStyle="packed"
+            app:flow_wrapMode="chain"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/songCover"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="@id/songCover" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/songDurationLabel"
+            style="@style/Widget.PlaylistMaker.TextView.SongInfo.Label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/duration_label"
+            app:layout_constraintHorizontal_weight="3" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/songDurationFetched"
+            style="@style/Widget.PlaylistMaker.TextView.SongInfo.Fetched"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="7"
+            tools:text="00:00" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/songAlbumLabel"
+            style="@style/Widget.PlaylistMaker.TextView.SongInfo.Label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/album_label"
+            app:layout_constraintHorizontal_weight="3" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/songAlbumFetched"
+            style="@style/Widget.PlaylistMaker.TextView.SongInfo.Fetched"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="7"
+            tools:text="Album name" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/songYearLabel"
+            style="@style/Widget.PlaylistMaker.TextView.SongInfo.Label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/year_label"
+            app:layout_constraintHorizontal_weight="3" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/songYearFetched"
+            style="@style/Widget.PlaylistMaker.TextView.SongInfo.Fetched"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="7"
+            tools:text="2025" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/songGenreLabel"
+            style="@style/Widget.PlaylistMaker.TextView.SongInfo.Label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/genre_label"
+            app:layout_constraintHorizontal_weight="3" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/songGenreFetched"
+            style="@style/Widget.PlaylistMaker.TextView.SongInfo.Fetched"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="7"
+            tools:text="Hip-Hop/Rap" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/songCountryLabel"
+            style="@style/Widget.PlaylistMaker.TextView.SongInfo.Label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/country_label"
+            app:layout_constraintHorizontal_weight="3" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/songCountryFetched"
+            style="@style/Widget.PlaylistMaker.TextView.SongInfo.Fetched"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_weight="7"
+            tools:text="USA" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/playlistsBottomSheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bottom_sheet_background"
+        android:backgroundTint="@color/background"
+        android:orientation="vertical"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="450dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <View
+            android:layout_width="40dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounder" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="30dp"
+            android:text="@string/add_to_playlist"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/addToPlaylistButton"
-            style="@style/Widget.PlaylistMaker.IconButton.Medium"
-            android:contentDescription="@string/add_to_playlist"
-            app:icon="@drawable/ic_add_to_playlist_24" />
+            android:id="@+id/newPlaylistButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/new_playlist" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/playButton"
-            style="@style/Widget.PlaylistMaker.IconButton.Large"
-            android:contentDescription="@string/play"
-            app:icon="@drawable/ic_play_24" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/playlistsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/playlistBottomSheetMarginTop"
+            android:paddingHorizontal="@dimen/playlistBottomSheetPaddingHorizontal"
+            android:requiresFadingEdge="vertical"
+            tools:listitem="@layout/playlist_item_small" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/addToFavoriteButton"
-            style="@style/Widget.PlaylistMaker.IconButton.Medium"
-            android:contentDescription="@string/add_to_favorite"
-            app:icon="@drawable/ic_favorite_inactive_24" />
+    </LinearLayout>
 
-    </com.google.android.material.button.MaterialButtonGroup>
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/songCurrentDuration"
-        style="@style/TextAppearance.PlaylistMaker.TitleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/songInfoFlow"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonGroup"
-        app:layout_constraintVertical_bias="0.0"
-        tools:text="00:00" />
-
-    <androidx.constraintlayout.helper.widget.Flow
-        android:id="@+id/songInfoFlow"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="songDurationLabel,songDurationFetched,songAlbumLabel,songAlbumFetched,songYearLabel,songYearFetched,songGenreLabel,songGenreFetched,songCountryLabel,songCountryFetched"
-        app:flow_horizontalStyle="spread"
-        app:flow_maxElementsWrap="2"
-        app:flow_verticalStyle="packed"
-        app:flow_wrapMode="chain"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/songCover"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toStartOf="@id/songCover" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/songDurationLabel"
-        style="@style/Widget.PlaylistMaker.TextView.SongInfo.Label"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/duration_label"
-        app:layout_constraintHorizontal_weight="3" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/songDurationFetched"
-        style="@style/Widget.PlaylistMaker.TextView.SongInfo.Fetched"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintHorizontal_weight="7"
-        tools:text="00:00" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/songAlbumLabel"
-        style="@style/Widget.PlaylistMaker.TextView.SongInfo.Label"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/album_label"
-        app:layout_constraintHorizontal_weight="3" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/songAlbumFetched"
-        style="@style/Widget.PlaylistMaker.TextView.SongInfo.Fetched"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintHorizontal_weight="7"
-        tools:text="Album name" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/songYearLabel"
-        style="@style/Widget.PlaylistMaker.TextView.SongInfo.Label"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/year_label"
-        app:layout_constraintHorizontal_weight="3" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/songYearFetched"
-        style="@style/Widget.PlaylistMaker.TextView.SongInfo.Fetched"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintHorizontal_weight="7"
-        tools:text="2025" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/songGenreLabel"
-        style="@style/Widget.PlaylistMaker.TextView.SongInfo.Label"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/genre_label"
-        app:layout_constraintHorizontal_weight="3" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/songGenreFetched"
-        style="@style/Widget.PlaylistMaker.TextView.SongInfo.Fetched"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintHorizontal_weight="7"
-        tools:text="Hip-Hop/Rap" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/songCountryLabel"
-        style="@style/Widget.PlaylistMaker.TextView.SongInfo.Label"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/country_label"
-        app:layout_constraintHorizontal_weight="3" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/songCountryFetched"
-        style="@style/Widget.PlaylistMaker.TextView.SongInfo.Fetched"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintHorizontal_weight="7"
-        tools:text="USA" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

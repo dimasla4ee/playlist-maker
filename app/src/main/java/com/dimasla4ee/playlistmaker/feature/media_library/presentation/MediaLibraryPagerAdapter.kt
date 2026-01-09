@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.dimasla4ee.playlistmaker.feature.favorite.presentation.FavoriteFragment
+import com.dimasla4ee.playlistmaker.feature.playlist.presentation.PlaylistFragment
 
 class MediaLibraryPagerAdapter(
     fragmentManager: FragmentManager,

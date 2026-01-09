@@ -33,4 +33,15 @@
         <item name="colorOnPrimary">@color/buttonText</item>
     </style>
 
+    <style name="Widget.PlaylistMaker.Button.CreatePlaylist" parent="Widget.Material3Expressive.Button">
+        <item name="materialSizeOverlay">@style/SizeOverlay.Material3Expressive.Button.Medium</item>
+        <item name="android:textAppearance">@style/TextAppearance.PlaylistMaker.TitleSmall</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.PlaylistMaker.Button.CreatePlaylist</item>
+    </style>
+
+    <style name="ThemeOverlay.PlaylistMaker.Button.CreatePlaylist" parent="ThemeOverlay.Material3Expressive.Button.Filled">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/onPrimary</item>
+    </style>
+
 </resources>

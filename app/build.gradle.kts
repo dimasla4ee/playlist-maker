@@ -1,4 +1,3 @@
-import org.gradle.kotlin.dsl.dependencies
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -30,6 +29,20 @@ android {
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
+            )
+
+            buildConfigField(
+                type = "String",
+                name = "API_BASE_URL",
+                value = "\"https://itunes.apple.com/\""
+            )
+        }
+
+        debug {
+            buildConfigField(
+                type = "String",
+                name = "API_BASE_URL",
+                value = "\"https://itunes.apple.com/\""
             )
         }
     }
