@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/Track.Height">
+    android:layout_height="@dimen/trackItemHeight">
 
     <ImageView
         android:id="@+id/playlistCover"
@@ -32,7 +32,7 @@
         style="@style/Widget.PlaylistMaker.TextView.Track.ArtistAndTime"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/Track.Padding.Horizontal"
+        android:paddingHorizontal="@dimen/trackPaddingHorizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/playlistName"
         app:layout_constraintStart_toStartOf="@+id/playlistName"

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/trackContainer"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/Track.Height"
+    android:layout_height="@dimen/trackItemHeight"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
@@ -34,7 +34,7 @@
         style="@style/Widget.PlaylistMaker.TextView.Track.ArtistAndTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="@dimen/Track.Padding.Horizontal"
+        android:paddingStart="@dimen/trackPaddingHorizontal"
         android:paddingEnd="0dp"
         android:singleLine="true"
         app:layout_constrainedWidth="true"
@@ -52,7 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingStart="0dp"
-        android:paddingEnd="@dimen/Track.Padding.Horizontal"
+        android:paddingEnd="@dimen/trackPaddingHorizontal"
         app:layout_constraintBottom_toBottomOf="@id/artistLabel"
         app:layout_constraintEnd_toEndOf="@id/titleLabel"
         app:layout_constraintStart_toEndOf="@id/artistLabel"

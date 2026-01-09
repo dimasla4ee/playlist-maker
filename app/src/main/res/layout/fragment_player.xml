@@ -72,7 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:spacing="@dimen/PlayerButtons.Spread"
+            android:spacing="@dimen/playerButtonsSpread"
             app:layout_constraintBottom_toTopOf="@id/songInfoFlow"
             app:layout_constraintEnd_toEndOf="@id/guideEnd"
             app:layout_constraintStart_toStartOf="@id/guideStart"
@@ -253,8 +253,8 @@
             android:id="@+id/playlistsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="16dp"
-            android:paddingHorizontal="@dimen/normal_100"
+            android:layout_marginTop="@dimen/playlistBottomSheetMarginTop"
+            android:paddingHorizontal="@dimen/playlistBottomSheetPaddingHorizontal"
             android:requiresFadingEdge="vertical"
             tools:listitem="@layout/playlist_item_small" />
 

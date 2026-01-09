@@ -8,16 +8,6 @@
     android:fitsSystemWindows="false"
     tools:context=".feature.search.presentation.SearchFragment">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideStart"
-        style="@style/Guideline.Vertical"
-        app:layout_constraintGuide_begin="@dimen/normal_100" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideEnd"
-        style="@style/Guideline.Vertical"
-        app:layout_constraintGuide_end="@dimen/normal_100" />
-
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/appBar"
         style="@style/Widget.PlaylistMaker.AppBar"
@@ -53,7 +43,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginHorizontal="@dimen/normal_100"
+                android:layout_marginHorizontal="@dimen/searchViewMarginHorizontal"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
@@ -62,14 +52,14 @@
                     style="@style/TextAppearance.PlaylistMaker.TitleMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/normal_150"
+                    android:layout_marginVertical="@dimen/historyLabelMarginVertical"
                     android:text="@string/been_searched" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/normal_150"
+                    android:layout_marginBottom="@dimen/searchRecyclerMarginBottom"
                     android:requiresFadingEdge="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
@@ -77,7 +67,7 @@
                     android:id="@+id/clearHistoryButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/small_100"
+                    android:layout_marginBottom="@dimen/clearButtonMarginBottom"
                     android:text="@string/clear_history" />
             </LinearLayout>
 
@@ -103,7 +93,7 @@
                     android:id="@+id/stateInfo"
                     style="@style/Widget.PlaylistMaker.TextView.StateInfo"
                     android:layout_width="wrap_content"
-                    android:drawablePadding="@dimen/normal_100"
+                    android:drawablePadding="@dimen/stateInfoDrawablePadding"
                     android:maxLines="6"
                     app:drawableTopCompat="@drawable/ic_nothing_found_120"
                     tools:text="@string/no_results" />
@@ -112,11 +102,13 @@
                     android:id="@+id/retryButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/normal_150"
+                    android:layout_marginTop="@dimen/retryButtonMarginTop"
                     android:text="@string/reload" />
+
             </LinearLayout>
 
         </com.google.android.material.search.SearchView>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

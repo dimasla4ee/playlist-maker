@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp">
+    android:paddingHorizontal="4dp"
+    android:paddingVertical="8dp">
 
     <ImageView
         android:id="@+id/playlistCover"
@@ -20,7 +21,7 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/playlistName"
-        style="@style/Widget.PlaylistMaker.TextView.Track.Title"
+        style="@style/Widget.PlaylistMaker.TextView.Playlist.Title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
@@ -33,7 +34,7 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/playlistTrackCount"
-        style="@style/Widget.PlaylistMaker.TextView.Track.Title"
+        style="@style/Widget.PlaylistMaker.TextView.Playlist.Tracklist"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"
