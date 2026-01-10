@@ -1,4 +1,4 @@
-package com.dimasla4ee.playlistmaker.feature.playlist.presentation
+package com.dimasla4ee.playlistmaker.feature.playlists.presentation
 
 import android.content.DialogInterface
 import android.net.Uri
@@ -21,16 +21,16 @@ import coil3.request.transformations
 import coil3.transform.RoundedCornersTransformation
 import com.dimasla4ee.playlistmaker.R
 import com.dimasla4ee.playlistmaker.core.utils.viewBinding
-import com.dimasla4ee.playlistmaker.databinding.FragmentNewPlaylistBinding
-import com.dimasla4ee.playlistmaker.feature.playlist.presentation.viewmodel.NewPlaylistViewModel
+import com.dimasla4ee.playlistmaker.databinding.FragmentPlaylistEditBinding
+import com.dimasla4ee.playlistmaker.feature.playlists.presentation.viewmodel.PlaylistEditViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class NewPlaylistFragment : Fragment(R.layout.fragment_new_playlist) {
+class PlaylistEditFragment : Fragment(R.layout.fragment_playlist_edit) {
 
-    private val binding by viewBinding(FragmentNewPlaylistBinding::bind)
-    private val viewModel: NewPlaylistViewModel by viewModel()
+    private val binding by viewBinding(FragmentPlaylistEditBinding::bind)
+    private val viewModel: PlaylistEditViewModel by viewModel()
 
     private val pickMedia = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
@@ -76,6 +76,7 @@ class NewPlaylistFragment : Fragment(R.layout.fragment_new_playlist) {
 
         createButton.setOnClickListener {
             viewModel.onCreatePlaylist()
+
             Toast.makeText(
                 requireContext(),
                 requireContext().getString(
@@ -84,6 +85,7 @@ class NewPlaylistFragment : Fragment(R.layout.fragment_new_playlist) {
                 ),
                 Toast.LENGTH_SHORT
             ).show()
+
             findNavController().popBackStack()
         }
 

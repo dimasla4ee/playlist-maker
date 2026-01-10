@@ -5,11 +5,12 @@ import com.dimasla4ee.playlistmaker.core.data.storage.ImageStorageManager
 import com.dimasla4ee.playlistmaker.core.domain.model.Track
 import com.dimasla4ee.playlistmaker.feature.favorite.domain.FavoriteInteractor
 import com.dimasla4ee.playlistmaker.feature.favorite.presentation.viewmodel.FavoriteViewModel
-import com.dimasla4ee.playlistmaker.feature.playlist.presentation.viewmodel.PlaylistsViewModel
 import com.dimasla4ee.playlistmaker.feature.player.presentation.TrackPlayerViewModel
 import com.dimasla4ee.playlistmaker.feature.player.presentation.viewmodel.MediaPlayerViewModel
-import com.dimasla4ee.playlistmaker.feature.playlist.domain.PlaylistInteractor
-import com.dimasla4ee.playlistmaker.feature.playlist.presentation.viewmodel.NewPlaylistViewModel
+import com.dimasla4ee.playlistmaker.feature.playlists.domain.PlaylistInteractor
+import com.dimasla4ee.playlistmaker.feature.playlists.presentation.PlaylistDetailedViewModel
+import com.dimasla4ee.playlistmaker.feature.playlists.presentation.viewmodel.PlaylistEditViewModel
+import com.dimasla4ee.playlistmaker.feature.playlists.presentation.viewmodel.PlaylistListViewModel
 import com.dimasla4ee.playlistmaker.feature.search.domain.SearchHistoryInteractor
 import com.dimasla4ee.playlistmaker.feature.search.domain.SearchTracksUseCase
 import com.dimasla4ee.playlistmaker.feature.search.presentation.viewmodel.SearchViewModel
@@ -40,8 +41,8 @@ val viewModelModule = module {
         )
     }
 
-    viewModel<PlaylistsViewModel> {
-        PlaylistsViewModel(
+    viewModel<PlaylistListViewModel> {
+        PlaylistListViewModel(
             playlistInteractor = get<PlaylistInteractor>()
         )
     }
@@ -60,10 +61,17 @@ val viewModelModule = module {
         )
     }
 
-    viewModel<NewPlaylistViewModel> {
-        NewPlaylistViewModel(
+    viewModel<PlaylistEditViewModel> {
+        PlaylistEditViewModel(
             playlistInteractor = get<PlaylistInteractor>(),
             imageStorageManager = get<ImageStorageManager>()
+        )
+    }
+
+    viewModel<PlaylistDetailedViewModel> { (playlistId: Int) ->
+        PlaylistDetailedViewModel(
+            interactor = get<PlaylistInteractor>(),
+            playlistId = playlistId
         )
     }
 

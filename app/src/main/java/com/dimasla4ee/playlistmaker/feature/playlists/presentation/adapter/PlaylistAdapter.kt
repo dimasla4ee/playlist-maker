@@ -1,4 +1,4 @@
-package com.dimasla4ee.playlistmaker.feature.playlist.presentation.adapter
+package com.dimasla4ee.playlistmaker.feature.playlists.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dimasla4ee.playlistmaker.R
 import com.dimasla4ee.playlistmaker.core.domain.model.Playlist
 
-class PlaylistAdapter : RecyclerView.Adapter<PlaylistItemViewHolder>() {
+class PlaylistAdapter(
+    private val onPlaylistClickListener: (Playlist) -> Unit
+) : RecyclerView.Adapter<PlaylistItemViewHolder>() {
 
     var playlists = listOf<Playlist>()
 
@@ -18,7 +20,7 @@ class PlaylistAdapter : RecyclerView.Adapter<PlaylistItemViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: PlaylistItemViewHolder, position: Int) {
-        holder.bind(playlists[position])
+        holder.bind(playlists[position], onPlaylistClickListener)
     }
 
     override fun getItemCount() = playlists.size

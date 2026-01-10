@@ -1,4 +1,4 @@
-package com.dimasla4ee.playlistmaker.feature.playlist.presentation.adapter
+package com.dimasla4ee.playlistmaker.feature.playlists.presentation.adapter
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
@@ -18,12 +18,14 @@ class PlaylistItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     private val binding = PlaylistItemBigBinding.bind(itemView)
     private val context = itemView.context
 
-    fun bind(playlist: Playlist) {
+    fun bind(playlist: Playlist, onPlaylistClickListener: (Playlist) -> Unit) {
+        itemView.setOnClickListener { onPlaylistClickListener(playlist) }
+
         binding.playlistName.text = playlist.name
         binding.playlistTrackCount.text = itemView.resources.getQuantityString(
             R.plurals.tracks_number,
-            playlist.tracksCount,
-            playlist.tracksCount
+            playlist.trackCount,
+            playlist.trackCount
         )
 
         val radius = itemView.resources.getDimension(R.dimen.coverCornerRadius)

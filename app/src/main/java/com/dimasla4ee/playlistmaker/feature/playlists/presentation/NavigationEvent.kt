@@ -1,4 +1,4 @@
-package com.dimasla4ee.playlistmaker.feature.playlist.presentation
+package com.dimasla4ee.playlistmaker.feature.playlists.presentation
 
 sealed interface NavigationEvent {
     data object ShowExitConfirmation : NavigationEvent

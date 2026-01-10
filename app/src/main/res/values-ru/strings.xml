@@ -15,7 +15,7 @@
     <string name="network_error">Проблемы со связью\n\nЗагрузка не удалась.\nПроверьте подключение к интернету</string>
     <string name="reload">Обновить</string>
     <string name="been_searched">Вы искали</string>
-    <string name="clear_history" >Очистить историю</string>
+    <string name="clear_history">Очистить историю</string>
     <string name="searchbar_hint">Поиск</string>
     <string name="play">Включить</string>
     <string name="add_to_playlist">Добавить в плейлист</string>
@@ -48,4 +48,11 @@
         <item quantity="many">%d треков</item>
         <item quantity="other">%d трека</item>
     </plurals>
+    <plurals name="minutes_number">
+        <item quantity="one">%d минута</item>
+        <item quantity="few">%d минуты</item>
+        <item quantity="many">%d минут</item>
+        <item quantity="other">%d минуты</item>
+    </plurals>
+    <string name="playlist_duration_and_tracklist">%1$s · %2$s</string>
 </resources>
