@@ -3,6 +3,7 @@ package com.dimasla4ee.playlistmaker.feature.playlists.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dimasla4ee.playlistmaker.core.domain.model.Playlist
+import com.dimasla4ee.playlistmaker.core.domain.model.Track
 import com.dimasla4ee.playlistmaker.feature.playlists.domain.PlaylistInteractor
 import com.dimasla4ee.playlistmaker.feature.playlists.presentation.model.PlaylistDetailedUiState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -39,7 +40,7 @@ class PlaylistDetailedViewModel(
                 val updatedPlaylist = fetchedPlaylist.copy(tracks = tracks)
                 playlist.update { updatedPlaylist }
 
-                if (tracks.isEmpty()) {
+                if (updatedPlaylist.trackCount == 0) {
                     uiState.update { PlaylistDetailedUiState.Empty }
                 } else {
                     uiState.update { PlaylistDetailedUiState.Content(tracks) }
@@ -53,6 +54,13 @@ class PlaylistDetailedViewModel(
         viewModelScope.launch {
             interactor.deletePlaylist(currentPlaylist)
             closeScreen.emit(Unit)
+        }
+    }
+
+    fun onDeleteTrack(track: Track) {
+        viewModelScope.launch {
+            interactor.deleteTrackFromPlaylist(playlistId, track.id)
+            fetchPlaylistData()
         }
     }
 

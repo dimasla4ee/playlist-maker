@@ -57,7 +57,9 @@ class PlaylistEditViewModel(
 
     fun onCreatePlaylist() {
         viewModelScope.launch {
-            val currentState = uiState.value
+            val currentState = uiState.value.copy(
+                description = uiState.value.description.trim(),
+            )
             val coverPath = if (!currentState.coverIsEmpty()) {
                 imageStorageManager.saveImage(currentState.coverUri)
             } else {

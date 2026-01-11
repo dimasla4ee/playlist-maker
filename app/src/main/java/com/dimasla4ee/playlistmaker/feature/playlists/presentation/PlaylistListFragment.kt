@@ -33,6 +33,8 @@ class PlaylistListFragment : Fragment(R.layout.fragment_playlist_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.getPlaylists()
+
         onPlaylistClickedDebounce = debounce(
             delayMillis = 300L,
             coroutineScope = viewLifecycleOwner.lifecycleScope,

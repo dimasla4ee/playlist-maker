@@ -106,8 +106,7 @@
         android:background="@drawable/bottom_sheet_background"
         android:backgroundTint="@color/background"
         android:orientation="vertical"
-
-        app:behavior_hideable="true"
+        app:behavior_hideable="false"
         app:behavior_peekHeight="200dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
@@ -125,7 +124,17 @@
             android:layout_marginTop="@dimen/playlistBottomSheetMarginTop"
             android:paddingHorizontal="@dimen/playlistBottomSheetPaddingHorizontal"
             android:requiresFadingEdge="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/track_item" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/stateInfo"
+            style="@style/Widget.PlaylistMaker.TextView.StateInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/no_results"
+            app:drawableTopCompat="@drawable/ic_nothing_found_120" />
 
     </LinearLayout>
 

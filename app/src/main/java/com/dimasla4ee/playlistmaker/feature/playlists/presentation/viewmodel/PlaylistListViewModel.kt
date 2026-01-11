@@ -14,11 +14,7 @@ class PlaylistListViewModel(private val playlistInteractor: PlaylistInteractor) 
     val uiState: StateFlow<PlaylistListUiState>
         field = MutableStateFlow<PlaylistListUiState>(PlaylistListUiState.Loading)
 
-    init {
-        getPlaylists()
-    }
-
-    private fun getPlaylists() {
+    fun getPlaylists() {
         viewModelScope.launch {
             playlistInteractor.getAllPlaylists().collect { playlists ->
                 val newState = if (playlists.isEmpty()) {

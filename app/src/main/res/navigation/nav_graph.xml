@@ -61,5 +61,8 @@
         <argument
             android:name="playlistId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_playlistDetailedFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
     </fragment>
 </navigation>
