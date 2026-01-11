@@ -99,7 +99,9 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         }
 
         newPlaylistButton.setOnClickListener {
-            findNavController().navigate(PlayerFragmentDirections.actionPlayerFragmentToNewPlaylistFragment())
+            findNavController().navigate(
+                PlayerFragmentDirections.actionPlayerFragmentToNewPlaylistFragment(playlistId = -1)
+            )
         }
     }
 

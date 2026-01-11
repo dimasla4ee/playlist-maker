@@ -49,7 +49,12 @@
         android:id="@+id/newPlaylistFragment"
         android:name="com.dimasla4ee.playlistmaker.feature.playlists.presentation.PlaylistEditFragment"
         android:label="fragment_new_playlist"
-        tools:layout="@layout/fragment_playlist_edit" />
+        tools:layout="@layout/fragment_playlist_edit">
+        <argument
+            android:name="playlistId"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </fragment>
     <fragment
         android:id="@+id/playlistFragment"
         android:name="com.dimasla4ee.playlistmaker.feature.playlists.presentation.PlaylistListFragment"

@@ -15,6 +15,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import coil3.load
 import coil3.request.crossfade
 import coil3.request.transformations
@@ -24,13 +25,18 @@ import com.dimasla4ee.playlistmaker.core.utils.viewBinding
 import com.dimasla4ee.playlistmaker.databinding.FragmentPlaylistEditBinding
 import com.dimasla4ee.playlistmaker.feature.playlists.presentation.viewmodel.PlaylistEditViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class PlaylistEditFragment : Fragment(R.layout.fragment_playlist_edit) {
 
     private val binding by viewBinding(FragmentPlaylistEditBinding::bind)
-    private val viewModel: PlaylistEditViewModel by viewModel()
+    private val args: PlaylistEditFragmentArgs by navArgs()
+    private val viewModel: PlaylistEditViewModel by viewModel {
+        parametersOf(args.playlistId)
+    }
 
     private val pickMedia = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
@@ -46,6 +52,11 @@ class PlaylistEditFragment : Fragment(R.layout.fragment_playlist_edit) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (args.playlistId != -1) {
+            binding.appBar.setTitle(R.string.edit)
+            binding.createButton.setText(R.string.save)
+        }
 
         dialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.exit_confirmation_title)
@@ -100,6 +111,12 @@ class PlaylistEditFragment : Fragment(R.layout.fragment_playlist_edit) {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
+                    val initialPlaylist = viewModel.initialData.first()
+                    playlistName.setText(initialPlaylist.name)
+                    playlistDescription.setText(initialPlaylist.description)
+                }
+
+                launch {
                     viewModel.uiState.collect { state ->
                         val isCreationAllowed = !state.nameIsBlank()
 
@@ -115,7 +132,6 @@ class PlaylistEditFragment : Fragment(R.layout.fragment_playlist_edit) {
                             crossfade(true)
                             playlistCover.scaleType = scaleType
                         }
-
                     }
                 }
 

@@ -1,6 +1,7 @@
 package com.dimasla4ee.playlistmaker.feature.playlists.presentation.viewmodel
 
 import android.net.Uri
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dimasla4ee.playlistmaker.core.data.storage.ImageStorageManager
@@ -16,8 +17,8 @@ import kotlinx.coroutines.launch
 
 class PlaylistEditViewModel(
     private val playlistInteractor: PlaylistInteractor,
-    private val imageStorageManager: ImageStorageManager
-    //TODO: add Playlist parameter to constructor
+    private val imageStorageManager: ImageStorageManager,
+    playlistId: Int? = null
 ) : ViewModel() {
 
     val uiState: StateFlow<NewPlaylistUiState>
@@ -26,10 +27,43 @@ class PlaylistEditViewModel(
     val showExitConfirmation: SharedFlow<NavigationEvent>
         field = MutableSharedFlow<NavigationEvent>()
 
-    //TODO: depend on Playlist parameter
+    val initialData: SharedFlow<Playlist>
+        field = MutableSharedFlow<Playlist>(replay = 1)
+
+    private var initialPlaylist: Playlist? = null
+
+    init {
+        if (playlistId != null) {
+            fetchPlaylistData(playlistId)
+        }
+    }
+
+    private fun fetchPlaylistData(id: Int) {
+        viewModelScope.launch {
+            val playlist = playlistInteractor.getPlaylistById(id)
+            initialPlaylist = playlist
+            initialData.emit(playlist)
+            uiState.update { currentState ->
+                currentState.copy(
+                    name = playlist.name,
+                    description = playlist.description ?: "",
+                    coverUri = playlist.coverPath.toUri()
+                )
+            }
+        }
+    }
+
     private val hasChanges: Boolean
-        get() = with(uiState.value) {
-            !nameIsBlank() || !descriptionIsBlank() || !coverIsEmpty()
+        get() = if (initialPlaylist != null) {
+            with(uiState.value) {
+                name != initialPlaylist?.name ||
+                        description != (initialPlaylist?.description ?: "") ||
+                        coverUri != initialPlaylist?.coverPath?.toUri()
+            }
+        } else {
+            with(uiState.value) {
+                !nameIsBlank() || !descriptionIsBlank() || !coverIsEmpty()
+            }
         }
 
     fun onNameChanged(newName: String) = uiState.update { currentState ->
@@ -60,18 +94,32 @@ class PlaylistEditViewModel(
             val currentState = uiState.value.copy(
                 description = uiState.value.description.trim(),
             )
-            val coverPath = if (!currentState.coverIsEmpty()) {
+            
+            val coverPath = if (initialPlaylist != null && currentState.coverUri == initialPlaylist?.coverPath?.toUri()) {
+                initialPlaylist?.coverPath ?: ""
+            } else if (!currentState.coverIsEmpty()) {
                 imageStorageManager.saveImage(currentState.coverUri)
             } else {
                 ""
             }
-            playlistInteractor.createPlaylist(
-                Playlist(
-                    name = currentState.name,
-                    description = currentState.description,
-                    coverPath = coverPath
+
+            if (initialPlaylist != null) {
+                playlistInteractor.updatePlaylist(
+                    initialPlaylist!!.copy(
+                        name = currentState.name,
+                        description = currentState.description,
+                        coverPath = coverPath
+                    )
                 )
-            )
+            } else {
+                playlistInteractor.createPlaylist(
+                    Playlist(
+                        name = currentState.name,
+                        description = currentState.description,
+                        coverPath = coverPath
+                    )
+                )
+            }
         }
     }
 

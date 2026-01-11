@@ -16,6 +16,8 @@ import coil3.load
 import coil3.request.crossfade
 import coil3.request.error
 import coil3.request.placeholder
+import coil3.request.transformations
+import coil3.transform.RoundedCornersTransformation
 import com.dimasla4ee.playlistmaker.R
 import com.dimasla4ee.playlistmaker.core.domain.model.Playlist
 import com.dimasla4ee.playlistmaker.core.domain.model.Track
@@ -104,7 +106,9 @@ class PlaylistDetailedFragment : Fragment(R.layout.fragment_playlist_detailed) {
 
         binding.editMenuButton.setOnClickListener {
             findNavController().navigate(
-                PlaylistDetailedFragmentDirections.actionPlaylistDetailedFragmentToNewPlaylistFragment()
+                PlaylistDetailedFragmentDirections.actionPlaylistDetailedFragmentToNewPlaylistFragment(
+                    playlistId = args.playlistId
+                )
             )
         }
 
@@ -232,11 +236,13 @@ class PlaylistDetailedFragment : Fragment(R.layout.fragment_playlist_detailed) {
             binding.playlistCover.scaleType = ImageView.ScaleType.CENTER_CROP
         }
 
+        val radius = resources.getDimension(R.dimen.thumbnailCornerRadius)
         binding.playlistItem.playlistName.text = playlist.name
         binding.playlistItem.playlistTrackCount.text = tracksText
         binding.playlistItem.playlistCover.load(playlist.coverPath) {
             placeholder(placeholder)
             error(placeholder)
+            transformations(RoundedCornersTransformation(radius))
             crossfade(true)
         }
     }

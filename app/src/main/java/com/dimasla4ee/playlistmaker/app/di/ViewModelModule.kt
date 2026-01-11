@@ -61,10 +61,11 @@ val viewModelModule = module {
         )
     }
 
-    viewModel<PlaylistEditViewModel> {
+    viewModel<PlaylistEditViewModel> { (playlistId: Int?) ->
         PlaylistEditViewModel(
             playlistInteractor = get<PlaylistInteractor>(),
-            imageStorageManager = get<ImageStorageManager>()
+            imageStorageManager = get<ImageStorageManager>(),
+            playlistId = if (playlistId == -1) null else playlistId
         )
     }
 
