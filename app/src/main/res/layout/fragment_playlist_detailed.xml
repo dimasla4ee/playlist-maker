@@ -92,13 +92,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <View
-        android:id="@+id/overlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#99000000"
-        android:visibility="gone" />
-
     <LinearLayout
         android:id="@+id/playlistsBottomSheet"
         android:layout_width="match_parent"
@@ -135,6 +128,64 @@
             android:layout_gravity="center_horizontal"
             android:text="@string/no_results"
             app:drawableTopCompat="@drawable/ic_nothing_found_120" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/menuBottomSheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bottom_sheet_background"
+        android:backgroundTint="@color/background"
+        android:elevation="10dp"
+        android:orientation="vertical"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="300dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <View
+            android:layout_width="40dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounder" />
+
+        <include
+            android:id="@+id/playlistItem"
+            layout="@layout/playlist_item_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="8dp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/shareMenuButton"
+            style="@style/Widget.PlaylistMaker.Setting.Button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settingItemHeight"
+            android:text="@string/share_playlist" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/editMenuButton"
+            style="@style/Widget.PlaylistMaker.Setting.Button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settingItemHeight"
+            android:text="@string/edit_playlist_info" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/deleteMenuButton"
+            style="@style/Widget.PlaylistMaker.Setting.Button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settingItemHeight"
+            android:text="@string/delete_playlist" />
 
     </LinearLayout>
 

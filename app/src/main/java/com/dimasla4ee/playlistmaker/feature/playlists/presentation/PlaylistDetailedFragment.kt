@@ -1,8 +1,11 @@
 package com.dimasla4ee.playlistmaker.feature.playlists.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -21,9 +24,11 @@ import com.dimasla4ee.playlistmaker.core.utils.debounce
 import com.dimasla4ee.playlistmaker.core.utils.show
 import com.dimasla4ee.playlistmaker.core.utils.tintedDrawable
 import com.dimasla4ee.playlistmaker.core.utils.toMm
+import com.dimasla4ee.playlistmaker.core.utils.toMmSs
 import com.dimasla4ee.playlistmaker.core.utils.viewBinding
 import com.dimasla4ee.playlistmaker.databinding.FragmentPlaylistDetailedBinding
 import com.dimasla4ee.playlistmaker.feature.playlists.presentation.model.PlaylistDetailedUiState
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -38,16 +43,20 @@ class PlaylistDetailedFragment : Fragment(R.layout.fragment_playlist_detailed) {
     }
     private lateinit var recyclerAdapter: TrackAdapter
     private lateinit var onTrackClickedDebounce: (Track) -> Unit
+    private lateinit var menuBottomSheetBehavior: BottomSheetBehavior<LinearLayout>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.fetchPlaylistData()
+        setupMenuBottomSheet()
 
         binding.appBar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
 
         binding.moreButton.setOnClickListener {
-            showDeletePlaylistDialog()
+            menuBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -87,20 +96,61 @@ class PlaylistDetailedFragment : Fragment(R.layout.fragment_playlist_detailed) {
             onLongItemClick = { showDeleteTrackDialog(it) }
         )
         binding.playlistsRecyclerView.adapter = recyclerAdapter
+
+        binding.deleteMenuButton.setOnClickListener {
+            showDeletePlaylistDialog()
+            menuBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        }
+
+        binding.editMenuButton.setOnClickListener {
+            findNavController().navigate(
+                PlaylistDetailedFragmentDirections.actionPlaylistDetailedFragmentToNewPlaylistFragment()
+            )
+        }
+
+        binding.shareButton.setOnClickListener {
+            onShareClick()
+        }
+
+        binding.shareMenuButton.setOnClickListener {
+            onShareClick()
+        }
     }
 
-    private fun onItemClick(track: Track) {
-        onTrackClickedDebounce(track)
-    }
+    private fun onShareClick() {
+        val playlist = viewModel.playlist.value ?: return
+        if (playlist.tracks.isEmpty()) {
+            Toast.makeText(requireContext(), R.string.no_tracks_to_share, Toast.LENGTH_SHORT)
+                .show()
+        } else {
+            val message = buildString {
+                appendLine(playlist.name)
+                if (!playlist.description.isNullOrEmpty()) {
+                    appendLine(playlist.description)
+                }
+                appendLine(
+                    resources.getQuantityString(
+                        R.plurals.tracks_number,
+                        playlist.tracks.size,
+                        playlist.tracks.size
+                    )
+                )
 
-    private fun showDeleteTrackDialog(track: Track) {
-        MaterialAlertDialogBuilder(requireContext())
-            .setMessage(getString(R.string.delete_track_dialog_message))
-            .setNegativeButton(R.string.no) { _, _ -> }
-            .setPositiveButton(R.string.yes) { _, _ ->
-                viewModel.onDeleteTrack(track)
+                playlist.tracks.forEachIndexed { index, track ->
+                    append("${index + 1}. ${track.artist} - ${track.title} (${track.duration.toMmSs()})")
+                    if (index < playlist.tracks.size - 1) {
+                        appendLine()
+                    }
+                }
             }
-            .show()
+
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                putExtra(Intent.EXTRA_TEXT, message)
+                type = getString(R.string.plain_text_intent_type)
+            }
+
+            startActivity(Intent.createChooser(shareIntent, null))
+        }
     }
 
     private fun showDeletePlaylistDialog() {
@@ -114,6 +164,35 @@ class PlaylistDetailedFragment : Fragment(R.layout.fragment_playlist_detailed) {
             .setNegativeButton(R.string.no) { _, _ -> }
             .setPositiveButton(R.string.yes) { _, _ ->
                 viewModel.onDeletePlaylist()
+            }
+            .show()
+    }
+
+    private fun setupMenuBottomSheet() {
+        menuBottomSheetBehavior = BottomSheetBehavior.from(binding.menuBottomSheet).apply {
+            state = BottomSheetBehavior.STATE_HIDDEN
+        }
+
+        menuBottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                binding.overlay.show(newState != BottomSheetBehavior.STATE_HIDDEN)
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+        })
+    }
+
+    private fun onItemClick(track: Track) {
+        onTrackClickedDebounce(track)
+    }
+
+    private fun showDeleteTrackDialog(track: Track) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.delete_track_dialog_message))
+            .setNegativeButton(R.string.no) { _, _ -> }
+            .setPositiveButton(R.string.yes) { _, _ ->
+                viewModel.onDeleteTrack(track)
             }
             .show()
     }
@@ -151,6 +230,14 @@ class PlaylistDetailedFragment : Fragment(R.layout.fragment_playlist_detailed) {
             error(placeholder)
             crossfade(true)
             binding.playlistCover.scaleType = ImageView.ScaleType.CENTER_CROP
+        }
+
+        binding.playlistItem.playlistName.text = playlist.name
+        binding.playlistItem.playlistTrackCount.text = tracksText
+        binding.playlistItem.playlistCover.load(playlist.coverPath) {
+            placeholder(placeholder)
+            error(placeholder)
+            crossfade(true)
         }
     }
 

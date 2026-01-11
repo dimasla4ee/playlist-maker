@@ -61,4 +61,8 @@
     <string name="no">No</string>
     <string name="delete_playlist_dialog_message">Do you want to delete playlist «%1$s»?</string>
     <string name="delete_track_dialog_message">Do you want to delete track?</string>
+    <string name="share_playlist">Share</string>
+    <string name="edit_playlist_info">Edit information</string>
+    <string name="delete_playlist">Delete playlist</string>
+    <string name="no_tracks_to_share">This playlist doesn\'t have any tracks to share</string>
 </resources>

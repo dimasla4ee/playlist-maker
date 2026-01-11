@@ -27,11 +27,7 @@ class PlaylistDetailedViewModel(
     val closeScreen: SharedFlow<Unit>
         field = MutableSharedFlow<Unit>()
 
-    init {
-        fetchPlaylistData()
-    }
-
-    private fun fetchPlaylistData() {
+    fun fetchPlaylistData() {
         viewModelScope.launch {
             val fetchedPlaylist = interactor.getPlaylistById(playlistId)
             playlist.update { fetchedPlaylist }
