@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.time.LocalDate
 
-@Entity(tableName = "favorite")
+@Entity(tableName = "track")
 data class TrackEntity(
     @PrimaryKey val id: Int,
     val title: String,
@@ -15,6 +15,11 @@ data class TrackEntity(
     val genre: String,
     val duration: Long,
     val thumbnailUrl: String,
-    val audioUrl: String,
+    val audioUrl: String
+)
+
+@Entity(tableName = "favorite")
+data class FavoriteEntity(
+    @PrimaryKey val trackId: Int,
     val addedAt: Long = System.currentTimeMillis()
 )

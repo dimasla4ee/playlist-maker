@@ -73,8 +73,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         bottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                binding.overlay.visibility =
-                    if (newState == BottomSheetBehavior.STATE_HIDDEN) View.GONE else View.VISIBLE
+                binding.overlay.show(newState != BottomSheetBehavior.STATE_HIDDEN)
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
@@ -100,7 +99,9 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         }
 
         newPlaylistButton.setOnClickListener {
-            findNavController().navigate(PlayerFragmentDirections.actionPlayerFragmentToNewPlaylistFragment())
+            findNavController().navigate(
+                PlayerFragmentDirections.actionPlayerFragmentToNewPlaylistFragment(playlistId = -1)
+            )
         }
     }
 

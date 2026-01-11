@@ -32,6 +32,9 @@
         <action
             android:id="@+id/action_mediaLibraryFragment_to_newPlaylistFragment"
             app:destination="@id/newPlaylistFragment" />
+        <action
+            android:id="@+id/action_mediaLibraryFragment_to_playlistDetailedFragment"
+            app:destination="@id/playlistDetailedFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -44,11 +47,30 @@
     </fragment>
     <fragment
         android:id="@+id/newPlaylistFragment"
-        android:name="com.dimasla4ee.playlistmaker.feature.playlist.presentation.NewPlaylistFragment"
+        android:name="com.dimasla4ee.playlistmaker.feature.playlists.presentation.PlaylistEditFragment"
         android:label="fragment_new_playlist"
-        tools:layout="@layout/fragment_new_playlist" />
+        tools:layout="@layout/fragment_playlist_edit">
+        <argument
+            android:name="playlistId"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </fragment>
     <fragment
         android:id="@+id/playlistFragment"
-        android:name="com.dimasla4ee.playlistmaker.feature.playlist.presentation.PlaylistFragment"
+        android:name="com.dimasla4ee.playlistmaker.feature.playlists.presentation.PlaylistListFragment"
         android:label="PlaylistFragment" />
+    <fragment
+        android:id="@+id/playlistDetailedFragment"
+        android:name="com.dimasla4ee.playlistmaker.feature.playlists.presentation.PlaylistDetailedFragment"
+        android:label="PlaylistDetailedFragment">
+        <argument
+            android:name="playlistId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_playlistDetailedFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
+        <action
+            android:id="@+id/action_playlistDetailedFragment_to_newPlaylistFragment"
+            app:destination="@id/newPlaylistFragment" />
+    </fragment>
 </navigation>
