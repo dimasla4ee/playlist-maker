@@ -17,8 +17,7 @@ import kotlinx.coroutines.launch
 
 class PlaylistEditViewModel(
     private val playlistInteractor: PlaylistInteractor,
-    private val imageStorageManager: ImageStorageManager,
-    playlistId: Int? = null
+    private val imageStorageManager: ImageStorageManager
 ) : ViewModel() {
 
     val uiState: StateFlow<NewPlaylistUiState>
@@ -32,13 +31,7 @@ class PlaylistEditViewModel(
 
     private var initialPlaylist: Playlist? = null
 
-    init {
-        if (playlistId != null) {
-            fetchPlaylistData(playlistId)
-        }
-    }
-
-    private fun fetchPlaylistData(id: Int) {
+    fun fetchPlaylistData(id: Int) {
         viewModelScope.launch {
             val playlist = playlistInteractor.getPlaylistById(id)
             initialPlaylist = playlist
@@ -123,14 +116,5 @@ class PlaylistEditViewModel(
         }
     }
 
-    data class NewPlaylistUiState(
-        val name: String = "",
-        val description: String = "",
-        val coverUri: Uri = Uri.EMPTY
-    ) {
-        fun nameIsBlank() = name.isBlank()
-        fun descriptionIsBlank() = description.isBlank()
-        fun coverIsEmpty() = coverUri == Uri.EMPTY
-    }
-
 }
+

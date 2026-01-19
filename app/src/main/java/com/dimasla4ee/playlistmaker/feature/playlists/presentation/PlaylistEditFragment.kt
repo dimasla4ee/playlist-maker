@@ -53,9 +53,12 @@ class PlaylistEditFragment : Fragment(R.layout.fragment_playlist_edit) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (args.playlistId != -1) {
+        val playlistId = args.playlistId
+
+        if (playlistId != -1) {
             binding.appBar.setTitle(R.string.edit)
             binding.createButton.setText(R.string.save)
+            viewModel.fetchPlaylistData(playlistId)
         }
 
         dialog = MaterialAlertDialogBuilder(requireContext())
