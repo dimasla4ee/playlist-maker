@@ -2,11 +2,10 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.android.navigation.safeargs)
+    alias(libs.plugins.google.devtools.ksp)
     alias(libs.plugins.kotlin.serialization)
-    id("kotlin-parcelize")
-    id("androidx.navigation.safeargs.kotlin")
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
@@ -14,7 +13,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.dimasla4ee.playlistmaker"
+        applicationId = "io.dimasla4ee.playlistmaker"
         minSdk = 29
         targetSdk = 36
         versionCode = 1
@@ -25,7 +24,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -39,6 +38,8 @@ android {
         }
 
         debug {
+            applicationIdSuffix = ".debug"
+            isMinifyEnabled = false
             buildConfigField(
                 type = "String",
                 name = "API_BASE_URL",
