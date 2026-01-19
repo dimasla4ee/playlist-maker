@@ -35,6 +35,7 @@ android {
                 name = "API_BASE_URL",
                 value = "\"https://itunes.apple.com/\""
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
 
         debug {

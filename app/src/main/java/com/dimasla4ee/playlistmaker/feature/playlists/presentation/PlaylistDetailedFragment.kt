@@ -193,7 +193,7 @@ class PlaylistDetailedFragment : Fragment(R.layout.fragment_playlist_detailed) {
 
     private fun showDeleteTrackDialog(track: Track) {
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle(getString(R.string.delete_track_dialog_message))
+            .setMessage(getString(R.string.delete_track_dialog_message))
             .setNegativeButton(R.string.no) { _, _ -> }
             .setPositiveButton(R.string.yes) { _, _ ->
                 viewModel.onDeleteTrack(track)
