@@ -49,7 +49,9 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
             )
         }
 
-        recyclerAdapter = TrackAdapter { onItemClick(it) }
+        recyclerAdapter = TrackAdapter(
+            onItemClick = { onItemClick(it) }
+        )
         binding.recycler.adapter = recyclerAdapter
     }
 

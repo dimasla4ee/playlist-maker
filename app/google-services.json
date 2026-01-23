@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "418695033343",
+    "project_id": "playlist-maker-26bbe",
+    "storage_bucket": "playlist-maker-26bbe.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:418695033343:android:126d5f64092735b872f7ca",
+        "android_client_info": {
+          "package_name": "io.dimasla4ee.playlistmaker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPQPNN56JSa158qS42k244GDfIV6SJSHY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

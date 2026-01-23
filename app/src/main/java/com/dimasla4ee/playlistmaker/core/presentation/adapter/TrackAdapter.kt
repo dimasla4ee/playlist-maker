@@ -5,7 +5,8 @@ import androidx.recyclerview.widget.ListAdapter
 import com.dimasla4ee.playlistmaker.core.domain.model.Track
 
 class TrackAdapter(
-    private val onItemClick: (Track) -> Unit
+    private val onItemClick: (Track) -> Unit,
+    private val onLongItemClick: ((Track) -> Unit)? = null
 ) : ListAdapter<Track, TrackViewHolder>(TrackDiffCallback()) {
 
     override fun onCreateViewHolder(
@@ -18,6 +19,6 @@ class TrackAdapter(
         position: Int
     ) {
         val track = getItem(position)
-        holder.bind(track, onItemClick)
+        holder.bind(track, onItemClick, onLongItemClick)
     }
 }

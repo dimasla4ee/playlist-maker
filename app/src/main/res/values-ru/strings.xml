@@ -15,7 +15,7 @@
     <string name="network_error">Проблемы со связью\n\nЗагрузка не удалась.\nПроверьте подключение к интернету</string>
     <string name="reload">Обновить</string>
     <string name="been_searched">Вы искали</string>
-    <string name="clear_history" >Очистить историю</string>
+    <string name="clear_history">Очистить историю</string>
     <string name="searchbar_hint">Поиск</string>
     <string name="play">Включить</string>
     <string name="add_to_playlist">Добавить в плейлист</string>
@@ -48,4 +48,21 @@
         <item quantity="many">%d треков</item>
         <item quantity="other">%d трека</item>
     </plurals>
+    <plurals name="minutes_number">
+        <item quantity="one">%d минута</item>
+        <item quantity="few">%d минуты</item>
+        <item quantity="many">%d минут</item>
+        <item quantity="other">%d минуты</item>
+    </plurals>
+    <string name="playlist_duration_and_tracklist">%1$s · %2$s</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="delete_playlist_dialog_message">Хотите удалить плейлист «%1$s»?</string>
+    <string name="delete_track_dialog_message">Хотите удалить трек?</string>
+    <string name="share_playlist">Поделиться</string>
+    <string name="edit_playlist_info">Редактировать информацию</string>
+    <string name="delete_playlist">Удалить плейлист</string>
+    <string name="no_tracks_to_share">В этом плейлисте нет списка треков, которым можно поделиться</string>
+    <string name="edit">Редактировать</string>
+    <string name="save">Сохранить</string>
 </resources>

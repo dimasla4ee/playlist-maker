@@ -44,7 +44,8 @@ class MainActivity : AppCompatActivity() {
             navController.addOnDestinationChangedListener { _, destination, _ ->
                 val shouldShowNavigationBar = when (destination.id) {
                     R.id.playerFragment,
-                    R.id.newPlaylistFragment -> false
+                    R.id.newPlaylistFragment,
+                    R.id.playlistDetailedFragment -> false
 
                     else -> true
                 }
@@ -54,4 +55,5 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
 }

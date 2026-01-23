@@ -11,7 +11,7 @@ import com.dimasla4ee.playlistmaker.core.data.network.NetworkClient
 import com.dimasla4ee.playlistmaker.core.data.network.NetworkConstants
 import com.dimasla4ee.playlistmaker.core.data.network.RetrofitNetworkClient
 import com.dimasla4ee.playlistmaker.feature.favorite.data.dao.FavoriteDao
-import com.dimasla4ee.playlistmaker.feature.playlist.data.dao.PlaylistDao
+import com.dimasla4ee.playlistmaker.feature.playlists.data.dao.PlaylistDao
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import org.koin.android.ext.koin.androidContext

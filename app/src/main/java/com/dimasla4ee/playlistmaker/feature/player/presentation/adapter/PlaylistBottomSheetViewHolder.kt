@@ -21,8 +21,8 @@ class PlaylistBottomSheetViewHolder(itemView: View) : RecyclerView.ViewHolder(it
         binding.playlistName.text = playlist.name
         binding.playlistTrackCount.text = context.resources.getQuantityString(
             R.plurals.tracks_number,
-            playlist.tracksCount,
-            playlist.tracksCount
+            playlist.trackCount,
+            playlist.trackCount
         )
 
         val radius = context.resources.getDimension(R.dimen.thumbnailCornerRadius)

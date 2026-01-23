@@ -7,7 +7,7 @@ import com.dimasla4ee.playlistmaker.core.domain.model.Track
 import com.dimasla4ee.playlistmaker.core.utils.LogUtil
 import com.dimasla4ee.playlistmaker.feature.favorite.domain.FavoriteInteractor
 import com.dimasla4ee.playlistmaker.feature.player.presentation.model.PlaylistAddTrackState
-import com.dimasla4ee.playlistmaker.feature.playlist.domain.PlaylistInteractor
+import com.dimasla4ee.playlistmaker.feature.playlists.domain.PlaylistInteractor
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -32,7 +32,7 @@ class TrackPlayerViewModel(
 
     fun onViewCreated() {
         viewModelScope.launch {
-            isFavorite.update { favoriteInteractor.getTrackById(track.id) != null }
+            isFavorite.update { favoriteInteractor.isFavorite(track.id) }
         }
     }
 
@@ -62,7 +62,7 @@ class TrackPlayerViewModel(
                 "TrackPlayerViewModel",
                 "onPlaylistClicked pl: ${playlist.id}, tr: ${track.id}"
             )
-            val isAdded = playlistInteractor.addTrackToPlaylist(playlist.id, track.id)
+            val isAdded = playlistInteractor.addTrackToPlaylist(playlist, track)
             val state = if (isAdded) {
                 PlaylistAddTrackState.Success(playlist.name)
             } else {
@@ -71,4 +71,5 @@ class TrackPlayerViewModel(
             playlistAddTrackState.emit(state)
         }
     }
+
 }
