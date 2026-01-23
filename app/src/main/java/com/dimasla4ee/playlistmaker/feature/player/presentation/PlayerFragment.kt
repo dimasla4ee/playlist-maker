@@ -25,6 +25,8 @@ import com.dimasla4ee.playlistmaker.feature.player.presentation.viewmodel.MediaP
 import com.dimasla4ee.playlistmaker.feature.search.presentation.mapper.TrackDetailedInfoMapper
 import com.dimasla4ee.playlistmaker.feature.search.presentation.model.TrackDetailedInfo
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.logEvent
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -43,10 +45,12 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     private val bottomSheetAdapter = PlaylistBottomSheetAdapter { playlist ->
         trackPlayerViewModel.onPlaylistClicked(playlist)
     }
+    private lateinit var analytics: FirebaseAnalytics
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        analytics = FirebaseAnalytics.getInstance(requireContext())
         trackDetailedInfo = TrackDetailedInfoMapper.map(args.track)
         fillTrackInfo(trackDetailedInfo)
 
@@ -109,6 +113,9 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         viewLifecycleOwner.lifecycleScope.launch {
             trackPlayerViewModel.isFavorite.collect { isFavorite ->
                 val (resId, colorRes) = if (isFavorite) {
+                    analytics.logEvent("add_to_favorite") {
+                        param(FirebaseAnalytics.Param.CONTENT, args.track.id.toString())
+                    }
                     R.drawable.ic_favorite_active_24 to R.color.favFabActiveIcon
                 } else {
                     R.drawable.ic_favorite_inactive_24 to R.color.fabIcon
