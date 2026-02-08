@@ -1,20 +1,20 @@
 package com.dimasla4ee.playlistmaker.app.di
 
+import com.dimasla4ee.playlistmaker.core.data.network.NetworkClient
 import com.dimasla4ee.playlistmaker.core.data.storage.PrefsStorageClient
 import com.dimasla4ee.playlistmaker.core.data.storage.StorageClient
 import com.dimasla4ee.playlistmaker.core.domain.model.Track
-import com.dimasla4ee.playlistmaker.core.data.network.NetworkClient
 import com.dimasla4ee.playlistmaker.core.utils.KeyConstants
-import com.dimasla4ee.playlistmaker.feature.favorite.data.dao.FavoriteDao
 import com.dimasla4ee.playlistmaker.feature.favorite.data.FavoriteRepositoryImpl
 import com.dimasla4ee.playlistmaker.feature.favorite.data.converter.TrackDbConverter
+import com.dimasla4ee.playlistmaker.feature.favorite.data.dao.FavoriteDao
 import com.dimasla4ee.playlistmaker.feature.favorite.domain.FavoriteRepository
-import com.dimasla4ee.playlistmaker.feature.playlist.data.converter.PlaylistDbConverter
-import com.dimasla4ee.playlistmaker.feature.playlist.data.PlaylistRepositoryImpl
-import com.dimasla4ee.playlistmaker.feature.playlist.data.dao.PlaylistDao
-import com.dimasla4ee.playlistmaker.feature.playlist.domain.PlaylistInteractor
-import com.dimasla4ee.playlistmaker.feature.playlist.domain.PlaylistInteractorImpl
-import com.dimasla4ee.playlistmaker.feature.playlist.domain.PlaylistRepository
+import com.dimasla4ee.playlistmaker.feature.playlists.data.PlaylistRepositoryImpl
+import com.dimasla4ee.playlistmaker.feature.playlists.data.converter.PlaylistDbConverter
+import com.dimasla4ee.playlistmaker.feature.playlists.data.dao.PlaylistDao
+import com.dimasla4ee.playlistmaker.feature.playlists.domain.PlaylistInteractor
+import com.dimasla4ee.playlistmaker.feature.playlists.domain.PlaylistInteractorImpl
+import com.dimasla4ee.playlistmaker.feature.playlists.domain.PlaylistRepository
 import com.dimasla4ee.playlistmaker.feature.search.data.SearchHistoryRepositoryImpl
 import com.dimasla4ee.playlistmaker.feature.search.data.TrackSearchRepositoryImpl
 import com.dimasla4ee.playlistmaker.feature.search.domain.repository.SearchHistoryRepository
@@ -77,7 +77,8 @@ val repositoryModule = module {
     factory<PlaylistRepository> {
         PlaylistRepositoryImpl(
             playlistDao = get<PlaylistDao>(),
-            playlistConverter = get<PlaylistDbConverter>()
+            playlistConverter = get<PlaylistDbConverter>(),
+            trackConverter = get<TrackDbConverter>()
         )
     }
 

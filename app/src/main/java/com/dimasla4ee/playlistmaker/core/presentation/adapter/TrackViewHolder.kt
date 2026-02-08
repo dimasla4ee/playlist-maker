@@ -23,7 +23,8 @@ class TrackViewHolder(
 
     fun bind(
         track: Track,
-        onItemClick: (Track) -> Unit
+        onItemClick: (Track) -> Unit,
+        onLongItemClick: ((Track) -> Unit)? = null
     ) {
         val trackDetailedInfo = TrackDetailedInfoMapper.map(track)
         val radius = itemView.resources.getDimension(R.dimen.thumbnailCornerRadius)
@@ -44,6 +45,11 @@ class TrackViewHolder(
                 onItemClick(track)
             }
 
+            trackContainer.setOnLongClickListener {
+                onLongItemClick?.invoke(track)
+                true
+            }
+
             albumCover.load(track.thumbnailUrl) {
                 placeholder(placeholder)
                 error(placeholder)
@@ -54,11 +60,11 @@ class TrackViewHolder(
     }
 
     companion object {
-
         fun from(parent: ViewGroup): TrackViewHolder {
             val inflater = LayoutInflater.from(parent.context)
             val binding = TrackItemBinding.inflate(inflater, parent, false)
             return TrackViewHolder(binding)
         }
     }
+
 }

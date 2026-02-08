@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.dimasla4ee.playlistmaker.feature.favorite.presentation.FavoriteFragment
-import com.dimasla4ee.playlistmaker.feature.playlist.presentation.PlaylistFragment
+import com.dimasla4ee.playlistmaker.feature.playlists.presentation.PlaylistListFragment
 
 class MediaLibraryPagerAdapter(
     fragmentManager: FragmentManager,
@@ -14,7 +14,7 @@ class MediaLibraryPagerAdapter(
 
     override fun createFragment(position: Int): Fragment = when (position) {
         0 -> FavoriteFragment.newInstance()
-        else -> PlaylistFragment.newInstance()
+        else -> PlaylistListFragment.newInstance()
     }
 
     override fun getItemCount(): Int = 2

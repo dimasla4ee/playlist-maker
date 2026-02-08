@@ -73,6 +73,9 @@
 
     <color name="outlinedBoxInactive">#AEAFB4</color>
 
+    <color name="playlistDetailedBackground">#E6E8EB</color>
+    <color name="playlistDetailedText">#1A1B22</color>
+
     <!-- fallback -->
     <color name="error">#F2B8B5</color>
     <color name="onError">#601410</color>

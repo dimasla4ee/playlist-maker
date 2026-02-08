@@ -20,3 +20,5 @@ fun Int.toMmSs(): String = dateFormatter.format(this)
  * @return A [String] in the "mm:ss" format.
  */
 fun Long.toMmSs(): String = dateFormatter.format(this)
+
+fun Long.toMm(): String = SimpleDateFormat("mm", Locale.ROOT).format(this)

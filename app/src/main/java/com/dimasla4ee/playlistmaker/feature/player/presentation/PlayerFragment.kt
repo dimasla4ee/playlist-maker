@@ -14,6 +14,7 @@ import coil3.request.error
 import coil3.request.placeholder
 import coil3.request.transformations
 import coil3.transform.RoundedCornersTransformation
+import com.dimasla4ee.playlistmaker.BuildConfig
 import com.dimasla4ee.playlistmaker.R
 import com.dimasla4ee.playlistmaker.core.utils.show
 import com.dimasla4ee.playlistmaker.core.utils.tintedDrawable
@@ -25,6 +26,8 @@ import com.dimasla4ee.playlistmaker.feature.player.presentation.viewmodel.MediaP
 import com.dimasla4ee.playlistmaker.feature.search.presentation.mapper.TrackDetailedInfoMapper
 import com.dimasla4ee.playlistmaker.feature.search.presentation.model.TrackDetailedInfo
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.logEvent
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -43,10 +46,13 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     private val bottomSheetAdapter = PlaylistBottomSheetAdapter { playlist ->
         trackPlayerViewModel.onPlaylistClicked(playlist)
     }
+    private lateinit var analytics: FirebaseAnalytics
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        analytics = FirebaseAnalytics.getInstance(requireContext())
+        analytics.setAnalyticsCollectionEnabled(!BuildConfig.DEBUG)
         trackDetailedInfo = TrackDetailedInfoMapper.map(args.track)
         fillTrackInfo(trackDetailedInfo)
 
@@ -73,8 +79,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         bottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                binding.overlay.visibility =
-                    if (newState == BottomSheetBehavior.STATE_HIDDEN) View.GONE else View.VISIBLE
+                binding.overlay.show(newState != BottomSheetBehavior.STATE_HIDDEN)
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
@@ -100,7 +105,9 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         }
 
         newPlaylistButton.setOnClickListener {
-            findNavController().navigate(PlayerFragmentDirections.actionPlayerFragmentToNewPlaylistFragment())
+            findNavController().navigate(
+                PlayerFragmentDirections.actionPlayerFragmentToNewPlaylistFragment(playlistId = -1)
+            )
         }
     }
 
@@ -108,6 +115,9 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         viewLifecycleOwner.lifecycleScope.launch {
             trackPlayerViewModel.isFavorite.collect { isFavorite ->
                 val (resId, colorRes) = if (isFavorite) {
+                    analytics.logEvent("add_to_favorite") {
+                        param(FirebaseAnalytics.Param.CONTENT, args.track.id.toString())
+                    }
                     R.drawable.ic_favorite_active_24 to R.color.favFabActiveIcon
                 } else {
                     R.drawable.ic_favorite_inactive_24 to R.color.fabIcon

@@ -9,5 +9,6 @@ interface FavoriteRepository {
     suspend fun getTrackById(trackId: Int): Track?
     suspend fun insertTrack(track: Track)
     suspend fun deleteTrack(trackId: Int)
+    suspend fun isFavorite(trackId: Int): Boolean
 
 }
