@@ -67,36 +67,41 @@
             app:layout_constraintVertical_chainStyle="spread"
             tools:text="Author" />
 
-        <com.google.android.material.button.MaterialButtonGroup
+        <androidx.constraintlayout.helper.widget.Flow
             android:id="@+id/buttonGroup"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:spacing="@dimen/playerButtonsSpread"
-            app:layout_constraintBottom_toTopOf="@id/songInfoFlow"
+            app:constraint_referenced_ids="addToPlaylistButton,playButton,addToFavoriteButton"
+            app:flow_horizontalGap="@dimen/playerButtonsSpread"
+            app:flow_horizontalStyle="packed"
+            app:layout_constraintBottom_toTopOf="@id/songCurrentDuration"
             app:layout_constraintEnd_toEndOf="@id/guideEnd"
             app:layout_constraintStart_toStartOf="@id/guideStart"
-            app:layout_constraintTop_toBottomOf="@id/songAuthor">
+            app:layout_constraintTop_toBottomOf="@id/songAuthor" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/addToPlaylistButton"
-                style="@style/Widget.PlaylistMaker.IconButton.Medium"
-                android:contentDescription="@string/add_to_playlist"
-                app:icon="@drawable/ic_add_to_playlist_24" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/addToPlaylistButton"
+            style="@style/Widget.PlaylistMaker.IconButton.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/add_to_playlist"
+            app:icon="@drawable/ic_add_to_playlist_24" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/playButton"
-                style="@style/Widget.PlaylistMaker.IconButton.Large"
-                android:contentDescription="@string/play"
-                app:icon="@drawable/ic_play_24" />
+        <com.dimasla4ee.playlistmaker.feature.player.presentation.PlaybackButtonView
+            android:id="@+id/playButton"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            app:drawablePause="@drawable/ic_pause_24"
+            app:drawablePlay="@drawable/ic_play_24"
+            app:drawableScale="0.4" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/addToFavoriteButton"
-                style="@style/Widget.PlaylistMaker.IconButton.Medium"
-                android:contentDescription="@string/add_to_favorite"
-                app:icon="@drawable/ic_favorite_inactive_24" />
-
-        </com.google.android.material.button.MaterialButtonGroup>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/addToFavoriteButton"
+            style="@style/Widget.PlaylistMaker.IconButton.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/add_to_favorite"
+            app:icon="@drawable/ic_favorite_inactive_24" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/songCurrentDuration"
@@ -224,7 +229,8 @@
         android:orientation="vertical"
         app:behavior_hideable="true"
         app:behavior_peekHeight="450dp"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        tools:visibility="gone">
 
         <View
             android:layout_width="40dp"
