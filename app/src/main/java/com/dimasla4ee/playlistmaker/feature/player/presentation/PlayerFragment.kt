@@ -14,6 +14,7 @@ import coil3.request.error
 import coil3.request.placeholder
 import coil3.request.transformations
 import coil3.transform.RoundedCornersTransformation
+import com.dimasla4ee.playlistmaker.BuildConfig
 import com.dimasla4ee.playlistmaker.R
 import com.dimasla4ee.playlistmaker.core.utils.show
 import com.dimasla4ee.playlistmaker.core.utils.tintedDrawable
@@ -51,6 +52,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         super.onViewCreated(view, savedInstanceState)
 
         analytics = FirebaseAnalytics.getInstance(requireContext())
+        analytics.setAnalyticsCollectionEnabled(!BuildConfig.DEBUG)
         trackDetailedInfo = TrackDetailedInfoMapper.map(args.track)
         fillTrackInfo(trackDetailedInfo)
 
