@@ -166,23 +166,10 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
 
     private fun fillTrackInfo(track: TrackDetailedInfo): Unit = with(binding) {
-        val yearIsAvailable = track.year != null
-        val albumIsAvailable = track.album != null
 
-        songDurationFetched.text = track.duration
-        songYearFetched.show(yearIsAvailable)
-        songYearLabel.show(yearIsAvailable)
-        songYearFetched.text = track.year?.toString()
-
-        songAlbumFetched.show(albumIsAvailable)
-        songAlbumLabel.show(albumIsAvailable)
-        songAlbumFetched.text = track.album
-
-        songGenreFetched.text = track.genre
-        songCountryFetched.text = track.country
-
-        songTitle.text = track.title
-        songAuthor.text = track.artist
+        fun LabelValueView.setValueOrHide(value: String?) {
+            if (value != null) setValue(value) else show(false)
+        }
 
         requireContext().also { context ->
             val radius = resources.getDimension(R.dimen.coverCornerRadius)
@@ -198,6 +185,15 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                 crossfade(true)
             }
         }
+
+        songTitle.text = track.title
+        songAuthor.text = track.artist
+
+        songDuration.setValue(track.duration)
+        songYear.setValueOrHide(track.year?.toString())
+        songAlbum.setValueOrHide(track.album)
+        songGenre.setValue(track.genre)
+        songCountry.setValue(track.country)
     }
 
 }

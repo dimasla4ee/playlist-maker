@@ -19,7 +19,6 @@ class PlaybackButtonView @JvmOverloads constructor(
     @StyleRes defStyleRes: Int = 0
 ) : View(context, attrs, defStyleAttr, defStyleRes) {
 
-    //    private val minViewSize = 24 TODO: dp size
     private var isPlaying = false
     private var center = 0f at 0f
     private var radius = 0f
