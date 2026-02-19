@@ -154,8 +154,13 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
         viewLifecycleOwner.lifecycleScope.launch {
             mediaPlayerViewModel.state.collect { mediaPlayerState ->
+                playButton.state = when (mediaPlayerState) {
+                    is MediaPlayerViewModel.State.Default -> PlaybackButtonView.State.LOADING
+                    is MediaPlayerViewModel.State.Playing -> PlaybackButtonView.State.PLAYING
+                    else -> PlaybackButtonView.State.PAUSED
+                }
+
                 playButton.isEnabled = mediaPlayerState.isPlayButtonEnabled
-                playButton.setPlaying(mediaPlayerState is MediaPlayerViewModel.State.Playing)
                 songCurrentDuration.text = mediaPlayerState.progress
             }
         }
