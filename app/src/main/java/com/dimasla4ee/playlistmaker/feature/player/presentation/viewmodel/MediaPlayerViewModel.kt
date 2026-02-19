@@ -34,6 +34,7 @@ class MediaPlayerViewModel(
             }
             setOnCompletionListener {
                 timerJob?.cancel()
+                mediaPlayer.seekTo(0)
                 state.update { State.Prepared }
             }
         }
