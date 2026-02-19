@@ -197,6 +197,22 @@ class PlaybackButtonView @JvmOverloads constructor(
         }
     }
 
+    fun setState(newState: State) {
+        state = newState
+    }
+
+    fun showLoading() {
+        state = State.LOADING
+    }
+
+    fun showPlaying() {
+        state = State.PLAYING
+    }
+
+    fun showPaused() {
+        state = State.PAUSED
+    }
+
     enum class State {
         LOADING,
         PLAYING,
