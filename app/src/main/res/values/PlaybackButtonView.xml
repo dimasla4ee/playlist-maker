@@ -3,8 +3,10 @@
 
     <declare-styleable name="PlaybackButtonView">
 
-        <attr name="drawablePlay" format="reference" />
-        <attr name="drawablePause" format="reference" />
+        <attr name="drawablePlaying" format="reference" />
+        <attr name="drawablePaused" format="reference" />
+        <attr name="avdPlayingToPaused" format="reference" />
+        <attr name="avdPausedToPlaying" format="reference" />
         <attr name="drawableScale" format="float" />
 
     </declare-styleable>

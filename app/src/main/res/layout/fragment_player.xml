@@ -95,9 +95,12 @@
                 android:id="@+id/playButton"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                app:drawablePause="@drawable/ic_pause_24"
-                app:drawablePlay="@drawable/ic_play_24"
-                app:drawableScale="0.4" />
+                app:avdPausedToPlaying="@drawable/avd_paused_to_playing"
+                app:avdPlayingToPaused="@drawable/avd_playing_to_paused"
+                app:drawablePaused="@drawable/ic_play_24"
+                app:drawablePlaying="@drawable/ic_pause_24"
+                app:drawableScale="0.6"
+                app:iconTint="@color/playbackFabIcon" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/addToFavoriteButton"
