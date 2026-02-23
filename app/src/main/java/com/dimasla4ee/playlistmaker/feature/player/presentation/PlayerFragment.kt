@@ -17,6 +17,8 @@ import coil3.request.transformations
 import coil3.transform.RoundedCornersTransformation
 import com.dimasla4ee.playlistmaker.BuildConfig
 import com.dimasla4ee.playlistmaker.R
+import com.dimasla4ee.playlistmaker.core.utils.collapse
+import com.dimasla4ee.playlistmaker.core.utils.hide
 import com.dimasla4ee.playlistmaker.core.utils.show
 import com.dimasla4ee.playlistmaker.core.utils.tintedDrawable
 import com.dimasla4ee.playlistmaker.core.utils.viewBinding
@@ -74,13 +76,17 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         mediaPlayerViewModel.onPause()
     }
 
+    override fun onResume() {
+        super.onResume()
+        mediaPlayerViewModel.onResume()
+    }
+
     private fun setupBottomSheet(): Unit = with(binding) {
         playlistsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         playlistsRecyclerView.adapter = bottomSheetAdapter
-        overlay.isClickable = true
 
         bottomSheetBehavior = BottomSheetBehavior.from(playlistsBottomSheet).apply {
-            state = BottomSheetBehavior.STATE_HIDDEN
+            hide()
             addBottomSheetCallback(
                 object : BottomSheetBehavior.BottomSheetCallback() {
                     override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -124,8 +130,12 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         }
 
         addToPlaylistButton.setOnClickListener {
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            bottomSheetBehavior.collapse()
             trackPlayerViewModel.onShowPlaylists()
+        }
+
+        overlay.setOnClickListener {
+            bottomSheetBehavior.hide()
         }
 
         newPlaylistButton.setOnClickListener {
@@ -186,12 +196,14 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                     )
                 }
                 Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+                bottomSheetBehavior.hide()
+                bottomSheetBehavior
             }
         }
     }
 
     private fun fillTrackInfo(track: TrackDetailedInfo): Unit = with(binding) {
+
         fun LabelValueView.setValueOrHide(value: String?) {
             if (value != null) setValue(value) else show(false)
         }

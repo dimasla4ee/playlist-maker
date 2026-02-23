@@ -127,6 +127,7 @@ class PlaybackButtonView @JvmOverloads constructor(
                 avdPlayingToPaused = getAvd(R.styleable.PlaybackButtonView_avdPlayingToPaused)
             }
         }
+        handleIconTransition(state, state)
 
         isClickable = true
         isFocusable = true
@@ -221,6 +222,10 @@ class PlaybackButtonView @JvmOverloads constructor(
                 iconAppearAnimator.start()
                 drawablePlaying
             }
+
+            newState == State.PAUSED -> drawablePaused
+
+            newState == State.PLAYING -> drawablePlaying
 
             else -> null
         }

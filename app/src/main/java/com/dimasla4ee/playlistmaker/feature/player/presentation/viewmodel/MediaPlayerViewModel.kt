@@ -3,6 +3,7 @@ package com.dimasla4ee.playlistmaker.feature.player.presentation.viewmodel
 import android.media.MediaPlayer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dimasla4ee.playlistmaker.core.utils.LogUtil
 import com.dimasla4ee.playlistmaker.core.utils.toMmSs
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -21,7 +22,9 @@ class MediaPlayerViewModel(
 
     private var timerJob: Job? = null
 
-    init {
+    fun onResume() {
+        if (state.value is State.Playing || state.value is State.Paused) return
+
         preparePlayer()
     }
 
@@ -34,7 +37,6 @@ class MediaPlayerViewModel(
             }
             setOnCompletionListener {
                 timerJob?.cancel()
-                mediaPlayer.seekTo(0)
                 state.update { State.Prepared }
             }
         }
@@ -63,6 +65,7 @@ class MediaPlayerViewModel(
     }
 
     fun onPlayButtonClicked() {
+        LogUtil.d("MediaPlayerViewModel", "${state.value}")
         when (state.value) {
             is State.Playing -> {
                 pausePlayback()
@@ -77,14 +80,14 @@ class MediaPlayerViewModel(
     }
 
     fun releasePlayer() {
-        mediaPlayer.pause()
         timerJob?.cancel()
+        mediaPlayer.release()
         state.update { State.Default }
     }
 
     override fun onCleared() {
-        super.onCleared()
         releasePlayer()
+        super.onCleared()
     }
 
     fun onPause() {
