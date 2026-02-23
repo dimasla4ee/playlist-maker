@@ -2,7 +2,6 @@ package com.dimasla4ee.playlistmaker.feature.player.presentation
 
 import android.os.Bundle
 import android.view.View
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -21,6 +20,7 @@ import com.dimasla4ee.playlistmaker.core.utils.collapse
 import com.dimasla4ee.playlistmaker.core.utils.hide
 import com.dimasla4ee.playlistmaker.core.utils.show
 import com.dimasla4ee.playlistmaker.core.utils.tintedDrawable
+import com.dimasla4ee.playlistmaker.core.utils.toPx
 import com.dimasla4ee.playlistmaker.core.utils.viewBinding
 import com.dimasla4ee.playlistmaker.databinding.FragmentPlayerBinding
 import com.dimasla4ee.playlistmaker.feature.player.presentation.adapter.PlaylistBottomSheetAdapter
@@ -29,11 +29,13 @@ import com.dimasla4ee.playlistmaker.feature.player.presentation.viewmodel.MediaP
 import com.dimasla4ee.playlistmaker.feature.search.presentation.mapper.TrackDetailedInfoMapper
 import com.dimasla4ee.playlistmaker.feature.search.presentation.model.TrackDetailedInfo
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.card.MaterialCardView
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.logEvent
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import kotlin.math.max
 
 class PlayerFragment : Fragment(R.layout.fragment_player) {
 
@@ -46,7 +48,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     private val trackPlayerViewModel: TrackPlayerViewModel by viewModel {
         parametersOf(args.track)
     }
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<MaterialCardView>
     private val bottomSheetAdapter = PlaylistBottomSheetAdapter { playlist ->
         trackPlayerViewModel.onPlaylistClicked(playlist)
     }
@@ -95,6 +97,11 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
                     override fun onSlide(bottomSheet: View, slideOffset: Float) {
                         overlay.alpha = alphaFromOffset(slideOffset)
+
+                        if (slideOffset < 0.85f) return
+
+                        val radiusDp = max(0f, 16 * (1 - (slideOffset - 0.85f) / 0.15f))
+                        playlistsBottomSheet.radius = requireContext().toPx(radiusDp.toInt())
                     }
 
                     /**

@@ -43,6 +43,7 @@ class MediaPlayerViewModel(
 
     private fun startPlayback() {
         mediaPlayer.start()
+        state.update { State.Playing("00:00") }
         startTimer()
     }
 
