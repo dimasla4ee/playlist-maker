@@ -204,7 +204,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                 }
                 Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
                 bottomSheetBehavior.hide()
-                bottomSheetBehavior
             }
         }
     }

@@ -14,7 +14,6 @@ import androidx.navigation.fragment.findNavController
 import com.dimasla4ee.playlistmaker.R
 import com.dimasla4ee.playlistmaker.core.domain.model.Track
 import com.dimasla4ee.playlistmaker.core.presentation.adapter.TrackAdapter
-import com.dimasla4ee.playlistmaker.core.utils.LogUtil
 import com.dimasla4ee.playlistmaker.core.utils.debounce
 import com.dimasla4ee.playlistmaker.core.utils.setTopDrawable
 import com.dimasla4ee.playlistmaker.core.utils.show
@@ -36,31 +35,12 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                searchViewModel.uiState.collect { state ->
-                    render(state)
-                }
-            }
-        }
-
-        onTrackClickedDebounce = debounce(
-            delayMillis = 300L,
-            coroutineScope = viewLifecycleOwner.lifecycleScope,
-            useLastParam = true
-        ) { track ->
-            searchViewModel.onTrackClicked(track)
-
-            findNavController().navigate(
-                SearchFragmentDirections.actionSearchFragmentToPlayerFragment(track)
-            )
-        }
-
         recyclerAdapter = TrackAdapter(
             onItemClick = { onItemClick(it) }
         )
         binding.recycler.adapter = recyclerAdapter
 
+        setupObservers()
         setupListeners()
     }
 
@@ -69,9 +49,15 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         searchViewModel.onPause()
     }
 
-    private fun onItemClick(track: Track) {
-        onTrackClickedDebounce(track)
+    private fun setupObservers() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                searchViewModel.uiState.collect(::render)
+            }
+        }
     }
+
+    private fun onItemClick(track: Track) = onTrackClickedDebounce(track)
 
     private fun setupListeners() {
         val inputMethodManager = requireContext().getSystemService(
@@ -84,6 +70,18 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             val color = requireContext().getColor(R.color.searchbarIcon)
             isVisible = false
             icon?.setTint(color)
+        }
+
+        onTrackClickedDebounce = debounce(
+            delayMillis = 300L,
+            coroutineScope = viewLifecycleOwner.lifecycleScope,
+            useLastParam = true
+        ) { track ->
+            searchViewModel.onTrackClicked(track)
+
+            findNavController().navigate(
+                SearchFragmentDirections.actionSearchFragmentToPlayerFragment(track)
+            )
         }
 
         with(binding) {
@@ -132,7 +130,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     }
 
     private fun render(state: SearchUiState) {
-        LogUtil.d(LOG_TAG, "render() called with: state = $state")
         when (state) {
             is SearchUiState.Content -> showContent(state)
             is SearchUiState.Error -> showError()
@@ -236,7 +233,4 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         stateInfoDrawable = null
     )
 
-    private companion object {
-        const val LOG_TAG = "SearchFragment"
-    }
 }
