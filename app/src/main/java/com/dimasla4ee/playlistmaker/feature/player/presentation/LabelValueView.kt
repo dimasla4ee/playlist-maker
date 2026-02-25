@@ -1,6 +1,7 @@
 package com.dimasla4ee.playlistmaker.feature.player.presentation
 
 import android.content.Context
+import android.text.TextUtils
 import android.util.AttributeSet
 import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
@@ -37,6 +38,7 @@ class LabelValueView @JvmOverloads constructor(
                 valueTextView.apply {
                     text = getString(R.styleable.LabelValueView_valueText)
                     setWeight(getFloat(R.styleable.LabelValueView_valueWeight, 7f))
+                    maxLines = Int.MAX_VALUE
                 }
             } finally {
                 recycle()
