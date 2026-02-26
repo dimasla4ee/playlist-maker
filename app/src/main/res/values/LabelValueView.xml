@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="LabelValueView">
+
+        <attr name="labelText" format="string" />
+        <attr name="valueText" format="string" />
+        <attr name="labelWeight" format="float" />
+        <attr name="valueWeight" format="float" />
+
+    </declare-styleable>
+
+</resources>

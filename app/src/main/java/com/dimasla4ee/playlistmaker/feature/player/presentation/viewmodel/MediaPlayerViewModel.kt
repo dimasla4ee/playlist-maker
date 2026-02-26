@@ -21,7 +21,9 @@ class MediaPlayerViewModel(
 
     private var timerJob: Job? = null
 
-    init {
+    fun onResume() {
+        if (state.value is State.Playing || state.value is State.Paused) return
+
         preparePlayer()
     }
 
@@ -33,15 +35,15 @@ class MediaPlayerViewModel(
                 state.update { State.Prepared }
             }
             setOnCompletionListener {
-                timerJob?.cancel()
                 state.update { State.Prepared }
+                timerJob?.cancel()
             }
         }
     }
 
     private fun startPlayback() {
         mediaPlayer.start()
-        state.update { State.Playing(getCurrentPosition()) }
+        state.update { State.Playing("00:00") }
         startTimer()
     }
 
@@ -76,14 +78,14 @@ class MediaPlayerViewModel(
     }
 
     fun releasePlayer() {
-        mediaPlayer.pause()
         timerJob?.cancel()
+        mediaPlayer.release()
         state.update { State.Default }
     }
 
     override fun onCleared() {
-        super.onCleared()
         releasePlayer()
+        super.onCleared()
     }
 
     fun onPause() {

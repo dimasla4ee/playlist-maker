@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="PlaybackButtonView">
+
+        <attr name="drawablePlaying" format="reference" />
+        <attr name="drawablePaused" format="reference" />
+        <attr name="avdPlayingToPaused" format="reference" />
+        <attr name="avdPausedToPlaying" format="reference" />
+        <attr name="drawableScale" format="float" />
+
+    </declare-styleable>
+
+</resources>

@@ -37,10 +37,12 @@
 
     <style name="Widget.PlaylistMaker.TextView.SongInfo.Label" parent="Widget.PlaylistMaker.TextView.SongInfo">
         <item name="android:textAlignment">textStart</item>
+        <item name="android:textColor">@color/playerLabel</item>
     </style>
 
     <style name="Widget.PlaylistMaker.TextView.SongInfo.Fetched" parent="Widget.PlaylistMaker.TextView.SongInfo">
         <item name="android:textAlignment">textEnd</item>
+        <item name="android:textColor">@color/textPrimary</item>
     </style>
 
     <style name="Widget.PlaylistMaker.TextView.StateInfo" parent="">

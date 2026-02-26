@@ -16,8 +16,11 @@ import coil3.request.transformations
 import coil3.transform.RoundedCornersTransformation
 import com.dimasla4ee.playlistmaker.BuildConfig
 import com.dimasla4ee.playlistmaker.R
+import com.dimasla4ee.playlistmaker.core.utils.collapse
+import com.dimasla4ee.playlistmaker.core.utils.hide
 import com.dimasla4ee.playlistmaker.core.utils.show
 import com.dimasla4ee.playlistmaker.core.utils.tintedDrawable
+import com.dimasla4ee.playlistmaker.core.utils.toPx
 import com.dimasla4ee.playlistmaker.core.utils.viewBinding
 import com.dimasla4ee.playlistmaker.databinding.FragmentPlayerBinding
 import com.dimasla4ee.playlistmaker.feature.player.presentation.adapter.PlaylistBottomSheetAdapter
@@ -26,11 +29,13 @@ import com.dimasla4ee.playlistmaker.feature.player.presentation.viewmodel.MediaP
 import com.dimasla4ee.playlistmaker.feature.search.presentation.mapper.TrackDetailedInfoMapper
 import com.dimasla4ee.playlistmaker.feature.search.presentation.model.TrackDetailedInfo
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.card.MaterialCardView
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.logEvent
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import kotlin.math.max
 
 class PlayerFragment : Fragment(R.layout.fragment_player) {
 
@@ -38,11 +43,12 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     private lateinit var trackDetailedInfo: TrackDetailedInfo
     private val args: PlayerFragmentArgs by navArgs()
     private val mediaPlayerViewModel: MediaPlayerViewModel by viewModel {
-        parametersOf(trackDetailedInfo.audioUrl)
+        parametersOf(args.track.audioUrl)
     }
     private val trackPlayerViewModel: TrackPlayerViewModel by viewModel {
         parametersOf(args.track)
     }
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<MaterialCardView>
     private val bottomSheetAdapter = PlaylistBottomSheetAdapter { playlist ->
         trackPlayerViewModel.onPlaylistClicked(playlist)
     }
@@ -51,16 +57,20 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        analytics = FirebaseAnalytics.getInstance(requireContext())
-        analytics.setAnalyticsCollectionEnabled(!BuildConfig.DEBUG)
-        trackDetailedInfo = TrackDetailedInfoMapper.map(args.track)
-        fillTrackInfo(trackDetailedInfo)
+        trackDetailedInfo = TrackDetailedInfoMapper.map(args.track).also { track ->
+            fillTrackInfo(track)
+        }
 
         trackPlayerViewModel.onViewCreated()
-
+        setupAnalytics()
         setupBottomSheet()
         setupListeners()
         setupObservers()
+    }
+
+    private fun setupAnalytics() {
+        analytics = FirebaseAnalytics.getInstance(requireContext())
+        analytics.setAnalyticsCollectionEnabled(!BuildConfig.DEBUG)
     }
 
     override fun onPause() {
@@ -68,26 +78,48 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         mediaPlayerViewModel.onPause()
     }
 
-    private fun setupBottomSheet() {
-        binding.playlistsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.playlistsRecyclerView.adapter = bottomSheetAdapter
+    override fun onResume() {
+        super.onResume()
+        mediaPlayerViewModel.onResume()
+    }
 
-        val bottomSheetBehavior = BottomSheetBehavior.from(binding.playlistsBottomSheet).apply {
-            state = BottomSheetBehavior.STATE_HIDDEN
-        }
+    private fun setupBottomSheet(): Unit = with(binding) {
+        playlistsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        playlistsRecyclerView.adapter = bottomSheetAdapter
 
-        bottomSheetBehavior.addBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                binding.overlay.show(newState != BottomSheetBehavior.STATE_HIDDEN)
-            }
+        bottomSheetBehavior = BottomSheetBehavior.from(playlistsBottomSheet).apply {
+            hide()
+            addBottomSheetCallback(
+                object : BottomSheetBehavior.BottomSheetCallback() {
+                    override fun onStateChanged(bottomSheet: View, newState: Int) {
+                        overlay.show(newState != BottomSheetBehavior.STATE_HIDDEN)
+                    }
 
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
-        })
+                    override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                        overlay.alpha = alphaFromOffset(slideOffset)
 
-        binding.addToPlaylistButton.setOnClickListener {
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            trackPlayerViewModel.onShowPlaylists()
+                        if (slideOffset < 0.85f) return
+
+                        val radiusDp = max(0f, 16 * (1 - (slideOffset - 0.85f) / 0.15f))
+                        playlistsBottomSheet.radius = requireContext().toPx(radiusDp.toInt())
+                    }
+
+                    /**
+                     * Calculates the alpha value based on the bottom sheet's slide offset.
+                     *
+                     * @param slideOffset The current slide offset of the bottom sheet, where:
+                     * - -1.0 is hidden
+                     * - 0.0 is collapsed
+                     * - 1.0 is expanded
+                     * @return A float value between 0.0 and 1.0 representing the transparency, where:
+                     * - 0.0 is completely transparent
+                     * - 1.0 is completely opaque
+                     */
+                    private fun alphaFromOffset(slideOffset: Float): Float =
+                        (1 + slideOffset).coerceIn(0f, 1f)
+
+                }
+            )
         }
     }
 
@@ -102,6 +134,15 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
         addToFavoriteButton.setOnClickListener {
             trackPlayerViewModel.onFavoriteClicked()
+        }
+
+        addToPlaylistButton.setOnClickListener {
+            bottomSheetBehavior.collapse()
+            trackPlayerViewModel.onShowPlaylists()
+        }
+
+        overlay.setOnClickListener {
+            bottomSheetBehavior.hide()
         }
 
         newPlaylistButton.setOnClickListener {
@@ -130,15 +171,13 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
         viewLifecycleOwner.lifecycleScope.launch {
             mediaPlayerViewModel.state.collect { mediaPlayerState ->
-                playButton.isEnabled = mediaPlayerState.isPlayButtonEnabled
-
-                val iconRes = if (mediaPlayerState is MediaPlayerViewModel.State.Playing) {
-                    R.drawable.ic_pause_24
-                } else {
-                    R.drawable.ic_play_24
+                when (mediaPlayerState) {
+                    is MediaPlayerViewModel.State.Default -> playButton.showLoading()
+                    is MediaPlayerViewModel.State.Playing -> playButton.showPlaying()
+                    else -> playButton.showPaused()
                 }
-                playButton.setIconResource(iconRes)
 
+                playButton.isEnabled = mediaPlayerState.isPlayButtonEnabled
                 songCurrentDuration.text = mediaPlayerState.progress
             }
         }
@@ -164,45 +203,38 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                     )
                 }
                 Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-                val bottomSheetBehavior = BottomSheetBehavior.from(binding.playlistsBottomSheet)
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+                bottomSheetBehavior.hide()
             }
         }
     }
 
     private fun fillTrackInfo(track: TrackDetailedInfo): Unit = with(binding) {
-        val yearIsAvailable = track.year != null
-        val albumIsAvailable = track.album != null
 
-        songDurationFetched.text = track.duration
-        songYearFetched.show(yearIsAvailable)
-        songYearLabel.show(yearIsAvailable)
-        songYearFetched.text = track.year?.toString()
+        fun LabelValueView.setValueOrHide(value: String?) {
+            if (value != null) setValue(value) else show(false)
+        }
 
-        songAlbumFetched.show(albumIsAvailable)
-        songAlbumLabel.show(albumIsAvailable)
-        songAlbumFetched.text = track.album
-
-        songGenreFetched.text = track.genre
-        songCountryFetched.text = track.country
-
-        songTitle.text = track.title
-        songAuthor.text = track.artist
-
-        requireContext().also { context ->
+        songCover.load(track.coverUrl) {
             val radius = resources.getDimension(R.dimen.coverCornerRadius)
-            val placeholder = context.tintedDrawable(
+            val placeholder = requireContext().tintedDrawable(
                 R.drawable.ic_placeholder_45,
                 R.color.coverPlaceholder
             )
 
-            songCover.load(track.coverUrl) {
-                placeholder(placeholder)
-                error(placeholder)
-                transformations(RoundedCornersTransformation(radius))
-                crossfade(true)
-            }
+            placeholder(placeholder)
+            error(placeholder)
+            transformations(RoundedCornersTransformation(radius))
+            crossfade(true)
         }
+
+        songTitle.text = track.title
+        songAuthor.text = track.artist
+
+        songDuration.setValue(track.duration)
+        songYear.setValueOrHide(track.year?.toString())
+        songAlbum.setValueOrHide(track.album)
+        songGenre.setValue(track.genre)
+        songCountry.setValue(track.country)
     }
 
 }

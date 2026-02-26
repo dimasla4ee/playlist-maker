@@ -9,6 +9,7 @@ import com.dimasla4ee.playlistmaker.feature.search.domain.SearchTracksUseCase
 import com.dimasla4ee.playlistmaker.feature.search.presentation.model.SearchUiState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -65,14 +66,10 @@ class SearchViewModel(
         debouncedQueryFlow
     )
         .distinctUntilChanged { old, new ->
-            val areEquivalent = when {
-                old.term != new.term -> false
-                !old.instant && !new.instant -> true
-                old.instant && !new.instant -> true
-                else -> false
-            }
-
-            return@distinctUntilChanged areEquivalent
+            old.term.trim().equals(
+                new.term.trim(),
+                ignoreCase = true
+            )
         }
         .flatMapLatest { request ->
             LogUtil.d(LOG_TAG, "SearchRequest: term='${request.term}', manual=${request.instant}")
@@ -135,7 +132,10 @@ class SearchViewModel(
     fun onClearQueueClicked() {
         query.update { "" }
         viewModelScope.launch {
-            immediateFlow.emit(SearchRequest("", instant = true))
+            delay(300L)
+            if (query.value.isBlank()) {
+                immediateFlow.emit(SearchRequest("", instant = true))
+            }
         }
     }
 

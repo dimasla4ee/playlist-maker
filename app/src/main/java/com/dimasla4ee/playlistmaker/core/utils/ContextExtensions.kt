@@ -2,6 +2,7 @@ package com.dimasla4ee.playlistmaker.core.utils
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.util.TypedValue
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
@@ -22,3 +23,9 @@ fun Context.tintedDrawable(
 
     return drawable
 }
+
+fun Context.toPx(dp: Int): Float = TypedValue.applyDimension(
+    TypedValue.COMPLEX_UNIT_DIP,
+    dp.toFloat(),
+    resources.displayMetrics
+)
