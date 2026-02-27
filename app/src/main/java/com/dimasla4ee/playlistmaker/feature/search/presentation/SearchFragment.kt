@@ -141,7 +141,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     }
 
     private fun updateUiVisibility(
-        recyclerAdapterList: List<Track>,
+        recyclerAdapterList: List<Track>? = null,
         loadingIndicatorVisible: Boolean,
         retryButtonVisible: Boolean,
         historyLabelVisible: Boolean,
@@ -149,23 +149,23 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         stateContainerVisible: Boolean,
         stateInfoText: String?,
         stateInfoDrawable: Int?
-    ) {
-        recyclerAdapter.submitList(recyclerAdapterList)
-        with(binding) {
-            loadingIndicator.show(loadingIndicatorVisible)
-            retryButton.show(retryButtonVisible)
-            historyLabel.show(historyLabelVisible)
-            clearHistoryButton.show(clearHistoryButtonVisible)
-            stateContainer.show(stateContainerVisible)
+    ): Unit = with(binding) {
+        recyclerAdapterList?.let { recyclerAdapter.submitList(it) }
+        recycler.show(recyclerAdapterList != null)
+        loadingIndicator.show(loadingIndicatorVisible)
+        retryButton.show(retryButtonVisible)
+        historyLabel.show(historyLabelVisible)
+        clearHistoryButton.show(clearHistoryButtonVisible)
+        stateContainer.show(stateContainerVisible)
 
-            if (stateContainerVisible) {
-                stateInfo.apply {
-                    text = stateInfoText
-                    setTopDrawable(stateInfoDrawable ?: 0)
-                }
+        if (stateContainerVisible) {
+            stateInfo.apply {
+                text = stateInfoText
+                setTopDrawable(stateInfoDrawable ?: 0)
             }
         }
     }
+
 
     private fun showContent(state: SearchUiState.Content) = updateUiVisibility(
         recyclerAdapterList = state.results,
@@ -179,7 +179,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     )
 
     private fun showError() = updateUiVisibility(
-        recyclerAdapterList = emptyList(),
         loadingIndicatorVisible = false,
         retryButtonVisible = true,
         historyLabelVisible = false,
@@ -190,7 +189,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     )
 
     private fun showNoResults() = updateUiVisibility(
-        recyclerAdapterList = emptyList(),
         loadingIndicatorVisible = false,
         retryButtonVisible = false,
         historyLabelVisible = false,
