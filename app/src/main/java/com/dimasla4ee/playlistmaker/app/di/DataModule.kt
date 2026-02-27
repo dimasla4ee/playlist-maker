@@ -1,15 +1,16 @@
 package com.dimasla4ee.playlistmaker.app.di
 
 import androidx.room.Room
+import com.dimasla4ee.playlistmaker.core.data.network.NetworkStatusProvider
 import com.dimasla4ee.playlistmaker.core.config.ApiConfig
-import com.dimasla4ee.playlistmaker.core.data.storage.ImageStorageManager
-import com.dimasla4ee.playlistmaker.core.data.storage.LocalDateSerializer
 import com.dimasla4ee.playlistmaker.core.data.database.AppDatabase
 import com.dimasla4ee.playlistmaker.core.data.database.DatabaseConfig
 import com.dimasla4ee.playlistmaker.core.data.network.ItunesService
 import com.dimasla4ee.playlistmaker.core.data.network.NetworkClient
 import com.dimasla4ee.playlistmaker.core.data.network.NetworkConstants
 import com.dimasla4ee.playlistmaker.core.data.network.RetrofitNetworkClient
+import com.dimasla4ee.playlistmaker.core.data.storage.ImageStorageManager
+import com.dimasla4ee.playlistmaker.core.data.storage.LocalDateSerializer
 import com.dimasla4ee.playlistmaker.feature.favorite.data.dao.FavoriteDao
 import com.dimasla4ee.playlistmaker.feature.playlists.data.dao.PlaylistDao
 import kotlinx.serialization.json.Json
@@ -57,7 +58,9 @@ val dataModule = module {
             androidContext(),
             AppDatabase::class.java,
             DatabaseConfig.NAME
-        ).fallbackToDestructiveMigration(false).build()
+        )
+            .fallbackToDestructiveMigration(false)
+            .build()
     }
 
     single<FavoriteDao> {
@@ -70,6 +73,12 @@ val dataModule = module {
 
     single<ImageStorageManager> {
         ImageStorageManager(
+            context = androidContext()
+        )
+    }
+
+    single<NetworkStatusProvider> {
+        NetworkStatusProvider(
             context = androidContext()
         )
     }
