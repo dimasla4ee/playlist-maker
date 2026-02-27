@@ -1,6 +1,7 @@
 package com.dimasla4ee.playlistmaker.app.di
 
 import android.media.MediaPlayer
+import com.dimasla4ee.playlistmaker.core.data.network.NetworkStatusProvider
 import com.dimasla4ee.playlistmaker.core.data.storage.ImageStorageManager
 import com.dimasla4ee.playlistmaker.core.domain.model.Track
 import com.dimasla4ee.playlistmaker.feature.favorite.domain.FavoriteInteractor
@@ -30,7 +31,8 @@ val viewModelModule = module {
     viewModel<SearchViewModel> {
         SearchViewModel(
             searchHistoryInteractor = get<SearchHistoryInteractor>(),
-            searchTracksUseCase = get<SearchTracksUseCase>()
+            searchTracksUseCase = get<SearchTracksUseCase>(),
+            networkStatusProvider = get<NetworkStatusProvider>()
         )
     }
 

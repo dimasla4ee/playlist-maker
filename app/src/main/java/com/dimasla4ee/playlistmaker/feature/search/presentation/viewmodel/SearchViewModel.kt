@@ -2,8 +2,8 @@ package com.dimasla4ee.playlistmaker.feature.search.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dimasla4ee.playlistmaker.core.data.network.NetworkStatusProvider
 import com.dimasla4ee.playlistmaker.core.domain.model.Track
-import com.dimasla4ee.playlistmaker.core.utils.LogUtil
 import com.dimasla4ee.playlistmaker.feature.search.domain.SearchHistoryInteractor
 import com.dimasla4ee.playlistmaker.feature.search.domain.SearchTracksUseCase
 import com.dimasla4ee.playlistmaker.feature.search.presentation.model.SearchUiState
@@ -29,7 +29,8 @@ import kotlinx.coroutines.launch
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 class SearchViewModel(
     private val searchHistoryInteractor: SearchHistoryInteractor,
-    private val searchTracksUseCase: SearchTracksUseCase
+    private val searchTracksUseCase: SearchTracksUseCase,
+    private val networkStatusProvider: NetworkStatusProvider
 ) : ViewModel() {
 
     /**
@@ -72,8 +73,6 @@ class SearchViewModel(
             )
         }
         .flatMapLatest { request ->
-            LogUtil.d(LOG_TAG, "SearchRequest: term='${request.term}', manual=${request.instant}")
-
             if (request.term.isBlank()) {
                 val state = when {
                     searchHistory.isEmpty() -> SearchUiState.Idle
@@ -83,12 +82,15 @@ class SearchViewModel(
             }
 
             flow {
-                emit(SearchUiState.Loading)
+                if (!networkStatusProvider.isConnected) {
+                    emit(SearchUiState.Error)
+                    return@flow
+                }
 
                 val (tracks, message) = try {
+                    emit(SearchUiState.Loading)
                     searchTracksUseCase.execute(request.term).first()
-                } catch (t: Throwable) {
-                    LogUtil.e(LOG_TAG, "search exception: ${t.message}")
+                } catch (_: Throwable) {
                     emit(SearchUiState.Error)
                     return@flow
                 }
@@ -113,7 +115,6 @@ class SearchViewModel(
         )
 
     fun onQueryChanged(newQuery: String) {
-        LogUtil.d(LOG_TAG, "onQueryChanged: $newQuery")
         query.update { newQuery }
     }
 
@@ -156,7 +157,6 @@ class SearchViewModel(
         updatedHistory.addFirst(track)
 
         searchHistoryFlow.update { updatedHistory }
-        LogUtil.d(LOG_TAG, "SearchHistory: ${searchHistoryFlow.value}")
 
         viewModelScope.launch {
             immediateFlow.emit(SearchRequest(query.value, instant = true))
@@ -173,8 +173,11 @@ class SearchViewModel(
     }
 
     companion object {
+
         private const val LOG_TAG = "SearchViewModel"
         private const val MAX_HISTORY_SIZE = 10
         private const val SEARCH_DELAY_MS = 2000L
+
     }
+
 }
