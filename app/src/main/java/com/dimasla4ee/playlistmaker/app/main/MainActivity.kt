@@ -1,16 +1,12 @@
 package com.dimasla4ee.playlistmaker.app.main
 
-import android.content.IntentFilter
-import android.net.ConnectivityManager
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.dimasla4ee.playlistmaker.R
-import com.dimasla4ee.playlistmaker.core.presentation.receiver.OnConnectivityChangeReceiver
 import com.dimasla4ee.playlistmaker.core.utils.setupWindowInsets
 import com.dimasla4ee.playlistmaker.core.utils.show
 import com.dimasla4ee.playlistmaker.databinding.ActivityMainBinding
@@ -18,13 +14,11 @@ import com.dimasla4ee.playlistmaker.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
-    lateinit var onConnectivityChangeReceiver: OnConnectivityChangeReceiver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
-        onConnectivityChangeReceiver = OnConnectivityChangeReceiver()
         binding = ActivityMainBinding.inflate(layoutInflater).apply {
             setContentView(root)
         }
@@ -60,21 +54,6 @@ class MainActivity : AppCompatActivity() {
                 bottomNavDivider.show(shouldShowNavigationBar)
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        ContextCompat.registerReceiver(
-            this,
-            onConnectivityChangeReceiver,
-            IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION),
-            ContextCompat.RECEIVER_NOT_EXPORTED
-        )
-    }
-
-    override fun onPause() {
-        super.onPause()
-        unregisterReceiver(onConnectivityChangeReceiver)
     }
 
 }

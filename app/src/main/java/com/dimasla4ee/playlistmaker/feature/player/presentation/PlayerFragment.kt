@@ -16,6 +16,7 @@ import coil3.request.transformations
 import coil3.transform.RoundedCornersTransformation
 import com.dimasla4ee.playlistmaker.BuildConfig
 import com.dimasla4ee.playlistmaker.R
+import com.dimasla4ee.playlistmaker.core.presentation.receiver.OnConnectivityChangeReceiver
 import com.dimasla4ee.playlistmaker.core.utils.collapse
 import com.dimasla4ee.playlistmaker.core.utils.hide
 import com.dimasla4ee.playlistmaker.core.utils.show
@@ -52,11 +53,13 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     private val bottomSheetAdapter = PlaylistBottomSheetAdapter { playlist ->
         trackPlayerViewModel.onPlaylistClicked(playlist)
     }
+    private lateinit var onConnectivityChangeReceiver: OnConnectivityChangeReceiver
     private lateinit var analytics: FirebaseAnalytics
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        onConnectivityChangeReceiver = OnConnectivityChangeReceiver()
         trackDetailedInfo = TrackDetailedInfoMapper.map(args.track).also { track ->
             fillTrackInfo(track)
         }
@@ -68,19 +71,21 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         setupObservers()
     }
 
-    private fun setupAnalytics() {
-        analytics = FirebaseAnalytics.getInstance(requireContext())
-        analytics.setAnalyticsCollectionEnabled(!BuildConfig.DEBUG)
+    override fun onResume() {
+        super.onResume()
+        onConnectivityChangeReceiver.register(requireContext())
+        mediaPlayerViewModel.onResume()
     }
 
     override fun onPause() {
         super.onPause()
+        onConnectivityChangeReceiver.unregister(requireContext())
         mediaPlayerViewModel.onPause()
     }
 
-    override fun onResume() {
-        super.onResume()
-        mediaPlayerViewModel.onResume()
+    private fun setupAnalytics() {
+        analytics = FirebaseAnalytics.getInstance(requireContext())
+        analytics.setAnalyticsCollectionEnabled(!BuildConfig.DEBUG)
     }
 
     private fun setupBottomSheet(): Unit = with(binding) {
