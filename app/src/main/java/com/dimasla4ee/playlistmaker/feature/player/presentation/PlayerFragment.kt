@@ -1,8 +1,16 @@
 package com.dimasla4ee.playlistmaker.feature.player.presentation
 
+import android.Manifest
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
+import android.os.Build
 import android.os.Bundle
+import android.os.IBinder
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -16,6 +24,7 @@ import coil3.request.transformations
 import coil3.transform.RoundedCornersTransformation
 import com.dimasla4ee.playlistmaker.BuildConfig
 import com.dimasla4ee.playlistmaker.R
+import com.dimasla4ee.playlistmaker.core.service.MusicService
 import com.dimasla4ee.playlistmaker.core.presentation.receiver.OnConnectivityChangeReceiver
 import com.dimasla4ee.playlistmaker.core.utils.collapse
 import com.dimasla4ee.playlistmaker.core.utils.hide
@@ -27,6 +36,7 @@ import com.dimasla4ee.playlistmaker.databinding.FragmentPlayerBinding
 import com.dimasla4ee.playlistmaker.feature.player.presentation.adapter.PlaylistBottomSheetAdapter
 import com.dimasla4ee.playlistmaker.feature.player.presentation.model.PlaylistAddTrackState
 import com.dimasla4ee.playlistmaker.feature.player.presentation.viewmodel.MediaPlayerViewModel
+import com.dimasla4ee.playlistmaker.core.domain.model.PlayerState
 import com.dimasla4ee.playlistmaker.feature.search.presentation.mapper.TrackDetailedInfoMapper
 import com.dimasla4ee.playlistmaker.feature.search.presentation.model.TrackDetailedInfo
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -55,9 +65,45 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     }
     private lateinit var onConnectivityChangeReceiver: OnConnectivityChangeReceiver
     private lateinit var analytics: FirebaseAnalytics
+    private val serviceConnection = object : ServiceConnection {
+        override fun onServiceConnected(
+            name: ComponentName?,
+            service: IBinder?
+        ) {
+            val binder = service as MusicService.MusicServiceBinder
+            mediaPlayerViewModel.setMusicService(binder.getService())
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+            mediaPlayerViewModel.removeMusicService()
+        }
+
+    }
+
+    private val requestPermission = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            val intent = Intent(requireContext(), MusicService::class.java).apply {
+                putExtra("song_url", args.track.audioUrl)
+            }
+            requireContext().bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
+        } else {
+            Toast.makeText(requireContext(), "Can't bind service!", Toast.LENGTH_LONG).show()
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+        } else {
+            val intent = Intent(requireContext(), MusicService::class.java).apply {
+                putExtra("song_url", args.track.audioUrl)
+            }
+            requireContext().bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
+        }
 
         onConnectivityChangeReceiver = OnConnectivityChangeReceiver()
         trackDetailedInfo = TrackDetailedInfoMapper.map(args.track).also { track ->
@@ -74,13 +120,16 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     override fun onResume() {
         super.onResume()
         onConnectivityChangeReceiver.register(requireContext())
-        mediaPlayerViewModel.onResume()
     }
 
     override fun onPause() {
         super.onPause()
         onConnectivityChangeReceiver.unregister(requireContext())
-        mediaPlayerViewModel.onPause()
+    }
+
+    override fun onDestroy() {
+        requireContext().unbindService(serviceConnection)
+        super.onDestroy()
     }
 
     private fun setupAnalytics() {
@@ -148,6 +197,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
         overlay.setOnClickListener {
             bottomSheetBehavior.hide()
+
         }
 
         newPlaylistButton.setOnClickListener {
@@ -177,8 +227,8 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         viewLifecycleOwner.lifecycleScope.launch {
             mediaPlayerViewModel.state.collect { mediaPlayerState ->
                 when (mediaPlayerState) {
-                    is MediaPlayerViewModel.State.Default -> playButton.showLoading()
-                    is MediaPlayerViewModel.State.Playing -> playButton.showPlaying()
+                    is PlayerState.Default -> playButton.showLoading()
+                    is PlayerState.Playing -> playButton.showPlaying()
                     else -> playButton.showPaused()
                 }
 
