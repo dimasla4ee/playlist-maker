@@ -6,4 +6,7 @@ interface PlayerController {
     fun getPlayerState(): StateFlow<PlayerState>
     fun play()
     fun pause()
+
+    fun startNotification()
+    fun cancelNotification()
 }

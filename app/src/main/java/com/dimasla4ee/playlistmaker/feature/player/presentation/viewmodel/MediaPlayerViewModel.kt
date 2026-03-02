@@ -16,7 +16,7 @@ class MediaPlayerViewModel : ViewModel() {
 
     private var controller: PlayerController? = null
 
-    fun setMusicService(controller: PlayerController) {
+    fun setPlayerController(controller: PlayerController) {
         this.controller = controller
 
         viewModelScope.launch {
@@ -26,7 +26,7 @@ class MediaPlayerViewModel : ViewModel() {
         }
     }
 
-    fun removeMusicService() {
+    fun removePlayerController() {
         controller = null
     }
 
@@ -37,6 +37,14 @@ class MediaPlayerViewModel : ViewModel() {
         is PlayerState.Paused -> controller?.play()
 
         else -> Unit
+    }
+
+    fun onResume() = controller?.cancelNotification()
+
+    fun onPause() {
+        if (state.value is PlayerState.Playing) {
+            controller?.startNotification()
+        }
     }
 
 }

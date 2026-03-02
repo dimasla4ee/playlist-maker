@@ -24,8 +24,10 @@ import coil3.request.transformations
 import coil3.transform.RoundedCornersTransformation
 import com.dimasla4ee.playlistmaker.BuildConfig
 import com.dimasla4ee.playlistmaker.R
-import com.dimasla4ee.playlistmaker.core.service.MusicService
+import com.dimasla4ee.playlistmaker.core.domain.model.PlayerState
 import com.dimasla4ee.playlistmaker.core.presentation.receiver.OnConnectivityChangeReceiver
+import com.dimasla4ee.playlistmaker.core.service.MusicService
+import com.dimasla4ee.playlistmaker.core.utils.KeyConstants
 import com.dimasla4ee.playlistmaker.core.utils.collapse
 import com.dimasla4ee.playlistmaker.core.utils.hide
 import com.dimasla4ee.playlistmaker.core.utils.show
@@ -36,7 +38,6 @@ import com.dimasla4ee.playlistmaker.databinding.FragmentPlayerBinding
 import com.dimasla4ee.playlistmaker.feature.player.presentation.adapter.PlaylistBottomSheetAdapter
 import com.dimasla4ee.playlistmaker.feature.player.presentation.model.PlaylistAddTrackState
 import com.dimasla4ee.playlistmaker.feature.player.presentation.viewmodel.MediaPlayerViewModel
-import com.dimasla4ee.playlistmaker.core.domain.model.PlayerState
 import com.dimasla4ee.playlistmaker.feature.search.presentation.mapper.TrackDetailedInfoMapper
 import com.dimasla4ee.playlistmaker.feature.search.presentation.model.TrackDetailedInfo
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -71,11 +72,11 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             service: IBinder?
         ) {
             val binder = service as MusicService.MusicServiceBinder
-            mediaPlayerViewModel.setMusicService(binder.getService())
+            mediaPlayerViewModel.setPlayerController(binder.getService())
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
-            mediaPlayerViewModel.removeMusicService()
+            mediaPlayerViewModel.removePlayerController()
         }
 
     }
@@ -84,13 +85,18 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted) {
-            val intent = Intent(requireContext(), MusicService::class.java).apply {
-                putExtra("song_url", args.track.audioUrl)
-            }
-            requireContext().bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
+            bindMusicService()
         } else {
             Toast.makeText(requireContext(), "Can't bind service!", Toast.LENGTH_LONG).show()
         }
+    }
+
+    private fun bindMusicService() {
+        val intent = Intent(requireContext(), MusicService::class.java).apply {
+            putExtra(KeyConstants.SOURCE_URL, args.track.audioUrl)
+            putExtra(KeyConstants.SOURCE_ARTIST_TITLE, "${args.track.artist} - ${args.track.title}")
+        }
+        requireContext().bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -99,10 +105,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requestPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
         } else {
-            val intent = Intent(requireContext(), MusicService::class.java).apply {
-                putExtra("song_url", args.track.audioUrl)
-            }
-            requireContext().bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
+            bindMusicService()
         }
 
         onConnectivityChangeReceiver = OnConnectivityChangeReceiver()
@@ -119,12 +122,14 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
     override fun onResume() {
         super.onResume()
+        mediaPlayerViewModel.onResume()
         onConnectivityChangeReceiver.register(requireContext())
     }
 
     override fun onPause() {
-        super.onPause()
+        mediaPlayerViewModel.onPause()
         onConnectivityChangeReceiver.unregister(requireContext())
+        super.onPause()
     }
 
     override fun onDestroy() {
