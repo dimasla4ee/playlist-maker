@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.dimasla4ee.playlistmaker.R
 import com.dimasla4ee.playlistmaker.core.domain.model.Track
 import com.dimasla4ee.playlistmaker.core.presentation.adapter.TrackAdapter
+import com.dimasla4ee.playlistmaker.core.presentation.receiver.OnConnectivityChangeReceiver
 import com.dimasla4ee.playlistmaker.core.utils.debounce
 import com.dimasla4ee.playlistmaker.core.utils.setTopDrawable
 import com.dimasla4ee.playlistmaker.core.utils.show
@@ -31,10 +32,12 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     private val searchViewModel: SearchViewModel by viewModel()
     private lateinit var recyclerAdapter: TrackAdapter
     private lateinit var onTrackClickedDebounce: (Track) -> Unit
+    private lateinit var onConnectivityChangeReceiver: OnConnectivityChangeReceiver
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        onConnectivityChangeReceiver = OnConnectivityChangeReceiver()
         recyclerAdapter = TrackAdapter(
             onItemClick = { onItemClick(it) }
         )
@@ -44,8 +47,14 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         setupListeners()
     }
 
+    override fun onResume() {
+        super.onResume()
+        onConnectivityChangeReceiver.register(requireContext())
+    }
+
     override fun onPause() {
         super.onPause()
+        onConnectivityChangeReceiver.unregister(requireContext())
         searchViewModel.onPause()
     }
 
@@ -141,7 +150,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     }
 
     private fun updateUiVisibility(
-        recyclerAdapterList: List<Track>,
+        recyclerAdapterList: List<Track>? = null,
         loadingIndicatorVisible: Boolean,
         retryButtonVisible: Boolean,
         historyLabelVisible: Boolean,
@@ -149,23 +158,23 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         stateContainerVisible: Boolean,
         stateInfoText: String?,
         stateInfoDrawable: Int?
-    ) {
-        recyclerAdapter.submitList(recyclerAdapterList)
-        with(binding) {
-            loadingIndicator.show(loadingIndicatorVisible)
-            retryButton.show(retryButtonVisible)
-            historyLabel.show(historyLabelVisible)
-            clearHistoryButton.show(clearHistoryButtonVisible)
-            stateContainer.show(stateContainerVisible)
+    ): Unit = with(binding) {
+        recyclerAdapterList?.let { recyclerAdapter.submitList(it) }
+        recycler.show(recyclerAdapterList != null)
+        loadingIndicator.show(loadingIndicatorVisible)
+        retryButton.show(retryButtonVisible)
+        historyLabel.show(historyLabelVisible)
+        clearHistoryButton.show(clearHistoryButtonVisible)
+        stateContainer.show(stateContainerVisible)
 
-            if (stateContainerVisible) {
-                stateInfo.apply {
-                    text = stateInfoText
-                    setTopDrawable(stateInfoDrawable ?: 0)
-                }
+        if (stateContainerVisible) {
+            stateInfo.apply {
+                text = stateInfoText
+                setTopDrawable(stateInfoDrawable ?: 0)
             }
         }
     }
+
 
     private fun showContent(state: SearchUiState.Content) = updateUiVisibility(
         recyclerAdapterList = state.results,
@@ -179,7 +188,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     )
 
     private fun showError() = updateUiVisibility(
-        recyclerAdapterList = emptyList(),
         loadingIndicatorVisible = false,
         retryButtonVisible = true,
         historyLabelVisible = false,
@@ -190,7 +198,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     )
 
     private fun showNoResults() = updateUiVisibility(
-        recyclerAdapterList = emptyList(),
         loadingIndicatorVisible = false,
         retryButtonVisible = false,
         historyLabelVisible = false,

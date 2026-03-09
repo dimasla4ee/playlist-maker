@@ -2,7 +2,7 @@
 <resources>
 
     <dimen name="bottomSheetCornerRadius">16dp</dimen>
-    <dimen name="searchViewMarginHorizontal">16dp</dimen>
+    <dimen name="marginHorizontalNormal">16dp</dimen>
     <dimen name="stateInfoDrawablePadding">16dp</dimen>
     <dimen name="playlistBottomSheetPaddingHorizontal">16dp</dimen>
     <dimen name="playlistBottomSheetMarginTop">16dp</dimen>
@@ -23,7 +23,6 @@
     <dimen name="settingItemHeight">61dp</dimen>
     <dimen name="trackItemHeight">61dp</dimen>
     <dimen name="trackPaddingHorizontal">8dp</dimen>
-    <dimen name="appPaddingHorizontal">16dp</dimen>
     <dimen name="stateTextImageMarginTop">46dp</dimen>
     <dimen name="albumCoverSize">48dp</dimen>
 

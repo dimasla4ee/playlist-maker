@@ -65,4 +65,7 @@
     <string name="no_tracks_to_share">В этом плейлисте нет списка треков, которым можно поделиться</string>
     <string name="edit">Редактировать</string>
     <string name="save">Сохранить</string>
+    <string name="no_internet_access">Нет доступа к Интернету</string>
+    <string name="now_playing">Играет сейчас</string>
+    <string name="now_playing_description">Отображает информацию о текущем треке</string>
 </resources>

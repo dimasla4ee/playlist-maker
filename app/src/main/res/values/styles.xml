@@ -13,7 +13,7 @@
     <style name="Widget.PlaylistMaker.Setting" parent="">
         <item name="android:layout_height">@dimen/settingItemHeight</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:paddingHorizontal">@dimen/appPaddingHorizontal</item>
+        <item name="android:paddingHorizontal">@dimen/marginHorizontalNormal</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
         <item name="android:textAppearance">@style/TextAppearance.PlaylistMaker.BodyLarge</item>
     </style>
