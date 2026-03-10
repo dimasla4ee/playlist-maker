@@ -101,6 +101,7 @@ dependencies {
 
     // Image Loading
     implementation(libs.coil)
+    implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
 
     // Dependency Injection
