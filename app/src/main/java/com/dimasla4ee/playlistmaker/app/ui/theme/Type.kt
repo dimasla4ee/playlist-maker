@@ -27,13 +27,13 @@ val AppTypography = Typography(
         fontFamily = YsDisplayFontFamily,
         fontWeight = FontWeight.Medium,
         lineHeight = 24.sp,
-        fontSize = 16.sp
+        fontSize = 19.sp
     ),
     titleSmall = TextStyle(
         fontFamily = YsDisplayFontFamily,
         fontWeight = FontWeight.Medium,
         lineHeight = 20.sp,
-        fontSize = 19.sp
+        fontSize = 16.sp
     ),
 
     // Body

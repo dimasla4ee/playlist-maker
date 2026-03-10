@@ -1,0 +1,357 @@
+@file:OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalMaterial3Api::class)
+
+package com.dimasla4ee.playlistmaker.feature.search.presentation
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.input.clearText
+import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExpandedFullScreenSearchBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LoadingIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SearchBar
+import androidx.compose.material3.SearchBarDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.rememberSearchBarState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
+import com.dimasla4ee.playlistmaker.R
+import com.dimasla4ee.playlistmaker.app.ui.theme.AppDimensions
+import com.dimasla4ee.playlistmaker.app.ui.theme.AppTypography
+import com.dimasla4ee.playlistmaker.app.ui.theme.LocalAppColors
+import com.dimasla4ee.playlistmaker.core.domain.model.Track
+import com.dimasla4ee.playlistmaker.core.presentation.components.ListItem
+import com.dimasla4ee.playlistmaker.core.presentation.components.StateInfo
+import com.dimasla4ee.playlistmaker.core.presentation.components.TitleAppBar
+import com.dimasla4ee.playlistmaker.core.utils.fadingEdge
+import com.dimasla4ee.playlistmaker.core.utils.toMmSs
+import com.dimasla4ee.playlistmaker.feature.search.presentation.model.SearchUiState
+
+@Composable
+fun SearchPane(
+    uiState: SearchUiState,
+    onQueryChanged: (String) -> Unit,
+    onSearchClicked: () -> Unit,
+    onClearQueueClicked: () -> Unit,
+    onClearSearchHistoryClicked: () -> Unit,
+    onRetryClicked: () -> Unit,
+    onTrackClicked: (Track) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val searchBarState = rememberSearchBarState()
+    val textFieldState = rememberTextFieldState()
+
+    LaunchedEffect(textFieldState.text) {
+        onQueryChanged(textFieldState.text.toString())
+    }
+
+    val searchBarColors = SearchBarDefaults.colors(
+        containerColor = colorResource(R.color.searchbarBackground),
+        inputFieldColors = SearchBarDefaults.inputFieldColors(
+            focusedTextColor = colorResource(R.color.searchbarText),
+            unfocusedTextColor = colorResource(R.color.searchbarText),
+            focusedPlaceholderColor = colorResource(R.color.searchbarHintText),
+            unfocusedPlaceholderColor = colorResource(R.color.searchbarHintText),
+            focusedLeadingIconColor = colorResource(R.color.searchbarIcon),
+            unfocusedLeadingIconColor = colorResource(R.color.searchbarIcon),
+            focusedTrailingIconColor = colorResource(R.color.searchbarIcon),
+            unfocusedTrailingIconColor = colorResource(R.color.searchbarIcon)
+        )
+    )
+
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+        topBar = {
+            TitleAppBar(
+                title = stringResource(R.string.search),
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            val inputField = @Composable {
+                SearchBarDefaults.InputField(
+                    textStyle = AppTypography.bodyLarge,
+                    textFieldState = textFieldState,
+                    searchBarState = searchBarState,
+                    onSearch = {
+                        onSearchClicked()
+                    },
+                    placeholder = {
+                        Text(
+                            style = AppTypography.bodyLarge,
+                            modifier = Modifier.clearAndSetSemantics {},
+                            text = stringResource(R.string.searchbar_hint)
+                        )
+                    },
+                    leadingIcon = {
+                        Icon(
+                            modifier = Modifier.size(16.dp),
+                            painter = painterResource(R.drawable.ic_search_24),
+                            contentDescription = null
+                        )
+                    },
+                    trailingIcon = {
+                        if (textFieldState.text.isNotEmpty()) {
+                            IconButton(
+                                onClick = {
+                                    textFieldState.clearText()
+                                    onClearQueueClicked()
+                                }
+                            ) {
+                                Icon(
+                                    modifier = Modifier.size(16.dp),
+                                    painter = painterResource(R.drawable.ic_clear_24),
+                                    contentDescription = stringResource(R.string.clear)
+                                )
+                            }
+                        }
+                    },
+                    colors = searchBarColors.inputFieldColors
+                )
+            }
+
+            SearchBar(
+                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = AppDimensions.paddingMedium),
+                state = searchBarState,
+                inputField = inputField,
+                colors = searchBarColors
+            )
+            ExpandedFullScreenSearchBar(
+                state = searchBarState,
+                inputField = inputField,
+                colors = searchBarColors
+            ) {
+                when (uiState) {
+                    is SearchUiState.Error -> ErrorContent(onRetryClicked = onRetryClicked)
+                    is SearchUiState.NoResults -> EmptyResultsContent()
+                    is SearchUiState.Loading -> LoadingContent()
+                    is SearchUiState.Content -> TracksContent(
+                        onTrackClicked = onTrackClicked,
+                        tracks = uiState.results
+                    )
+
+                    is SearchUiState.History -> SearchHistoryResults(
+                        onClearSearchHistoryClicked = onClearSearchHistoryClicked,
+                        onTrackClicked = onTrackClicked,
+                        tracks = uiState.history
+                    )
+
+                    is SearchUiState.Idle -> {}
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ErrorContent(
+    modifier: Modifier = Modifier,
+    onRetryClicked: () -> Unit
+) {
+    Column(
+        modifier = modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        StateInfo(
+            text = stringResource(R.string.network_error),
+            drawable = R.drawable.ic_no_internet_120,
+        )
+        Spacer(modifier.height(AppDimensions.paddingMedium))
+        Button(
+            onClick = onRetryClicked,
+            colors = ButtonDefaults.filledTonalButtonColors().copy(
+                containerColor = colorResource(R.color.buttonBackground),
+                contentColor = colorResource(R.color.buttonText)
+            )
+        ) {
+            Text(
+                text = stringResource(R.string.retry),
+                style = AppTypography.labelLarge
+            )
+        }
+    }
+}
+
+@Composable
+private fun EmptyResultsContent(
+    modifier: Modifier = Modifier
+) {
+    StateInfo(
+        text = stringResource(R.string.no_results),
+        drawable = R.drawable.ic_nothing_found_120,
+        modifier = modifier.fillMaxSize()
+    )
+}
+
+@Composable
+private fun LoadingContent(
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        LoadingIndicator(modifier.size(AppDimensions.loadingIndicatorSize))
+    }
+}
+
+@Composable
+private fun TracksContent(
+    tracks: List<Track>,
+    onTrackClicked: (Track) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    LazyColumn(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(vertical = AppDimensions.paddingMedium)
+            .fadingEdge()
+    ) {
+        items(
+            items = tracks,
+            key = { track -> track.id }
+        ) { track ->
+            TrackItem(
+                title = track.title,
+                author = track.artist,
+                duration = track.duration.toMmSs(),
+                imageUrl = track.thumbnailUrl,
+                onClick = { onTrackClicked(track) }
+            )
+        }
+    }
+}
+
+@Composable
+private fun SearchHistoryResults(
+    tracks: List<Track>,
+    onTrackClicked: (Track) -> Unit,
+    onClearSearchHistoryClicked: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(bottom = AppDimensions.paddingMedium),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            modifier = Modifier.padding(vertical = 24.dp),
+            text = stringResource(R.string.been_searched),
+            style = AppTypography.titleMedium,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+        TracksContent(
+            tracks = tracks,
+            onTrackClicked = onTrackClicked,
+            modifier = Modifier.weight(1f)
+        )
+        Button(
+            onClick = onClearSearchHistoryClicked,
+            colors = ButtonDefaults.filledTonalButtonColors().copy(
+                containerColor = colorResource(R.color.buttonBackground),
+                contentColor = colorResource(R.color.buttonText)
+            )
+        ) {
+            Text(
+                text = stringResource(R.string.clear_history),
+                style = AppTypography.labelLarge
+            )
+        }
+    }
+}
+
+@Composable
+private fun TrackItem(
+    title: String,
+    author: String,
+    duration: String,
+    imageUrl: String,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    ListItem(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .height(AppDimensions.settingsItemHeight)
+            .padding(horizontal = AppDimensions.paddingSmall),
+        leadingContent = {
+            AsyncImage(
+                modifier = Modifier
+                    .size(48.dp)
+                    .clip(RoundedCornerShape(2.dp)),
+                model = imageUrl,
+                placeholder = painterResource(R.drawable.ic_placeholder_45),
+                error = painterResource(R.drawable.ic_placeholder_45),
+                contentDescription = null
+            )
+        },
+        headlineContent = {
+            Text(
+                modifier = Modifier.padding(horizontal = AppDimensions.paddingSmall),
+                text = title,
+                style = AppTypography.bodyLarge,
+                color = MaterialTheme.colorScheme.onBackground,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        },
+        supportingContent = {
+            Text(
+                modifier = Modifier.padding(horizontal = AppDimensions.paddingSmall),
+                text = "$author · $duration",
+                style = AppTypography.labelSmall,
+                color = colorResource(R.color.cardLowerText),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        },
+        trailingContent = {
+            Icon(
+                painter = painterResource(R.drawable.ic_arrow_forward_24),
+                tint = LocalAppColors.current.settingDrawable,
+                contentDescription = null
+            )
+        }
+    )
+}

@@ -3,9 +3,7 @@
 package com.dimasla4ee.playlistmaker.feature.settings.presentation
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,11 +14,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -30,6 +25,8 @@ import com.dimasla4ee.playlistmaker.app.ui.theme.AppDimensions
 import com.dimasla4ee.playlistmaker.app.ui.theme.AppTypography
 import com.dimasla4ee.playlistmaker.app.ui.theme.LocalAppColors
 import com.dimasla4ee.playlistmaker.app.ui.theme.appSwitchColors
+import com.dimasla4ee.playlistmaker.core.presentation.components.ListItem
+import com.dimasla4ee.playlistmaker.core.presentation.components.TitleAppBar
 
 @Composable
 fun SettingsPane(
@@ -57,17 +54,9 @@ fun SettingsPane(
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
-            TopAppBar(
-                modifier = Modifier.fillMaxWidth(),
-                title = {
-                    Text(
-                        text = stringResource(R.string.settings),
-                        style = AppTypography.titleLarge
-                    )
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background
-                )
+            TitleAppBar(
+                title = stringResource(R.string.settings),
+                modifier = Modifier.fillMaxWidth()
             )
         }
     ) { innerPadding ->
@@ -108,24 +97,23 @@ private fun SettingItem(
     title: String,
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    trailingIcon: @Composable (() -> Unit) = {}
+    trailingContent: @Composable (() -> Unit) = {}
 ) {
-    Row(
+    ListItem(
         modifier = modifier
             .fillMaxWidth()
-            .height(AppDimensions.settingsItemHeight)
             .clickable(onClick = onClick)
+            .height(AppDimensions.settingsItemHeight)
             .padding(horizontal = AppDimensions.paddingMedium),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = title,
-            style = AppTypography.bodyLarge,
-            color = MaterialTheme.colorScheme.onBackground
-        )
-        trailingIcon()
-    }
+        headlineContent = {
+            Text(
+                text = title,
+                style = AppTypography.bodyLarge,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+        },
+        trailingContent = trailingContent
+    )
 }
 
 @Preview(showSystemUi = true)

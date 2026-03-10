@@ -33,6 +33,14 @@ class SearchViewModel(
     private val networkStatusProvider: NetworkStatusProvider
 ) : ViewModel() {
 
+    companion object {
+
+        private val LOG_TAG = SearchViewModel::class.java.simpleName
+        private const val MAX_HISTORY_SIZE = 10
+        private const val SEARCH_DELAY_MS = 2000L
+
+    }
+
     /**
      * Represents a search request initiated by the user.
      *
@@ -70,7 +78,7 @@ class SearchViewModel(
             old.term.trim().equals(
                 new.term.trim(),
                 ignoreCase = true
-            )
+            ) && !new.instant
         }
         .flatMapLatest { request ->
             if (request.term.isBlank()) {
@@ -170,14 +178,6 @@ class SearchViewModel(
     override fun onCleared() {
         super.onCleared()
         searchHistoryInteractor.saveHistory(searchHistory)
-    }
-
-    companion object {
-
-        private const val LOG_TAG = "SearchViewModel"
-        private const val MAX_HISTORY_SIZE = 10
-        private const val SEARCH_DELAY_MS = 2000L
-
     }
 
 }
