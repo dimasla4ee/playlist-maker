@@ -15,7 +15,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -23,13 +22,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.dimasla4ee.playlistmaker.R
 import com.dimasla4ee.playlistmaker.app.ui.theme.AppDimensions
 import com.dimasla4ee.playlistmaker.app.ui.theme.AppTypography
+import com.dimasla4ee.playlistmaker.app.ui.theme.LocalAppColors
+import com.dimasla4ee.playlistmaker.app.ui.theme.appSwitchColors
 
 @Composable
 fun SettingsPane(
@@ -83,12 +83,7 @@ fun SettingsPane(
                 Switch(
                     checked = isDarkTheme,
                     onCheckedChange = null,
-                    colors = SwitchDefaults.colors(
-                        checkedThumbColor = colorResource(R.color.switchThumbChecked),
-                        checkedTrackColor = colorResource(R.color.switchTrackChecked),
-                        uncheckedThumbColor = colorResource(R.color.switchThumbUnchecked),
-                        uncheckedTrackColor = colorResource(R.color.switchTrackUnchecked)
-                    )
+                    colors = appSwitchColors()
                 )
             }
 
@@ -99,7 +94,7 @@ fun SettingsPane(
                 ) {
                     Icon(
                         painter = painterResource(item.iconRes),
-                        tint = colorResource(R.color.settingDrawable),
+                        tint = LocalAppColors.current.settingDrawable,
                         contentDescription = null
                     )
                 }
@@ -127,7 +122,7 @@ private fun SettingItem(
         Text(
             text = title,
             style = AppTypography.bodyLarge,
-            color = colorResource(R.color.textPrimary)
+            color = MaterialTheme.colorScheme.onBackground
         )
         trailingIcon()
     }

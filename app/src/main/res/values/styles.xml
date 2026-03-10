@@ -18,16 +18,6 @@
         <item name="android:textAppearance">@style/TextAppearance.PlaylistMaker.BodyLarge</item>
     </style>
 
-    <style name="Widget.PlaylistMaker.Setting.Button" parent="Widget.PlaylistMaker.Setting">
-        <item name="drawableTint">@color/settingDrawable</item>
-    </style>
-
-    <style name="Widget.PlaylistMaker.Setting.Switch" parent="Widget.PlaylistMaker.Setting">
-        <item name="thumbTint">@color/switch_thumb_state</item>
-        <item name="trackTint">@color/switch_track_state</item>
-    </style>
-
-
     <!-- TextView -->
     <style name="Widget.PlaylistMaker.TextView.SongInfo" parent="">
         <item name="android:textAppearance">@style/TextAppearance.Material3.BodySmall</item>
