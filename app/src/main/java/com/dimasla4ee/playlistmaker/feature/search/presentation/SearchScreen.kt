@@ -14,8 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExpandedFullScreenSearchBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -32,7 +30,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -40,7 +37,9 @@ import androidx.compose.ui.unit.dp
 import com.dimasla4ee.playlistmaker.R
 import com.dimasla4ee.playlistmaker.app.ui.theme.AppDimensions
 import com.dimasla4ee.playlistmaker.app.ui.theme.AppTypography
+import com.dimasla4ee.playlistmaker.app.ui.theme.appSearchBarColors
 import com.dimasla4ee.playlistmaker.core.domain.model.Track
+import com.dimasla4ee.playlistmaker.core.presentation.components.ActionButton
 import com.dimasla4ee.playlistmaker.core.presentation.components.StateInfo
 import com.dimasla4ee.playlistmaker.core.presentation.components.TitleAppBar
 import com.dimasla4ee.playlistmaker.core.presentation.components.TracksContent
@@ -64,20 +63,6 @@ fun SearchPane(
     LaunchedEffect(textFieldState.text) {
         onQueryChanged(textFieldState.text.toString())
     }
-
-    val searchBarColors = SearchBarDefaults.colors(
-        containerColor = colorResource(R.color.searchbarBackground),
-        inputFieldColors = SearchBarDefaults.inputFieldColors(
-            focusedTextColor = colorResource(R.color.searchbarText),
-            unfocusedTextColor = colorResource(R.color.searchbarText),
-            focusedPlaceholderColor = colorResource(R.color.searchbarHintText),
-            unfocusedPlaceholderColor = colorResource(R.color.searchbarHintText),
-            focusedLeadingIconColor = colorResource(R.color.searchbarIcon),
-            unfocusedLeadingIconColor = colorResource(R.color.searchbarIcon),
-            focusedTrailingIconColor = colorResource(R.color.searchbarIcon),
-            unfocusedTrailingIconColor = colorResource(R.color.searchbarIcon)
-        )
-    )
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -111,7 +96,7 @@ fun SearchPane(
                     },
                     leadingIcon = {
                         Icon(
-                            modifier = Modifier.size(16.dp),
+                            modifier = Modifier.size(AppDimensions.searchBarIconSize),
                             painter = painterResource(R.drawable.ic_search_24),
                             contentDescription = null
                         )
@@ -125,14 +110,14 @@ fun SearchPane(
                                 }
                             ) {
                                 Icon(
-                                    modifier = Modifier.size(16.dp),
+                                    modifier = Modifier.size(AppDimensions.searchBarIconSize),
                                     painter = painterResource(R.drawable.ic_clear_24),
                                     contentDescription = stringResource(R.string.clear)
                                 )
                             }
                         }
                     },
-                    colors = searchBarColors.inputFieldColors
+                    colors = appSearchBarColors().inputFieldColors
                 )
             }
 
@@ -143,12 +128,12 @@ fun SearchPane(
                     .padding(horizontal = AppDimensions.paddingMedium),
                 state = searchBarState,
                 inputField = inputField,
-                colors = searchBarColors
+                colors = appSearchBarColors()
             )
             ExpandedFullScreenSearchBar(
                 state = searchBarState,
                 inputField = inputField,
-                colors = searchBarColors
+                colors = appSearchBarColors()
             ) {
                 when (uiState) {
                     is SearchUiState.Error -> ErrorContent(onRetryClicked = onRetryClicked)
@@ -187,23 +172,14 @@ private fun ErrorContent(
         verticalArrangement = Arrangement.Center
     ) {
         StateInfo(
-            modifier = Modifier.fillMaxSize(),
             text = stringResource(R.string.network_error),
             drawable = R.drawable.ic_no_internet_120,
         )
-        Spacer(modifier.height(AppDimensions.paddingMedium))
-        Button(
+        Spacer(modifier.height(AppDimensions.paddingBig))
+        ActionButton(
             onClick = onRetryClicked,
-            colors = ButtonDefaults.filledTonalButtonColors().copy(
-                containerColor = colorResource(R.color.buttonBackground),
-                contentColor = colorResource(R.color.buttonText)
-            )
-        ) {
-            Text(
-                text = stringResource(R.string.retry),
-                style = AppTypography.labelLarge
-            )
-        }
+            text = stringResource(R.string.retry)
+        )
     }
 }
 
@@ -258,17 +234,9 @@ private fun SearchHistoryResults(
                 .padding(vertical = AppDimensions.paddingMedium)
                 .fadingEdge()
         )
-        Button(
+        ActionButton(
             onClick = onClearSearchHistoryClicked,
-            colors = ButtonDefaults.filledTonalButtonColors().copy(
-                containerColor = colorResource(R.color.buttonBackground),
-                contentColor = colorResource(R.color.buttonText)
-            )
-        ) {
-            Text(
-                text = stringResource(R.string.clear_history),
-                style = AppTypography.labelLarge
-            )
-        }
+            text = stringResource(R.string.clear_history)
+        )
     }
 }

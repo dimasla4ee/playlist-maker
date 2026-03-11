@@ -25,7 +25,7 @@ import com.dimasla4ee.playlistmaker.app.ui.theme.AppDimensions
 import com.dimasla4ee.playlistmaker.app.ui.theme.AppTypography
 import com.dimasla4ee.playlistmaker.app.ui.theme.LocalAppColors
 import com.dimasla4ee.playlistmaker.app.ui.theme.appSwitchColors
-import com.dimasla4ee.playlistmaker.core.presentation.components.ListItem
+import com.dimasla4ee.playlistmaker.core.presentation.components.RowListItem
 import com.dimasla4ee.playlistmaker.core.presentation.components.TitleAppBar
 
 @Composable
@@ -99,11 +99,11 @@ private fun SettingItem(
     onClick: () -> Unit,
     trailingContent: @Composable (() -> Unit) = {}
 ) {
-    ListItem(
+    RowListItem(
         modifier = modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
-            .height(AppDimensions.settingsItemHeight)
+            .height(AppDimensions.rowListItemHeight)
             .padding(horizontal = AppDimensions.paddingMedium),
         headlineContent = {
             Text(

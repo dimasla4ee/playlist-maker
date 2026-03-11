@@ -9,7 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun ListItem(
+fun RowListItem(
     modifier: Modifier = Modifier,
     leadingContent: (@Composable () -> Unit)? = null,
     headlineContent: @Composable () -> Unit,

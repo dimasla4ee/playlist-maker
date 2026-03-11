@@ -31,34 +31,32 @@ class SettingsFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        return ComposeView(requireContext()).apply {
-            setContent {
-                val isDarkThemeEnabled by viewModel.isDarkThemeEnabled.collectAsState()
-                var localChecked by remember { mutableStateOf(isDarkThemeEnabled) }
+    ): View = ComposeView(requireContext()).apply {
+        setContent {
+            val isDarkThemeEnabled by viewModel.isDarkThemeEnabled.collectAsState()
+            var localChecked by remember { mutableStateOf(isDarkThemeEnabled) }
 
-                LaunchedEffect(isDarkThemeEnabled) {
-                    if (localChecked != isDarkThemeEnabled) {
-                        localChecked = isDarkThemeEnabled
-                    }
-
-                    delay(100)
-                    setAppTheme(isDarkThemeEnabled)
+            LaunchedEffect(isDarkThemeEnabled) {
+                if (localChecked != isDarkThemeEnabled) {
+                    localChecked = isDarkThemeEnabled
                 }
 
-                PlaylistMakerTheme {
-                    SettingsPane(
-                        modifier = Modifier.fillMaxSize(),
-                        isDarkTheme = localChecked,
-                        onThemeToggle = { isChecked ->
-                            localChecked = isChecked
-                            viewModel.onThemeToggle(isChecked)
-                        },
-                        onShareClick = { shareIntent() },
-                        onSupportClick = { emailIntent() },
-                        onAgreementClick = { agreementIntent() }
-                    )
-                }
+                delay(100)
+                setAppTheme(isDarkThemeEnabled)
+            }
+
+            PlaylistMakerTheme {
+                SettingsPane(
+                    modifier = Modifier.fillMaxSize(),
+                    isDarkTheme = localChecked,
+                    onThemeToggle = { isChecked ->
+                        localChecked = isChecked
+                        viewModel.onThemeToggle(isChecked)
+                    },
+                    onShareClick = { shareIntent() },
+                    onSupportClick = { emailIntent() },
+                    onAgreementClick = { agreementIntent() }
+                )
             }
         }
     }

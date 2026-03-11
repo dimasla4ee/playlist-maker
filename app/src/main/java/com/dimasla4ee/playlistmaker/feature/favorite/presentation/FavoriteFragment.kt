@@ -28,17 +28,15 @@ class FavoriteFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        return ComposeView(requireContext()).apply {
-            setContent {
-                val uiState by viewModel.uiState.collectAsState()
+    ): View = ComposeView(requireContext()).apply {
+        setContent {
+            val uiState by viewModel.uiState.collectAsState()
 
-                PlaylistMakerTheme {
-                    FavoritePane(
-                        uiState = uiState,
-                        onTrackClicked = ::navigateToPlayer
-                    )
-                }
+            PlaylistMakerTheme {
+                FavoritePane(
+                    uiState = uiState,
+                    onTrackClicked = ::navigateToPlayer
+                )
             }
         }
     }

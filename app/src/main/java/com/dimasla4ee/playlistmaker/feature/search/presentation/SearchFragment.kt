@@ -24,26 +24,24 @@ class SearchFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        return ComposeView(requireContext()).apply {
-            setContent {
-                val uiState by searchViewModel.uiState.collectAsState()
+    ): View = ComposeView(requireContext()).apply {
+        setContent {
+            val uiState by searchViewModel.uiState.collectAsState()
 
-                PlaylistMakerTheme {
-                    SearchPane(
-                        uiState = uiState,
-                        onQueryChanged = searchViewModel::onQueryChanged,
-                        onSearchClicked = searchViewModel::onSearchClicked,
-                        onClearQueueClicked = searchViewModel::onClearQueueClicked,
-                        onClearSearchHistoryClicked = searchViewModel::onClearSearchHistoryClicked,
-                        onRetryClicked = searchViewModel::onRetryClicked,
-                        onTrackClicked = { track ->
-                            searchViewModel.onTrackClicked(track)
-                            navigateToPlayer(track)
-                        },
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
+            PlaylistMakerTheme {
+                SearchPane(
+                    uiState = uiState,
+                    onQueryChanged = searchViewModel::onQueryChanged,
+                    onSearchClicked = searchViewModel::onSearchClicked,
+                    onClearQueueClicked = searchViewModel::onClearQueueClicked,
+                    onClearSearchHistoryClicked = searchViewModel::onClearSearchHistoryClicked,
+                    onRetryClicked = searchViewModel::onRetryClicked,
+                    onTrackClicked = { track ->
+                        searchViewModel.onTrackClicked(track)
+                        navigateToPlayer(track)
+                    },
+                    modifier = Modifier.fillMaxSize()
+                )
             }
         }
     }

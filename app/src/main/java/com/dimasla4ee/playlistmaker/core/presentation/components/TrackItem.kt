@@ -31,12 +31,12 @@ fun TrackItem(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
-    ListItem(
+    RowListItem(
         modifier = modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
-            .height(AppDimensions.settingsItemHeight)
-            .padding(horizontal = AppDimensions.paddingSmall),
+            .height(AppDimensions.rowListItemHeight)
+            .padding(AppDimensions.trackItemPadding),
         leadingContent = {
             AsyncImage(
                 modifier = Modifier
