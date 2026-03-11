@@ -12,6 +12,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.dimasla4ee.playlistmaker.app.ui.theme.PlaylistMakerTheme
+import com.dimasla4ee.playlistmaker.core.domain.model.Track
 import com.dimasla4ee.playlistmaker.feature.search.presentation.viewmodel.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -38,9 +39,7 @@ class SearchFragment : Fragment() {
                         onRetryClicked = searchViewModel::onRetryClicked,
                         onTrackClicked = { track ->
                             searchViewModel.onTrackClicked(track)
-                            findNavController().navigate(
-                                SearchFragmentDirections.actionSearchFragmentToPlayerFragment(track)
-                            )
+                            navigateToPlayer(track)
                         },
                         modifier = Modifier.fillMaxSize()
                     )
@@ -52,6 +51,12 @@ class SearchFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         searchViewModel.onPause()
+    }
+
+    private fun navigateToPlayer(track: Track) {
+        findNavController().navigate(
+            SearchFragmentDirections.actionSearchFragmentToPlayerFragment(track)
+        )
     }
 
 }

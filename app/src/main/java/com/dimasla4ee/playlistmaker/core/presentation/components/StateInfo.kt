@@ -2,9 +2,11 @@ package com.dimasla4ee.playlistmaker.core.presentation.components
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,7 +24,8 @@ fun StateInfo(
 ) {
     Column(
         modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
         Image(
             painter = painterResource(drawable),
@@ -33,7 +36,8 @@ fun StateInfo(
             text = text,
             maxLines = 4,
             style = AppTypography.titleMedium,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onBackground
         )
     }
 }
