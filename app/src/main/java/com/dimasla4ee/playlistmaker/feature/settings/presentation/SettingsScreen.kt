@@ -29,7 +29,7 @@ import com.dimasla4ee.playlistmaker.core.presentation.components.RowListItem
 import com.dimasla4ee.playlistmaker.core.presentation.components.TitleAppBar
 
 @Composable
-fun SettingsPane(
+fun SettingsScreen(
     isDarkTheme: Boolean,
     onThemeToggle: (Boolean) -> Unit,
     onShareClick: () -> Unit,
@@ -118,8 +118,8 @@ private fun SettingItem(
 
 @Preview(showSystemUi = true)
 @Composable
-fun SettingsPanePreview() {
-    SettingsPane(
+fun SettingsScreenPreview() {
+    SettingsScreen(
         isDarkTheme = true,
         onThemeToggle = {},
         onShareClick = {},

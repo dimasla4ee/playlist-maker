@@ -29,7 +29,7 @@ class SearchFragment : Fragment() {
             val uiState by searchViewModel.uiState.collectAsState()
 
             PlaylistMakerTheme {
-                SearchPane(
+                SearchScreen(
                     uiState = uiState,
                     onQueryChanged = searchViewModel::onQueryChanged,
                     onSearchClicked = searchViewModel::onSearchClicked,

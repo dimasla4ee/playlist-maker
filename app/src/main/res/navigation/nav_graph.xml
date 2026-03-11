@@ -23,8 +23,7 @@
     <fragment
         android:id="@+id/mediaLibraryFragment"
         android:name="com.dimasla4ee.playlistmaker.feature.media_library.presentation.MediaLibraryFragment"
-        android:label="fragment_media_library"
-        tools:layout="@layout/fragment_media_library">
+        android:label="fragment_media_library">
         <action
             android:id="@+id/action_mediaLibraryFragment_to_playerFragment"
             app:destination="@id/playerFragment" />
@@ -53,10 +52,6 @@
             android:defaultValue="-1"
             app:argType="integer" />
     </fragment>
-    <fragment
-        android:id="@+id/playlistFragment"
-        android:name="com.dimasla4ee.playlistmaker.feature.playlists.presentation.UserPlaylistsFragment"
-        android:label="PlaylistFragment" />
     <fragment
         android:id="@+id/playlistDetailedFragment"
         android:name="com.dimasla4ee.playlistmaker.feature.playlists.presentation.PlaylistDetailedFragment"

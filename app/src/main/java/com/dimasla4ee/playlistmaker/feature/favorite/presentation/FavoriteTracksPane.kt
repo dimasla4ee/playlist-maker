@@ -11,11 +11,11 @@ import com.dimasla4ee.playlistmaker.core.domain.model.Track
 import com.dimasla4ee.playlistmaker.core.presentation.components.StateInfo
 import com.dimasla4ee.playlistmaker.core.presentation.components.TracksContent
 import com.dimasla4ee.playlistmaker.core.utils.fadingEdge
-import com.dimasla4ee.playlistmaker.feature.favorite.presentation.model.FavoriteUiState
+import com.dimasla4ee.playlistmaker.feature.favorite.presentation.model.FavoriteTracksUiState
 
 @Composable
-fun FavoritePane(
-    uiState: FavoriteUiState,
+fun FavoriteTracksPane(
+    uiState: FavoriteTracksUiState,
     onTrackClicked: (Track) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -24,7 +24,7 @@ fun FavoritePane(
         contentAlignment = Alignment.Center
     ) {
         when (uiState) {
-            is FavoriteUiState.Content -> {
+            is FavoriteTracksUiState.Content -> {
                 TracksContent(
                     tracks = uiState.tracks,
                     onTrackClicked = { onTrackClicked(it) },
@@ -34,7 +34,7 @@ fun FavoritePane(
                 )
             }
 
-            is FavoriteUiState.Empty -> {
+            is FavoriteTracksUiState.Empty -> {
                 StateInfo(
                     text = stringResource(R.string.empty_media_library),
                     drawable = R.drawable.ic_nothing_found_120,
@@ -42,7 +42,7 @@ fun FavoritePane(
                 )
             }
 
-            is FavoriteUiState.Idle -> {}
+            is FavoriteTracksUiState.Idle -> {}
         }
     }
 }

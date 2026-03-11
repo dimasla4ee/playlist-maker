@@ -4,7 +4,7 @@ import com.dimasla4ee.playlistmaker.core.data.network.NetworkStatusProvider
 import com.dimasla4ee.playlistmaker.core.data.storage.ImageStorageManager
 import com.dimasla4ee.playlistmaker.core.domain.model.Track
 import com.dimasla4ee.playlistmaker.feature.favorite.domain.FavoriteInteractor
-import com.dimasla4ee.playlistmaker.feature.favorite.presentation.viewmodel.FavoriteViewModel
+import com.dimasla4ee.playlistmaker.feature.favorite.presentation.viewmodel.FavoriteTracksViewModel
 import com.dimasla4ee.playlistmaker.feature.player.presentation.TrackPlayerViewModel
 import com.dimasla4ee.playlistmaker.feature.player.presentation.viewmodel.MediaPlayerViewModel
 import com.dimasla4ee.playlistmaker.feature.playlists.domain.PlaylistInteractor
@@ -46,8 +46,8 @@ val viewModelModule = module {
         )
     }
 
-    viewModel<FavoriteViewModel> {
-        FavoriteViewModel(
+    viewModel<FavoriteTracksViewModel> {
+        FavoriteTracksViewModel(
             favoriteInteractor = get<FavoriteInteractor>()
         )
     }

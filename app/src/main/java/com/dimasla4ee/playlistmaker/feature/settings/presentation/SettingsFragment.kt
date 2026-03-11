@@ -46,7 +46,7 @@ class SettingsFragment : Fragment() {
             }
 
             PlaylistMakerTheme {
-                SettingsPane(
+                SettingsScreen(
                     modifier = Modifier.fillMaxSize(),
                     isDarkTheme = localChecked,
                     onThemeToggle = { isChecked ->

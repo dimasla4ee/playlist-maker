@@ -47,7 +47,7 @@ import com.dimasla4ee.playlistmaker.core.utils.fadingEdge
 import com.dimasla4ee.playlistmaker.feature.search.presentation.model.SearchUiState
 
 @Composable
-fun SearchPane(
+fun SearchScreen(
     uiState: SearchUiState,
     onQueryChanged: (String) -> Unit,
     onSearchClicked: () -> Unit,

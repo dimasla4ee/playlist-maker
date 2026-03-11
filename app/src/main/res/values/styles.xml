@@ -69,45 +69,12 @@
         <item name="tabRippleColor">@null</item>
     </style>
 
-
-    <!-- Search -->
-    <style name="Widget.PlaylistMaker.SearchBar" parent="Widget.Material3Expressive.SearchBar">
-        <item name="liftOnScroll">false</item>
-        <item name="hideNavigationIcon">false</item>
-        <item name="backgroundTint">@color/searchbarBackground</item>
-        <item name="navigationIconTint">@color/searchbarIcon</item>
-        <item name="android:colorControlNormal">@color/searchbarIcon</item>
-        <item name="materialThemeOverlay">@style/ThemeOverlay.PlaylistMaker.Search</item>
-        <item name="android:textAppearance">@style/TextAppearance.PlaylistMaker.SearchBar</item>
-    </style>
-
-    <style name="Widget.PlaylistMaker.SearchView" parent="Widget.Material3Expressive.SearchView">
-        <item name="backgroundTint">@color/searchbarBackground</item>
-        <item name="android:colorControlNormal">@color/searchbarIcon</item>
-        <item name="materialThemeOverlay">@style/ThemeOverlay.PlaylistMaker.Search</item>
-        <item name="android:textAppearance">@style/TextAppearance.PlaylistMaker.SearchView</item>
-    </style>
-
-    <style name="ThemeOverlay.PlaylistMaker.Search" parent="">
-        <item name="colorOnSurface">@color/searchbarText</item>
-        <item name="colorOnSurfaceVariant">@color/searchbarHintText</item>
-        <item name="colorOnSecondaryContainer">@color/searchbarIcon</item>
-    </style>
-
-
     <!-- Bottom Navigation -->
     <style name="Widget.PlaylistMaker.BottomNavigationView" parent="Widget.Material3Expressive.BottomNavigationView">
         <item name="itemIconTint">@color/bottom_nav_item_color</item>
         <item name="itemTextColor">@color/bottom_nav_item_color</item>
         <item name="itemBackground">@color/bottomNavigationItemBackground</item>
     </style>
-
-
-    <!-- Loading Indicator -->
-    <style name="Widget.PlaylistMaker.LoadingIndicator" parent="Widget.Material3.LoadingIndicator">
-        <item name="indicatorSize">80dp</item>
-    </style>
-
 
     <!-- Image -->
     <style name="Widget.PlaylistMaker.ImageView.FixedSquare" parent="">

@@ -31,11 +31,11 @@ import com.dimasla4ee.playlistmaker.core.domain.model.Playlist
 import com.dimasla4ee.playlistmaker.core.presentation.components.ActionButton
 import com.dimasla4ee.playlistmaker.core.presentation.components.StateInfo
 import com.dimasla4ee.playlistmaker.core.utils.fadingEdge
-import com.dimasla4ee.playlistmaker.feature.playlists.presentation.model.PlaylistListUiState
+import com.dimasla4ee.playlistmaker.feature.playlists.presentation.model.UserPlaylistsUiState
 
 @Composable
 fun UserPlaylistsPane(
-    uiState: PlaylistListUiState,
+    uiState: UserPlaylistsUiState,
     onPlaylistClicked: (Playlist) -> Unit,
     onNewPlaylistClicked: () -> Unit,
     modifier: Modifier = Modifier
@@ -51,7 +51,7 @@ fun UserPlaylistsPane(
         )
 
         when (uiState) {
-            is PlaylistListUiState.Content -> {
+            is UserPlaylistsUiState.Content -> {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
                     modifier = Modifier
@@ -71,11 +71,11 @@ fun UserPlaylistsPane(
                 }
             }
 
-            is PlaylistListUiState.Empty -> {
+            is UserPlaylistsUiState.Empty -> {
                 NoPlaylists(modifier = Modifier.weight(1f))
             }
 
-            is PlaylistListUiState.Loading -> {}
+            is UserPlaylistsUiState.Loading -> {}
         }
     }
 }
