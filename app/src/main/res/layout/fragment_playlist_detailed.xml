@@ -172,21 +172,21 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/shareMenuButton"
-            style="@style/Widget.PlaylistMaker.Setting.Button"
+            style="@style/Widget.PlaylistMaker.Setting"
             android:layout_width="match_parent"
             android:layout_height="@dimen/settingItemHeight"
             android:text="@string/share_playlist" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/editMenuButton"
-            style="@style/Widget.PlaylistMaker.Setting.Button"
+            style="@style/Widget.PlaylistMaker.Setting"
             android:layout_width="match_parent"
             android:layout_height="@dimen/settingItemHeight"
             android:text="@string/edit_playlist_info" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/deleteMenuButton"
-            style="@style/Widget.PlaylistMaker.Setting.Button"
+            style="@style/Widget.PlaylistMaker.Setting"
             android:layout_width="match_parent"
             android:layout_height="@dimen/settingItemHeight"
             android:text="@string/delete_playlist" />

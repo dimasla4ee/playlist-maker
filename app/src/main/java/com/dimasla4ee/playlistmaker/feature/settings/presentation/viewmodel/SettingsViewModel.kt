@@ -1,32 +1,33 @@
 package com.dimasla4ee.playlistmaker.feature.settings.presentation.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dimasla4ee.playlistmaker.feature.settings.domain.SettingsInteractor
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 
 class SettingsViewModel(
     private val settingsInteractor: SettingsInteractor
 ) : ViewModel() {
 
-    private val _isDarkThemeEnabled = MutableLiveData<Boolean>()
-    val isDarkThemeEnabled: LiveData<Boolean> get() = _isDarkThemeEnabled
+    val isDarkThemeEnabled: StateFlow<Boolean>
+        field = MutableStateFlow(false)
 
     init {
-        val isDarkThemeEnabled = settingsInteractor.isDarkThemeEnabled()
-        _isDarkThemeEnabled.postValue(isDarkThemeEnabled)
+        val isDarkTheme = settingsInteractor.isDarkThemeEnabled()
+        isDarkThemeEnabled.update { isDarkTheme }
     }
 
     fun onThemeToggle(useDarkTheme: Boolean) {
-        _isDarkThemeEnabled.postValue(useDarkTheme)
+        isDarkThemeEnabled.update { useDarkTheme }
     }
 
     fun onPause() {
-        settingsInteractor.setAppTheme(_isDarkThemeEnabled.value ?: false)
+        settingsInteractor.setAppTheme(isDarkThemeEnabled.value)
     }
 
     override fun onCleared() {
         super.onCleared()
-        settingsInteractor.setAppTheme(_isDarkThemeEnabled.value ?: false)
+        settingsInteractor.setAppTheme(isDarkThemeEnabled.value)
     }
 }

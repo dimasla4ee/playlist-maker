@@ -3,8 +3,6 @@ package com.dimasla4ee.playlistmaker.core.utils
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.widget.TextView
-import androidx.annotation.DrawableRes
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -62,13 +60,4 @@ fun View.setupWindowInsets(
 
         WindowInsetsCompat.CONSUMED
     }
-}
-
-/**
- * Sets a drawable to the top of this TextView.
- *
- * @param drawable The resource ID of the drawable to set.
- */
-fun TextView.setTopDrawable(@DrawableRes drawable: Int) {
-    this.setCompoundDrawablesWithIntrinsicBounds(0, drawable, 0, 0)
 }

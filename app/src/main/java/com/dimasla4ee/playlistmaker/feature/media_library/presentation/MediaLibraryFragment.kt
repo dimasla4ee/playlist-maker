@@ -1,37 +1,72 @@
 package com.dimasla4ee.playlistmaker.feature.media_library.presentation
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import com.dimasla4ee.playlistmaker.R
-import com.dimasla4ee.playlistmaker.core.utils.viewBinding
-import com.dimasla4ee.playlistmaker.databinding.FragmentMediaLibraryBinding
-import com.google.android.material.tabs.TabLayoutMediator
+import androidx.navigation.fragment.findNavController
+import com.dimasla4ee.playlistmaker.app.ui.theme.PlaylistMakerTheme
+import com.dimasla4ee.playlistmaker.core.domain.model.Track
+import com.dimasla4ee.playlistmaker.feature.favorite.presentation.viewmodel.FavoriteTracksViewModel
+import com.dimasla4ee.playlistmaker.feature.playlists.presentation.viewmodel.UserPlaylistsViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MediaLibraryFragment : Fragment(R.layout.fragment_media_library) {
+class MediaLibraryFragment : Fragment() {
 
-    private val binding by viewBinding(FragmentMediaLibraryBinding::bind)
-    private var tabMediator: TabLayoutMediator? = null
+    private val userPlaylistsViewModel: UserPlaylistsViewModel by viewModel()
+    private val favoriteTracksViewModel: FavoriteTracksViewModel by viewModel()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = ComposeView(requireContext()).apply {
+        setContent {
+            val favoriteUiState by favoriteTracksViewModel.uiState.collectAsState()
+            val userPlaylistUiState by userPlaylistsViewModel.uiState.collectAsState()
 
-        with(binding) {
-            viewPager.adapter = MediaLibraryPagerAdapter(childFragmentManager, lifecycle)
-
-            tabMediator = TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-                when (position) {
-                    0 -> tab.text = getString(R.string.favorite_tracks)
-                    1 -> tab.text = getString(R.string.playlists)
-                }
-            }.apply { attach() }
+            PlaylistMakerTheme {
+                MediaLibraryPane(
+                    favoriteTracksUiState = favoriteUiState,
+                    userPlaylistsUiState = userPlaylistUiState,
+                    onTrackClicked = ::navigateToPlayer,
+                    onPlaylistClicked = { navigateToPlaylist(it.id) },
+                    onCreatePlaylistClicked = ::navigateToPlaylistCreation
+                )
+            }
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        tabMediator?.detach()
-        tabMediator = null
+    private fun navigateToPlayer(track: Track) {
+        findNavController().navigate(
+            MediaLibraryFragmentDirections.actionMediaLibraryFragmentToPlayerFragment(
+                track
+            )
+        )
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        userPlaylistsViewModel.getPlaylists()
+
+    }
+
+    private fun navigateToPlaylist(playlistId: Int) {
+        findNavController().navigate(
+            MediaLibraryFragmentDirections.actionMediaLibraryFragmentToPlaylistDetailedFragment(
+                playlistId
+            )
+        )
+    }
+
+    private fun navigateToPlaylistCreation() {
+        findNavController().navigate(
+            MediaLibraryFragmentDirections.actionMediaLibraryFragmentToNewPlaylistFragment()
+        )
     }
 
 }

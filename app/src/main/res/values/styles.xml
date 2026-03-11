@@ -18,16 +18,6 @@
         <item name="android:textAppearance">@style/TextAppearance.PlaylistMaker.BodyLarge</item>
     </style>
 
-    <style name="Widget.PlaylistMaker.Setting.Button" parent="Widget.PlaylistMaker.Setting">
-        <item name="drawableTint">@color/settingDrawable</item>
-    </style>
-
-    <style name="Widget.PlaylistMaker.Setting.Switch" parent="Widget.PlaylistMaker.Setting">
-        <item name="thumbTint">@color/switch_thumb_state</item>
-        <item name="trackTint">@color/switch_track_state</item>
-    </style>
-
-
     <!-- TextView -->
     <style name="Widget.PlaylistMaker.TextView.SongInfo" parent="">
         <item name="android:textAppearance">@style/TextAppearance.Material3.BodySmall</item>
@@ -69,19 +59,6 @@
         <item name="android:textAppearance">@style/TextAppearance.PlaylistMaker.LabelSmall</item>
     </style>
 
-    <style name="Widget.PlaylistMaker.TextView.Playlist.Title" parent="Widget.PlaylistMaker.TextView.Track">
-        <item name="android:textColor">@color/textPrimary</item>
-        <item name="android:paddingHorizontal">0dp</item>
-        <item name="android:textAppearance">@style/TextAppearance.PlaylistMaker.LabelMedium</item>
-    </style>
-
-    <style name="Widget.PlaylistMaker.TextView.Playlist.Tracklist" parent="Widget.PlaylistMaker.TextView.Track">
-        <item name="android:textColor">@color/textPrimary</item>
-        <item name="android:paddingHorizontal">0dp</item>
-        <item name="android:textAppearance">@style/TextAppearance.PlaylistMaker.LabelMedium</item>
-    </style>
-
-
     <!-- Tabs -->
     <style name="Widget.PlaylistMaker.TabLayout" parent="Widget.Material3.TabLayout">
         <item name="tabIndicatorColor">@color/tabIndicator</item>
@@ -92,45 +69,12 @@
         <item name="tabRippleColor">@null</item>
     </style>
 
-
-    <!-- Search -->
-    <style name="Widget.PlaylistMaker.SearchBar" parent="Widget.Material3Expressive.SearchBar">
-        <item name="liftOnScroll">false</item>
-        <item name="hideNavigationIcon">false</item>
-        <item name="backgroundTint">@color/searchbarBackground</item>
-        <item name="navigationIconTint">@color/searchbarIcon</item>
-        <item name="android:colorControlNormal">@color/searchbarIcon</item>
-        <item name="materialThemeOverlay">@style/ThemeOverlay.PlaylistMaker.Search</item>
-        <item name="android:textAppearance">@style/TextAppearance.PlaylistMaker.SearchBar</item>
-    </style>
-
-    <style name="Widget.PlaylistMaker.SearchView" parent="Widget.Material3Expressive.SearchView">
-        <item name="backgroundTint">@color/searchbarBackground</item>
-        <item name="android:colorControlNormal">@color/searchbarIcon</item>
-        <item name="materialThemeOverlay">@style/ThemeOverlay.PlaylistMaker.Search</item>
-        <item name="android:textAppearance">@style/TextAppearance.PlaylistMaker.SearchView</item>
-    </style>
-
-    <style name="ThemeOverlay.PlaylistMaker.Search" parent="">
-        <item name="colorOnSurface">@color/searchbarText</item>
-        <item name="colorOnSurfaceVariant">@color/searchbarHintText</item>
-        <item name="colorOnSecondaryContainer">@color/searchbarIcon</item>
-    </style>
-
-
     <!-- Bottom Navigation -->
     <style name="Widget.PlaylistMaker.BottomNavigationView" parent="Widget.Material3Expressive.BottomNavigationView">
         <item name="itemIconTint">@color/bottom_nav_item_color</item>
         <item name="itemTextColor">@color/bottom_nav_item_color</item>
         <item name="itemBackground">@color/bottomNavigationItemBackground</item>
     </style>
-
-
-    <!-- Loading Indicator -->
-    <style name="Widget.PlaylistMaker.LoadingIndicator" parent="Widget.Material3.LoadingIndicator">
-        <item name="indicatorSize">80dp</item>
-    </style>
-
 
     <!-- Image -->
     <style name="Widget.PlaylistMaker.ImageView.FixedSquare" parent="">

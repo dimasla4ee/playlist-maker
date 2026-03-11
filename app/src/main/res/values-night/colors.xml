@@ -53,13 +53,6 @@
     <color name="fabIcon">#FFFFFF</color>
     <color name="favFabActiveIcon">#F56B6C</color>
 
-    <color name="settingDrawable">#FFFFFF</color>
-
-    <color name="switchTrackChecked">#9FBBF3</color>
-    <color name="switchTrackUnchecked">#E6E8EB</color>
-    <color name="switchThumbChecked">#3772E7</color>
-    <color name="switchThumbUnchecked">#AEAFB4</color>
-
     <color name="searchbarBackground">#535459</color>
     <color name="searchbarIcon">#FFFFFF</color>
     <color name="searchbarText">#FFFFFF</color>

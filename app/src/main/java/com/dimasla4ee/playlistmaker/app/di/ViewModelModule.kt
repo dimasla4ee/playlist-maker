@@ -4,13 +4,13 @@ import com.dimasla4ee.playlistmaker.core.data.network.NetworkStatusProvider
 import com.dimasla4ee.playlistmaker.core.data.storage.ImageStorageManager
 import com.dimasla4ee.playlistmaker.core.domain.model.Track
 import com.dimasla4ee.playlistmaker.feature.favorite.domain.FavoriteInteractor
-import com.dimasla4ee.playlistmaker.feature.favorite.presentation.viewmodel.FavoriteViewModel
+import com.dimasla4ee.playlistmaker.feature.favorite.presentation.viewmodel.FavoriteTracksViewModel
 import com.dimasla4ee.playlistmaker.feature.player.presentation.TrackPlayerViewModel
 import com.dimasla4ee.playlistmaker.feature.player.presentation.viewmodel.MediaPlayerViewModel
 import com.dimasla4ee.playlistmaker.feature.playlists.domain.PlaylistInteractor
 import com.dimasla4ee.playlistmaker.feature.playlists.presentation.PlaylistDetailedViewModel
 import com.dimasla4ee.playlistmaker.feature.playlists.presentation.viewmodel.PlaylistEditViewModel
-import com.dimasla4ee.playlistmaker.feature.playlists.presentation.viewmodel.PlaylistListViewModel
+import com.dimasla4ee.playlistmaker.feature.playlists.presentation.viewmodel.UserPlaylistsViewModel
 import com.dimasla4ee.playlistmaker.feature.search.domain.SearchHistoryInteractor
 import com.dimasla4ee.playlistmaker.feature.search.domain.SearchTracksUseCase
 import com.dimasla4ee.playlistmaker.feature.search.presentation.viewmodel.SearchViewModel
@@ -40,14 +40,14 @@ val viewModelModule = module {
         )
     }
 
-    viewModel<PlaylistListViewModel> {
-        PlaylistListViewModel(
+    viewModel<UserPlaylistsViewModel> {
+        UserPlaylistsViewModel(
             playlistInteractor = get<PlaylistInteractor>()
         )
     }
 
-    viewModel<FavoriteViewModel> {
-        FavoriteViewModel(
+    viewModel<FavoriteTracksViewModel> {
+        FavoriteTracksViewModel(
             favoriteInteractor = get<FavoriteInteractor>()
         )
     }

@@ -1,7 +1,6 @@
 package com.dimasla4ee.playlistmaker.feature.player.presentation
 
 import android.content.Context
-import android.text.TextUtils
 import android.util.AttributeSet
 import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes

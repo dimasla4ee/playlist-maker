@@ -1,243 +1,60 @@
 package com.dimasla4ee.playlistmaker.feature.search.presentation
 
-import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
-import androidx.core.widget.doOnTextChanged
+import android.view.ViewGroup
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.dimasla4ee.playlistmaker.R
+import com.dimasla4ee.playlistmaker.app.ui.theme.PlaylistMakerTheme
 import com.dimasla4ee.playlistmaker.core.domain.model.Track
-import com.dimasla4ee.playlistmaker.core.presentation.adapter.TrackAdapter
-import com.dimasla4ee.playlistmaker.core.presentation.receiver.OnConnectivityChangeReceiver
-import com.dimasla4ee.playlistmaker.core.utils.debounce
-import com.dimasla4ee.playlistmaker.core.utils.setTopDrawable
-import com.dimasla4ee.playlistmaker.core.utils.show
-import com.dimasla4ee.playlistmaker.core.utils.viewBinding
-import com.dimasla4ee.playlistmaker.databinding.FragmentSearchBinding
-import com.dimasla4ee.playlistmaker.feature.search.presentation.model.SearchUiState
 import com.dimasla4ee.playlistmaker.feature.search.presentation.viewmodel.SearchViewModel
-import com.google.android.material.search.SearchView
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchFragment : Fragment(R.layout.fragment_search) {
+class SearchFragment : Fragment() {
 
-    private val binding by viewBinding(FragmentSearchBinding::bind)
     private val searchViewModel: SearchViewModel by viewModel()
-    private lateinit var recyclerAdapter: TrackAdapter
-    private lateinit var onTrackClickedDebounce: (Track) -> Unit
-    private lateinit var onConnectivityChangeReceiver: OnConnectivityChangeReceiver
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = ComposeView(requireContext()).apply {
+        setContent {
+            val uiState by searchViewModel.uiState.collectAsState()
 
-        onConnectivityChangeReceiver = OnConnectivityChangeReceiver()
-        recyclerAdapter = TrackAdapter(
-            onItemClick = { onItemClick(it) }
-        )
-        binding.recycler.adapter = recyclerAdapter
-
-        setupObservers()
-        setupListeners()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        onConnectivityChangeReceiver.register(requireContext())
+            PlaylistMakerTheme {
+                SearchScreen(
+                    uiState = uiState,
+                    onQueryChanged = searchViewModel::onQueryChanged,
+                    onSearchClicked = searchViewModel::onSearchClicked,
+                    onClearQueueClicked = searchViewModel::onClearQueueClicked,
+                    onClearSearchHistoryClicked = searchViewModel::onClearSearchHistoryClicked,
+                    onRetryClicked = searchViewModel::onRetryClicked,
+                    onTrackClicked = { track ->
+                        searchViewModel.onTrackClicked(track)
+                        navigateToPlayer(track)
+                    },
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+        }
     }
 
     override fun onPause() {
         super.onPause()
-        onConnectivityChangeReceiver.unregister(requireContext())
         searchViewModel.onPause()
     }
 
-    private fun setupObservers() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                searchViewModel.uiState.collect(::render)
-            }
-        }
+    private fun navigateToPlayer(track: Track) {
+        findNavController().navigate(
+            SearchFragmentDirections.actionSearchFragmentToPlayerFragment(track)
+        )
     }
-
-    private fun onItemClick(track: Track) = onTrackClickedDebounce(track)
-
-    private fun setupListeners() {
-        val inputMethodManager = requireContext().getSystemService(
-            INPUT_METHOD_SERVICE
-        ) as InputMethodManager
-
-        val clearButtonSearchBar = binding.searchBar.menu.findItem(
-            R.id.actionClear
-        ).apply {
-            val color = requireContext().getColor(R.color.searchbarIcon)
-            isVisible = false
-            icon?.setTint(color)
-        }
-
-        onTrackClickedDebounce = debounce(
-            delayMillis = 300L,
-            coroutineScope = viewLifecycleOwner.lifecycleScope,
-            useLastParam = true
-        ) { track ->
-            searchViewModel.onTrackClicked(track)
-
-            findNavController().navigate(
-                SearchFragmentDirections.actionSearchFragmentToPlayerFragment(track)
-            )
-        }
-
-        with(binding) {
-            clearHistoryButton.setOnClickListener {
-                searchViewModel.onClearSearchHistoryClicked()
-            }
-
-            searchView.editText.doOnTextChanged { charSequence, _, _, _ ->
-                val text = charSequence.toString()
-                if (text.isBlank()) {
-                    searchViewModel.onClearQueueClicked()
-                } else {
-                    searchViewModel.onQueryChanged(text)
-                }
-                clearButtonSearchBar?.isVisible = text.isNotEmpty()
-            }
-
-            searchView.editText.setOnEditorActionListener { _, actionId, _ ->
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    searchViewModel.onSearchClicked()
-                    inputMethodManager.hideSoftInputFromWindow(searchView.windowToken, 0)
-                    true
-                } else false
-            }
-
-            searchView.addTransitionListener { _, _, newState ->
-                if (newState == SearchView.TransitionState.HIDING) {
-                    searchBar.setText(searchView.editText.text)
-                }
-            }
-
-            searchBar.setOnMenuItemClickListener { item ->
-                if (item.itemId == R.id.actionClear) {
-                    searchViewModel.onClearQueueClicked()
-                    searchBar.clearText()
-                    true
-                } else {
-                    false
-                }
-            }
-
-            retryButton.setOnClickListener {
-                searchViewModel.onRetryClicked()
-            }
-        }
-    }
-
-    private fun render(state: SearchUiState) {
-        when (state) {
-            is SearchUiState.Content -> showContent(state)
-            is SearchUiState.Error -> showError()
-            is SearchUiState.Loading -> showLoading()
-            is SearchUiState.NoResults -> showNoResults()
-            is SearchUiState.History -> showHistory(state)
-            is SearchUiState.Idle -> showIdle()
-        }
-    }
-
-    private fun updateUiVisibility(
-        recyclerAdapterList: List<Track>? = null,
-        loadingIndicatorVisible: Boolean,
-        retryButtonVisible: Boolean,
-        historyLabelVisible: Boolean,
-        clearHistoryButtonVisible: Boolean,
-        stateContainerVisible: Boolean,
-        stateInfoText: String?,
-        stateInfoDrawable: Int?
-    ): Unit = with(binding) {
-        recyclerAdapterList?.let { recyclerAdapter.submitList(it) }
-        recycler.show(recyclerAdapterList != null)
-        loadingIndicator.show(loadingIndicatorVisible)
-        retryButton.show(retryButtonVisible)
-        historyLabel.show(historyLabelVisible)
-        clearHistoryButton.show(clearHistoryButtonVisible)
-        stateContainer.show(stateContainerVisible)
-
-        if (stateContainerVisible) {
-            stateInfo.apply {
-                text = stateInfoText
-                setTopDrawable(stateInfoDrawable ?: 0)
-            }
-        }
-    }
-
-
-    private fun showContent(state: SearchUiState.Content) = updateUiVisibility(
-        recyclerAdapterList = state.results,
-        loadingIndicatorVisible = false,
-        retryButtonVisible = false,
-        historyLabelVisible = false,
-        clearHistoryButtonVisible = false,
-        stateContainerVisible = false,
-        stateInfoText = null,
-        stateInfoDrawable = null
-    )
-
-    private fun showError() = updateUiVisibility(
-        loadingIndicatorVisible = false,
-        retryButtonVisible = true,
-        historyLabelVisible = false,
-        clearHistoryButtonVisible = false,
-        stateContainerVisible = true,
-        stateInfoText = getString(R.string.network_error),
-        stateInfoDrawable = R.drawable.ic_no_internet_120
-    )
-
-    private fun showNoResults() = updateUiVisibility(
-        loadingIndicatorVisible = false,
-        retryButtonVisible = false,
-        historyLabelVisible = false,
-        clearHistoryButtonVisible = false,
-        stateContainerVisible = true,
-        stateInfoText = getString(R.string.no_results),
-        stateInfoDrawable = R.drawable.ic_nothing_found_120
-    )
-
-    private fun showLoading() = updateUiVisibility(
-        recyclerAdapterList = emptyList(),
-        loadingIndicatorVisible = true,
-        retryButtonVisible = false,
-        historyLabelVisible = false,
-        clearHistoryButtonVisible = false,
-        stateContainerVisible = false,
-        stateInfoText = null,
-        stateInfoDrawable = null
-    )
-
-    private fun showHistory(state: SearchUiState.History) = updateUiVisibility(
-        recyclerAdapterList = state.history,
-        loadingIndicatorVisible = false,
-        retryButtonVisible = false,
-        historyLabelVisible = true,
-        clearHistoryButtonVisible = true,
-        stateContainerVisible = false,
-        stateInfoText = null,
-        stateInfoDrawable = null
-    )
-
-    private fun showIdle() = updateUiVisibility(
-        recyclerAdapterList = emptyList(),
-        loadingIndicatorVisible = false,
-        retryButtonVisible = false,
-        historyLabelVisible = false,
-        clearHistoryButtonVisible = false,
-        stateContainerVisible = false,
-        stateInfoText = null,
-        stateInfoDrawable = null
-    )
 
 }
