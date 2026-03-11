@@ -28,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberSearchBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -59,6 +60,50 @@ fun SearchScreen(
 ) {
     val searchBarState = rememberSearchBarState()
     val textFieldState = rememberTextFieldState()
+    val searchBarColors = appSearchBarColors()
+    val inputField = remember {
+        @Composable {
+            SearchBarDefaults.InputField(
+                textStyle = AppTypography.bodyLarge,
+                textFieldState = textFieldState,
+                searchBarState = searchBarState,
+                onSearch = {
+                    onSearchClicked()
+                },
+                placeholder = {
+                    Text(
+                        style = AppTypography.bodyLarge,
+                        modifier = Modifier.clearAndSetSemantics {},
+                        text = stringResource(R.string.searchbar_hint)
+                    )
+                },
+                leadingIcon = {
+                    Icon(
+                        modifier = Modifier.size(AppDimensions.searchBarIconSize),
+                        painter = painterResource(R.drawable.ic_search_24),
+                        contentDescription = null
+                    )
+                },
+                trailingIcon = {
+                    if (textFieldState.text.isNotEmpty()) {
+                        IconButton(
+                            onClick = {
+                                textFieldState.clearText()
+                                onClearQueueClicked()
+                            }
+                        ) {
+                            Icon(
+                                modifier = Modifier.size(AppDimensions.searchBarIconSize),
+                                painter = painterResource(R.drawable.ic_clear_24),
+                                contentDescription = stringResource(R.string.clear)
+                            )
+                        }
+                    }
+                },
+                colors = appSearchBarColors().inputFieldColors
+            )
+        }
+    }
 
     LaunchedEffect(textFieldState.text) {
         onQueryChanged(textFieldState.text.toString())
@@ -79,48 +124,6 @@ fun SearchScreen(
                 .padding(innerPadding),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val inputField = @Composable {
-                SearchBarDefaults.InputField(
-                    textStyle = AppTypography.bodyLarge,
-                    textFieldState = textFieldState,
-                    searchBarState = searchBarState,
-                    onSearch = {
-                        onSearchClicked()
-                    },
-                    placeholder = {
-                        Text(
-                            style = AppTypography.bodyLarge,
-                            modifier = Modifier.clearAndSetSemantics {},
-                            text = stringResource(R.string.searchbar_hint)
-                        )
-                    },
-                    leadingIcon = {
-                        Icon(
-                            modifier = Modifier.size(AppDimensions.searchBarIconSize),
-                            painter = painterResource(R.drawable.ic_search_24),
-                            contentDescription = null
-                        )
-                    },
-                    trailingIcon = {
-                        if (textFieldState.text.isNotEmpty()) {
-                            IconButton(
-                                onClick = {
-                                    textFieldState.clearText()
-                                    onClearQueueClicked()
-                                }
-                            ) {
-                                Icon(
-                                    modifier = Modifier.size(AppDimensions.searchBarIconSize),
-                                    painter = painterResource(R.drawable.ic_clear_24),
-                                    contentDescription = stringResource(R.string.clear)
-                                )
-                            }
-                        }
-                    },
-                    colors = appSearchBarColors().inputFieldColors
-                )
-            }
-
             SearchBar(
                 shape = RoundedCornerShape(8.dp),
                 modifier = Modifier
@@ -128,12 +131,12 @@ fun SearchScreen(
                     .padding(horizontal = AppDimensions.paddingMedium),
                 state = searchBarState,
                 inputField = inputField,
-                colors = appSearchBarColors()
+                colors = searchBarColors
             )
             ExpandedFullScreenSearchBar(
                 state = searchBarState,
                 inputField = inputField,
-                colors = appSearchBarColors()
+                colors = searchBarColors
             ) {
                 when (uiState) {
                     is SearchUiState.Error -> ErrorContent(onRetryClicked = onRetryClicked)
