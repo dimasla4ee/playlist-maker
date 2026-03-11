@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class PlaylistListViewModel(private val playlistInteractor: PlaylistInteractor) : ViewModel() {
+class UserPlaylistsViewModel(private val playlistInteractor: PlaylistInteractor) : ViewModel() {
 
     val uiState: StateFlow<PlaylistListUiState>
         field = MutableStateFlow<PlaylistListUiState>(PlaylistListUiState.Loading)

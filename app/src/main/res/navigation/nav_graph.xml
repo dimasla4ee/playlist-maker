@@ -55,7 +55,7 @@
     </fragment>
     <fragment
         android:id="@+id/playlistFragment"
-        android:name="com.dimasla4ee.playlistmaker.feature.playlists.presentation.PlaylistListFragment"
+        android:name="com.dimasla4ee.playlistmaker.feature.playlists.presentation.UserPlaylistsFragment"
         android:label="PlaylistFragment" />
     <fragment
         android:id="@+id/playlistDetailedFragment"

@@ -10,7 +10,7 @@ import com.dimasla4ee.playlistmaker.feature.player.presentation.viewmodel.MediaP
 import com.dimasla4ee.playlistmaker.feature.playlists.domain.PlaylistInteractor
 import com.dimasla4ee.playlistmaker.feature.playlists.presentation.PlaylistDetailedViewModel
 import com.dimasla4ee.playlistmaker.feature.playlists.presentation.viewmodel.PlaylistEditViewModel
-import com.dimasla4ee.playlistmaker.feature.playlists.presentation.viewmodel.PlaylistListViewModel
+import com.dimasla4ee.playlistmaker.feature.playlists.presentation.viewmodel.UserPlaylistsViewModel
 import com.dimasla4ee.playlistmaker.feature.search.domain.SearchHistoryInteractor
 import com.dimasla4ee.playlistmaker.feature.search.domain.SearchTracksUseCase
 import com.dimasla4ee.playlistmaker.feature.search.presentation.viewmodel.SearchViewModel
@@ -40,8 +40,8 @@ val viewModelModule = module {
         )
     }
 
-    viewModel<PlaylistListViewModel> {
-        PlaylistListViewModel(
+    viewModel<UserPlaylistsViewModel> {
+        UserPlaylistsViewModel(
             playlistInteractor = get<PlaylistInteractor>()
         )
     }
